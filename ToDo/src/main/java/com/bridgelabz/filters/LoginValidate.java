@@ -4,9 +4,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class LoginValidate {
 
 	private static final String regularExpressionForEmailId = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";

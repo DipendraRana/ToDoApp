@@ -21,6 +21,12 @@ public class RegistrationSerivceImplement implements RegistrationService {
 	public void register(User user) throws PersistenceException {
 		registrationdao.register(user);
 	}
+
+	@Override
+	@Transactional
+	public int updateTheValidationToken(String emailId) {
+		return registrationdao.updateTheValidationToken(emailId);
+	}
 	
 	
 

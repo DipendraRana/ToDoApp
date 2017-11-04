@@ -14,8 +14,9 @@
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<hibernate.version>5.2.10.Final</hibernate.version>
 		<mysql.version>5.1.10</mysql.version>
-		<hibernate.validator.version>5.2.1.Final</hibernate.validator.version>
-		<javax.validation.version>1.1.0.Final</javax.validation.version>
+		<javax.mail.version>1.5.2</javax.mail.version>
+		<commons-logging.version>1.1.1</commons-logging.version>
+		<com.fasterxml.jackson.core.version>2.9.0</com.fasterxml.jackson.core.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -62,6 +63,27 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>4.3.12.RELEASE</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-expression -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<!-- Hibernate 4 dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -75,20 +97,6 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 
-		<!-- jsr303 validation dependencies -->
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>${javax.validation.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate.validator.version}</version>
-		</dependency>
-
-
 		<!--MYSQL Connector -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -101,7 +109,21 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.0</version>
+			<version>${com.fasterxml.jackson.core.version}</version>
+		</dependency>
+
+		<!--  https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency> 
+
+		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging.version}</version>
 		</dependency>
 
 	</dependencies>

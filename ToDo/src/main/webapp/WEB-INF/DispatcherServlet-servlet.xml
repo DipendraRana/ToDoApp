@@ -49,6 +49,21 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<!-- <bean id="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" /> -->
+	<!-- Mail Setting -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		 <!-- SMTP settings -->
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="chincholkarsujit12@gmail.com" />
+        <property name="password" value="sujit1234" />
+        <property name="javaMailProperties">
+         <!-- additional properties specific to JavaMail -->
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+    
 </beans>

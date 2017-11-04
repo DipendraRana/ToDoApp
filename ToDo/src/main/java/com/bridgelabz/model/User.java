@@ -22,11 +22,23 @@ public class User {
 	@Column(name="Email_Id")
 	private String emailId;
 	
+	@Column(name="Valid")
+	private String validToken;
+
 	public User() {
 		userName=null;
 		password=null;
 		mobileNumber=0;
 		emailId=null;
+		validToken=null;
+	}
+	
+	public String getValidToken() {
+		return validToken;
+	}
+
+	public void setValidToken(String validToken) {
+		this.validToken = validToken;
 	}
 	
 	public String getUserName() {
