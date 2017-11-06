@@ -2,6 +2,8 @@ package com.bridgelabz.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,35 +11,48 @@ import javax.persistence.Table;
 @Table(name="login")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID")
+	private int id;
+
 	@Column(name="User_Name")
 	private String userName;
 	
-	@Column(name="Mobile_Number")
+	@Column(name="Password")
 	private String password;
 	
-	@Column(name="Password")
+	@Column(name="Mobile_Number",unique=true)
 	private long mobileNumber;
 	
-	@Id
-	@Column(name="Email_Id")
+	@Column(name="Email_Id",unique=true,nullable=false)
 	private String emailId;
 	
-	@Column(name="Valid")
-	private String validToken;
+	@Column(name="Enabled")
+	private boolean validToken;
 
 	public User() {
+		id=0;
 		userName=null;
 		password=null;
 		mobileNumber=0;
 		emailId=null;
-		validToken=null;
+		validToken=false;
 	}
 	
-	public String getValidToken() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public boolean getValidToken() {
 		return validToken;
 	}
 
-	public void setValidToken(String validToken) {
+	public void setValidToken(boolean validToken) {
 		this.validToken = validToken;
 	}
 	

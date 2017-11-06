@@ -23,7 +23,7 @@ public class LoginDaoImplement implements LoginDao {
 					.createQuery("from User where emailId =:Email_Id and password=:Password and validToken=:Valid_Token", User.class);
 			query.setParameter("Email_Id", emailId);
 			query.setParameter("Password", password);
-			query.setParameter("Valid_Token", "V");
+			query.setParameter("Valid_Token", true);
 			User user = (User) query.uniqueResult();
 			userName = user.getUserName();
 			return userName;

@@ -10,7 +10,6 @@ import com.bridgelabz.dao.RegistrationDao;
 import com.bridgelabz.model.User;
 
 @Service
-@Transactional
 public class RegistrationSerivceImplement implements RegistrationService {
 	
 	@Autowired
@@ -24,8 +23,8 @@ public class RegistrationSerivceImplement implements RegistrationService {
 
 	@Override
 	@Transactional
-	public int updateTheValidationToken(String emailId) {
-		return registrationdao.updateTheValidationToken(emailId);
+	public int updateTheValidationToken(int id) {
+		return registrationdao.updateTheValidationToken(id);
 	}
 	
 	

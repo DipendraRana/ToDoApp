@@ -8,6 +8,6 @@ public interface RegistrationService {
 	
 	public void register(User user) throws PersistenceException;
 	
-	public int updateTheValidationToken(String emailId);
+	public int updateTheValidationToken(int id);
 
 }

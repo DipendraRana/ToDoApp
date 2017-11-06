@@ -14,7 +14,8 @@
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<hibernate.version>5.2.10.Final</hibernate.version>
 		<mysql.version>5.1.10</mysql.version>
-		<javax.mail.version>1.5.2</javax.mail.version>
+		<javax.mail.version>1.4.4</javax.mail.version>
+		<javax.activation>1.1.1</javax.activation>
 		<commons-logging.version>1.1.1</commons-logging.version>
 		<com.fasterxml.jackson.core.version>2.9.0</com.fasterxml.jackson.core.version>
 	</properties>
@@ -112,12 +113,19 @@
 			<version>${com.fasterxml.jackson.core.version}</version>
 		</dependency>
 
-		<!--  https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
 			<groupId>javax.mail</groupId>
-			<artifactId>javax.mail-api</artifactId>
+			<artifactId>mail</artifactId>
 			<version>${javax.mail.version}</version>
-		</dependency> 
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>${javax.activation}</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
 		<dependency>

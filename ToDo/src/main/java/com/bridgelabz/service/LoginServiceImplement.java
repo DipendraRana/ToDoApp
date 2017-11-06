@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.bridgelabz.dao.LoginDao;
 
 @Service
-@Transactional
 public class LoginServiceImplement implements LoginService {
 
 	@Autowired
