@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.dao.LoginDao;
+import com.bridgelabz.model.User;
 
 @Service
 public class LoginServiceImplement implements LoginService {
@@ -17,7 +18,7 @@ public class LoginServiceImplement implements LoginService {
 
 	@Override
 	@Transactional
-	public String validateTheUser(String emailId, String password) throws IOException {
+	public User validateTheUser(String emailId, String password) throws IOException {
 		return loginDao.validateTheUser(emailId, password);
 	}
 	

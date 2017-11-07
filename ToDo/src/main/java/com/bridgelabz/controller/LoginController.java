@@ -1,6 +1,9 @@
 package com.bridgelabz.controller;
 
 import java.io.IOException;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +22,15 @@ public class LoginController {
 	private LoginService loginService;
 	
 	@RequestMapping(value="/login",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String login(@RequestBody User user) throws IOException {
-		String userName=loginService.validateTheUser(user.getEmailId(), user.getPassword());
-		return userName!=null? "login succesfull":"login failed"; 
+	public @ResponseBody String login(@RequestBody User user,HttpSession session) throws IOException {
+		user=loginService.validateTheUser(user.getEmailId(), user.getPassword());
+		session.setAttribute("user", user);
+		return user!=null? "login succesfull":"login failed"; 
 	}
 	
+	@RequestMapping(value="/logout",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public String logout(HttpSession session) {
+		session.removeAttribute("userId");
+		return "succesfully Loged Out";
+	}
 }

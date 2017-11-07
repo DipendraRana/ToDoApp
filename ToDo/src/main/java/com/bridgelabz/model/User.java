@@ -1,11 +1,15 @@
 package com.bridgelabz.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="login")
@@ -13,7 +17,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID")
+	@Column(name="User_ID")
 	private int id;
 
 	@Column(name="User_Name")
@@ -30,6 +34,10 @@ public class User {
 	
 	@Column(name="Enabled")
 	private boolean validToken;
+	
+	@OneToMany(mappedBy="user")
+	@JsonIgnore
+	private List<Note> notes;
 
 	public User() {
 		id=0;
@@ -38,6 +46,7 @@ public class User {
 		mobileNumber=0;
 		emailId=null;
 		validToken=false;
+		notes=null;
 	}
 	
 	public int getId() {
@@ -86,6 +95,14 @@ public class User {
 
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
 	}
 	
 }

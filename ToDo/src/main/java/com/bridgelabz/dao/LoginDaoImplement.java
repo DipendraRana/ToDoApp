@@ -15,21 +15,14 @@ public class LoginDaoImplement implements LoginDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public String validateTheUser(String emailId, String password) throws IOException {
-		String userName = null;
+	public User validateTheUser(String emailId, String password) throws IOException, NullPointerException {
 		Query<User> query;
-		try {
-			query = sessionFactory.getCurrentSession()
-					.createQuery("from User where emailId =:Email_Id and password=:Password and validToken=:Valid_Token", User.class);
-			query.setParameter("Email_Id", emailId);
-			query.setParameter("Password", password);
-			query.setParameter("Valid_Token", true);
-			User user = (User) query.uniqueResult();
-			userName = user.getUserName();
-			return userName;
-		} catch (NullPointerException e) {
-			return userName;
-		}
+		query = sessionFactory.getCurrentSession().createQuery(
+				"from User where emailId =:Email_Id and password=:Password and validToken=:Valid_Token", User.class);
+		query.setParameter("Email_Id", emailId);
+		query.setParameter("Password", password);
+		query.setParameter("Valid_Token", true);
+		User user = (User) query.uniqueResult();
+		return user;
 	}
-
 }
