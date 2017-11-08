@@ -9,5 +9,7 @@ public interface RegistrationService {
 	public void register(User user) throws PersistenceException;
 	
 	public int updateTheValidationToken(int id);
+	
+	public int deleteTheUserForFailedValidation(int id);
 
 }

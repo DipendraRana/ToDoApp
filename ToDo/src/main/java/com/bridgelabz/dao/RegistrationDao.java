@@ -9,5 +9,7 @@ public interface RegistrationDao {
 	public int register(User user) throws PersistenceException;
 	
 	public int updateTheValidationToken(int id);
+	
+	public int deleteTheUserForFailedValidation(int id);
 
 }

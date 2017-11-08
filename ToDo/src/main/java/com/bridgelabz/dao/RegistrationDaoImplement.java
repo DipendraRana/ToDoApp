@@ -21,9 +21,14 @@ public class RegistrationDaoImplement implements RegistrationDao {
 
 	@Override
 	public int updateTheValidationToken(int id) {
-		System.out.println(id);
 		return sessionFactory.getCurrentSession().createQuery("update User set validToken=:Valid_Token where id=:Id")
 				.setParameter("Valid_Token", true).setParameter("Id", id).executeUpdate();
+	}
+
+	@Override
+	public int deleteTheUserForFailedValidation(int id) {
+		return sessionFactory.getCurrentSession().createQuery("delete from User where id=:User_Id").setParameter("User_Id", id)
+				.executeUpdate();
 	}
 
 }

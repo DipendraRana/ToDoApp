@@ -1,7 +1,6 @@
 package com.bridgelabz.controller;
 
 import java.security.Key;
-
 import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.EmailService;
 import com.bridgelabz.service.RegistrationService;
+import com.bridgelabz.service.TokenOpearionImplement;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 @RestController
@@ -35,6 +34,9 @@ public class RegistrationController {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private TokenOpearionImplement tokenOperation;
 
 	private Key key=MacProvider.generateKey();
 	
@@ -46,8 +48,8 @@ public class RegistrationController {
 			registerService.register(user);
 			
 			//Generating JWT token for authentication
-			String token=Jwts.builder().setSubject(String.valueOf(user.getId())).signWith(SignatureAlgorithm.HS512,key).compact(); 
-			
+			String token=tokenOperation.generateToken(String.valueOf(user.getId()), key); 
+	
 			//message to send to user with JWT token appended
 			String message = "<a href=\"" + request.getRequestURL() + "/activate/" + token + "\" >"
 					+ request.getRequestURL() + "</a>";
@@ -65,9 +67,10 @@ public class RegistrationController {
 
 	@RequestMapping(value = "/registration/activate/{token:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String authorizeTheUser(@PathVariable("token") String token) {
-		//getting id of user from JWT Token
-		int id=Integer.parseInt(Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject());
-		
-		return registerService.updateTheValidationToken(id) == 1 ? "Account Activated" : "Account Activation Failed";
-	}
+			//getting id of user from JWT Token
+			Claims claim=tokenOperation.parseTheToken(key, token);
+			int id=Integer.parseInt(claim.getSubject());
+			
+			return registerService.updateTheValidationToken(id) == 1 ? "Account Activated" : "Account Activation Failed";
+		}
 }
