@@ -10,5 +10,5 @@ public interface LoginService {
 
 	public String validationOfPassword(String password);
 	
-	public User validateTheUser(String emailId,String password) throws IOException;
+	public User validateTheUser(String emailId) throws IOException;
 }

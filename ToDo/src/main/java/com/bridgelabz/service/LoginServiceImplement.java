@@ -18,8 +18,8 @@ public class LoginServiceImplement implements LoginService {
 
 	@Override
 	@Transactional
-	public User validateTheUser(String emailId, String password) throws IOException {
-		return loginDao.validateTheUser(emailId, password);
+	public User validateTheUser(String emailId) throws IOException {
+		return loginDao.validateTheUser(emailId);
 	}
 	
 	@Override

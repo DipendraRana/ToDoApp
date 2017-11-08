@@ -1,11 +1,14 @@
 package com.bridgelabz.controller;
 
+import java.security.Key;
+
 import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,23 +20,41 @@ import com.bridgelabz.model.User;
 import com.bridgelabz.service.EmailService;
 import com.bridgelabz.service.RegistrationService;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.MacProvider;
+
 @RestController
 public class RegistrationController {
-	
+
 	@Autowired
 	private RegistrationService registerService;
-	
+
 	@Autowired
 	private EmailService emailService;
 	
-	@RequestMapping(value="/registration",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String Register(@RequestBody User user,HttpServletRequest request)  {
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
+	private Key key=MacProvider.generateKey();
+	
+	@RequestMapping(value = "/registration", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String Register(@RequestBody User user, HttpServletRequest request) {
 		try {
+			user.setValidToken(false);
+			user.setPassword(passwordEncoder.encode(user.getPassword())); //Encrypting the password
 			registerService.register(user);
-			String message="<a href=\""+request.getRequestURL()+"/activate/"+user.getId()+"\" >"+request.getRequestURL()+"</a>";
+			
+			//Generating JWT token for authentication
+			String token=Jwts.builder().setSubject(String.valueOf(user.getId())).signWith(SignatureAlgorithm.HS512,key).compact(); 
+			
+			//message to send to user with JWT token appended
+			String message = "<a href=\"" + request.getRequestURL() + "/activate/" + token + "\" >"
+					+ request.getRequestURL() + "</a>";
+			
 			emailService.sendActivationMail(user.getEmailId(), "Link to actvate your account", message);
 			return "registration succesfull";
-		}catch(PersistenceException e) {
+		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return "registration Failed";
 		} catch (MessagingException e) {
@@ -41,9 +62,12 @@ public class RegistrationController {
 			return "Mail sent Failed";
 		}
 	}
-	
-	@RequestMapping(value="/registration/activate/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String authorizeTheUser(@PathVariable("id") int id) {
-		return registerService.updateTheValidationToken(id)==1 ? "Account Activated":"Account Activation Failed";
+
+	@RequestMapping(value = "/registration/activate/{token:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String authorizeTheUser(@PathVariable("token") String token) {
+		//getting id of user from JWT Token
+		int id=Integer.parseInt(Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject());
+		
+		return registerService.updateTheValidationToken(id) == 1 ? "Account Activated" : "Account Activation Failed";
 	}
 }

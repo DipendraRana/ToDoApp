@@ -6,6 +6,6 @@ import com.bridgelabz.model.User;
 
 public interface LoginDao {
 
-	public User validateTheUser(String emailId, String password) throws IOException;
+	public User validateTheUser(String emailId) throws IOException;
 
 }

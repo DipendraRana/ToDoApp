@@ -23,7 +23,6 @@ public class EmailServiceImplement implements EmailService {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage, true);
 				mimeMessageHelper.setTo(to);
-				mimeMessageHelper.setFrom("chincholkarsujit12@gmail.com");
 				mimeMessageHelper.setSubject(subject);
 				mimeMessageHelper.setText(message, true);
 			}

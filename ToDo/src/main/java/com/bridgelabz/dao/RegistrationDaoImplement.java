@@ -16,7 +16,6 @@ public class RegistrationDaoImplement implements RegistrationDao {
 
 	@Override
 	public int register(User user) throws PersistenceException {
-		user.setValidToken(false);
 		return (int) sessionFactory.getCurrentSession().save(user);
 	}
 
