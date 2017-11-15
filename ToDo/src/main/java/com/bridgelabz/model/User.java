@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -18,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="nativeGenerator")
-	@GenericGenerator(name="nativeGenerator",strategy="native")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="User_ID")
 	private int id;
 
@@ -38,6 +35,9 @@ public class User {
 	@Column(name="Enabled")
 	private boolean validToken;
 	
+	@Column(name="Pictures")
+	private String picture;
+	
 	@OneToMany(mappedBy="user")
 	@JsonIgnore
 	private List<Note> notes;
@@ -50,6 +50,7 @@ public class User {
 		emailId=null;
 		validToken=false;
 		notes=null;
+		picture=null;
 	}
 	
 	public int getId() {
@@ -106,6 +107,14 @@ public class User {
 
 	public void setNotes(List<Note> notes) {
 		this.notes = notes;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 	
 }

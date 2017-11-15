@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.EmailService;
 import com.bridgelabz.service.RegistrationService;
-import com.bridgelabz.service.TokenOpearionImplement;
+import com.bridgelabz.service.TokenOperationImplement;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.crypto.MacProvider;
@@ -36,9 +36,9 @@ public class RegistrationController {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private TokenOpearionImplement tokenOperation;
+	private TokenOperationImplement tokenOperation;
 
-	private Key key=MacProvider.generateKey();
+	private final Key key=MacProvider.generateKey();
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String Register(@RequestBody User user, HttpServletRequest request) {
@@ -54,7 +54,7 @@ public class RegistrationController {
 			String message = "<a href=\"" + request.getRequestURL() + "/activate/" + token + "\" >"
 					+ request.getRequestURL() + "</a>";
 			
-			emailService.sendActivationMail(user.getEmailId(), "Link to actvate your account", message);
+			emailService.sendMail(user.getEmailId(), "Link to actvate your account", message);
 			return "registration succesfull";
 		} catch (PersistenceException e) {
 			e.printStackTrace();

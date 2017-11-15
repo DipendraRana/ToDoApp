@@ -16,7 +16,7 @@ public class EmailServiceImplement implements EmailService {
 	private JavaMailSender mailSender;
 
 	@Override
-	public void sendActivationMail(String to, String subject, String message) throws MessagingException {
+	public void sendMail(String to, String subject, String message) throws MessagingException {
 		mailSender.send(new MimeMessagePreparator(){
 
 			@Override

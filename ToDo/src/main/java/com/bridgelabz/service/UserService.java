@@ -1,8 +1,8 @@
-package com.bridgelabz.dao;
+package com.bridgelabz.service;
 
 import com.bridgelabz.model.User;
 
-public interface UserDao {
+public interface UserService {
 	
 	public User getUserByEmail(String emailId);
 	

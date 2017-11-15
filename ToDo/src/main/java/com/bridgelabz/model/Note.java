@@ -11,15 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
 @Table(name="notes")
 public class Note {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="nativeGenerator")
-	@GenericGenerator(name="nativeGenerator",strategy="native")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="Note_id")
 	private int noteId;
 	
