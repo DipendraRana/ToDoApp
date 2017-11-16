@@ -1,7 +1,6 @@
 package com.bridgelabz.controller;
 
 import java.security.Key;
-import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.model.User;
-import com.bridgelabz.service.EmailService;
+import com.bridgelabz.service.JmsMessageSendingService;
 import com.bridgelabz.service.RegistrationService;
 import com.bridgelabz.service.TokenOperationImplement;
 
@@ -30,7 +29,7 @@ public class RegistrationController {
 	private RegistrationService registerService;
 
 	@Autowired
-	private EmailService emailService;
+	private JmsMessageSendingService jmsMessageSendingService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -49,19 +48,13 @@ public class RegistrationController {
 			
 			//Generating JWT token for authentication
 			String token=tokenOperation.generateToken(String.valueOf(user.getId()), key); 
-	
-			//message to send to user with JWT token appended
-			String message = "<a href=\"" + request.getRequestURL() + "/activate/" + token + "\" >"
-					+ request.getRequestURL() + "</a>";
 			
-			emailService.sendMail(user.getEmailId(), "Link to actvate your account", message);
+			jmsMessageSendingService.sendMessage(token, request.getRequestURL(), user.getEmailId());
+			
 			return "registration succesfull";
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return "registration Failed";
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			return "Mail sent Failed";
 		}
 	}
 

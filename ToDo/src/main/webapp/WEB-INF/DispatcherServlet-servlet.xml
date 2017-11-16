@@ -1,11 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd">
 
 	<!-- Activate Spring MVC Annotation scanning -->
 	<!-- Specifying base package of the Components like Controller, Service,DAO -->
@@ -16,6 +18,9 @@
 
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
+
+	<!-- enable the configuration of jms on annotations -->
+	<jms:annotation-driven container-factory="jmsListenerContainerFactory" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -67,9 +72,44 @@
 		</property>
 	</bean>
 
+	<!-- Activemq connection factory -->
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<!-- brokerURL -->
+		<constructor-arg index="0" value="tcp://localhost:61616" />
+		<!-- one setting is done to env. file inside bin directory of activeMQ 
+			installation directory and another one is done here -->
+		<!-- it is important to set if you are sending message as object due to upgraded security in activeMQ -->
+		<property name="trustAllPackages" value="true" />
+	</bean>
+
+	<!-- Pooled Spring connection factory -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+	<!-- Default Destination Queue Definition -->
+	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<!-- name of the queue -->
+		<constructor-arg index="0" value="MessageStorage" />
+	</bean>
+
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="defaultDestination" />
+	</bean>
+
+	<!-- JMS receive, define JmsListenerContainerFactory -->
+	<bean id="jmsListenerContainerFactory"
+		class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="concurrency" value="1-1" />
+	</bean>
+
 	<bean id="bcryptEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-		
+
 	<bean id="bcryptDecode" class="org.springframework.security.crypto.bcrypt.BCrypt"></bean>
 
 </beans>
