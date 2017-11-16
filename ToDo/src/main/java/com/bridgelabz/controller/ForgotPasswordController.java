@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.model.ResetPassword;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.EmailService;
 import com.bridgelabz.service.TokenOperation;
@@ -59,11 +60,16 @@ public class ForgotPasswordController {
 	}
 	
 	@RequestMapping(value="/forgotPassword/resetPassword/{token:.+}",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
-	public String resetPassword(@PathVariable String token,@RequestBody User user) {
-		String newPassword=passwordEncoder.encode(user.getPassword());
-		Claims claim=tokenOperation.parseTheToken(key, token);
-		int id=Integer.parseInt(claim.getSubject());
-		return userService.updatePasswordOfUser(newPassword, id)==1? "password is reset":"Failed To reset The Password";
+	public String resetPassword(@PathVariable String token,@RequestBody ResetPassword resetPassword) {
+		String newPassword=passwordEncoder.encode(resetPassword.getNewPassword());
+		String reEnterNewPassword=passwordEncoder.encode(resetPassword.getReEnterNewPassword());
+		if(newPassword.equals(reEnterNewPassword)) {
+			Claims claim=tokenOperation.parseTheToken(key, token);
+			int id=Integer.parseInt(claim.getSubject());
+			return userService.updatePasswordOfUser(newPassword, id)==1? "password is reset":"Failed To reset The Password";
+		}
+		else
+			return "Password not matched";
 		
 	}
 
