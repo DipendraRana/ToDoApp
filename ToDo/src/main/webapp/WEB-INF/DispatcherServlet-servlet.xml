@@ -78,7 +78,8 @@
 		<constructor-arg index="0" value="tcp://localhost:61616" />
 		<!-- one setting is done to env. file inside bin directory of activeMQ 
 			installation directory and another one is done here -->
-		<!-- it is important to set if you are sending message as object due to upgraded security in activeMQ -->
+		<!-- it is important to set if you are sending message as object due to 
+			upgraded security in activeMQ -->
 		<property name="trustAllPackages" value="true" />
 	</bean>
 
@@ -111,5 +112,16 @@
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<bean id="bcryptDecode" class="org.springframework.security.crypto.bcrypt.BCrypt"></bean>
+
+	<!-- View Resolver -->
+	<!-- <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean> -->
 
 </beans>

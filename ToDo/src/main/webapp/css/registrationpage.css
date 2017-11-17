@@ -1,0 +1,20 @@
+form {
+	border: 3px solid white;
+	max-width: 30%;
+	margin: 5% auto;
+	box-shadow: 0 4px 10px 4px;
+}
+
+button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+button:hover {
+	opacity: 0.8;
+}
