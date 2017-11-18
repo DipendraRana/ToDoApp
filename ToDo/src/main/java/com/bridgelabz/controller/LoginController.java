@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.LoginService;
 import com.bridgelabz.service.TokenOperation;
@@ -37,22 +38,29 @@ public class LoginController {
 
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String login(@RequestBody User user, HttpServletResponse response) throws IOException {
+	public @ResponseBody Response login(@RequestBody User user, HttpServletResponse response) throws IOException {
 		String receivedPassword = user.getPassword();
+		Response message = new Response();
 		try {
 			user = loginService.validateTheUser(user.getEmailId());
-			response.addHeader(
-					tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", key, 3600000, user.getId()),
-					"token");
-			return bCrypt.checkpw(receivedPassword, user.getPassword()) ? "login succesfull" : "login failed";
+			response.addHeader("token",
+					tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", key, 3600000, user.getId()));
+			if (user.getPassword() != null && bCrypt.checkpw(receivedPassword, user.getPassword())) {
+				message.setMessage("login succesfull");
+				return message;
+			} else {
+				message.setMessage("login unsuccesfull");
+				return message;
+			}
 		} catch (NullPointerException e) {
-			return "Not Activated";
+			message.setMessage("Not Activated");
+			return message;
 		}
 	}
 
-	@RequestMapping(value="/logout",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String logout(HttpServletRequest request) {
 		return "succesfully Loged Out";
 	}
-	
+
 }
