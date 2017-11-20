@@ -58,7 +58,9 @@ public class GoogleController {
 			if(userProfile.get("picture").get("data")!=null)
 				user.setPicture(userProfile.get("picture").get("data").get("url").asText());
 			registrationSerivce.register(user);
+			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
 		}else {
+			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
 			System.out.println("User Already Present");
 		}
 	}

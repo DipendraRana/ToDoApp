@@ -2,6 +2,11 @@ package com.bridgelabz.dao;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.PersistenceException;
+import javax.persistence.QueryTimeoutException;
+import javax.persistence.TransactionRequiredException;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,7 +40,7 @@ public class NoteDaoImplement implements NoteDao {
 	}
 
 	@Override
-	public void updateTheNote(Note note, int id) throws Exception {
+	public void updateTheNote(Note note, int id) throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException {
 		sessionFactory.getCurrentSession()
 				.createQuery(
 						"update Note set noteTitle=:Note_Title,noteDescription=:Note_Description where noteId=:Note_Id")

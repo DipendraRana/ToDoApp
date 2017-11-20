@@ -8,5 +8,15 @@ function($stateProvider, $urlRouterProvider) {
 		templateUrl : 'template/login.html',
 		controller : 'loginController'
 	});
+	$stateProvider.state('register',{
+		url:'/registration',
+		templateUrl:'template/registration.html',
+		controller:'registrationController'
+	});
+	$stateProvider.state('emailEnter',{
+		url:'/forgotPassword',
+		templateUrl:'template/emailEnter.html',
+		controller:'enterEmailController'
+	});
 	$urlRouterProvider.otherwise('login');
 } ]);

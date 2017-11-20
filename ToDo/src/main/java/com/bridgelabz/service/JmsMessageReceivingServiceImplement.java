@@ -16,13 +16,8 @@ public class JmsMessageReceivingServiceImplement implements JmsMessageReceivingS
 	@Override
 	@JmsListener(destination="MessageStorage")
 	public void messageReceive(JmsData jmsData) {
-		String token=jmsData.getToken();
-		StringBuffer url=jmsData.getUrl();
-		String emailId=jmsData.getEmailId();
-		String message = "<a href=\"" + url + "/activate/" + token + "\" >"
-				+ url + "</a>";
 		try {
-			emailService.sendMail(emailId, "Link to actvate your account", message);
+			emailService.sendMail(jmsData.getEmailId(), "Link to actvate your account", jmsData.getMessage());
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

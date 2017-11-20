@@ -10,7 +10,7 @@
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/loginpage.css">
+<link rel="stylesheet" href="css/scriptpage.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -18,7 +18,9 @@
 	
 <script type="text/javascript" src="script/ToDoApp.js"></script>
 <script type="text/javascript" src="service/loginService.js"></script>
+<script type="text/javascript" src="service/registrationService.js"></script>
 <script type="text/javascript" src="controller/loginController.js"></script>
+<script type="text/javascript" src="controller/registrationController.js"></script>
 
 <body data-ng-app="ToDo">
 	<div data-ui-view></div>

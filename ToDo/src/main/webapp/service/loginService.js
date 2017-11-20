@@ -3,7 +3,7 @@ toDo.factory('loginService', function($http) {
 	var details = {};
 	details.loginUser = function(user) {
 		return $http({
-			method : "POST",
+			method : 'POST',
 			url : 'login',
 			data : user
 		})

@@ -18,12 +18,11 @@ public class JmsMessageSendingServiceImplement implements JmsMessageSendingServi
 	private JmsTemplate jmsTemplate; 
 	
 	@Override
-	public void sendMessage(String token, StringBuffer url,String emailId) {
+	public void sendMessage(String message,String emailId) {
 		
 		JmsData jmsData=new JmsData();
 		jmsData.setEmailId(emailId);
-		jmsData.setToken(token);
-		jmsData.setUrl(url);
+		jmsData.setMessage(message);
 		jmsTemplate.send(new MessageCreator() {
 			
 			@Override

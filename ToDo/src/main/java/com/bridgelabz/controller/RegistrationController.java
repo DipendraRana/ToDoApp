@@ -1,6 +1,5 @@
 package com.bridgelabz.controller;
 
-import java.security.Key;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.JmsMessageSendingService;
 import com.bridgelabz.service.RegistrationService;
 import com.bridgelabz.service.TokenOperationImplement;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 
 @RestController
 public class RegistrationController {
@@ -30,40 +29,47 @@ public class RegistrationController {
 
 	@Autowired
 	private JmsMessageSendingService jmsMessageSendingService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private TokenOperationImplement tokenOperation;
 
-	private final Key key=MacProvider.generateKey();
-	
+	private static final String KEY = "!12@3#abcde";
+
 	@RequestMapping(value = "/registration", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String Register(@RequestBody User user, HttpServletRequest request) {
+	public @ResponseBody Response Register(@RequestBody User user, HttpServletRequest request) {
+		Response response = new Response();
 		try {
 			user.setValidToken(false);
-			user.setPassword(passwordEncoder.encode(user.getPassword())); //Encrypting the password
+			user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypting the password
 			registerService.register(user);
-			
-			//Generating JWT token for authentication
-			String token=tokenOperation.generateToken(String.valueOf(user.getId()), key); 
-			
-			jmsMessageSendingService.sendMessage(token, request.getRequestURL(), user.getEmailId());
-			
-			return "registration succesfull";
+
+			// Generating JWT token for authentication
+			String token = tokenOperation.generateToken(String.valueOf(user.getId()), KEY);
+			String message = "<a href=\"" + request.getRequestURL() + "/activate/" + token + "\" >"
+					+ request.getRequestURL() + "</a>";
+			jmsMessageSendingService.sendMessage(message, user.getEmailId());
+			response.setMessage("registration succesfull");
+			return response;
 		} catch (PersistenceException e) {
 			e.printStackTrace();
-			return "registration Failed";
+			response.setMessage("registration Failed");
+			return response;
 		}
 	}
 
 	@RequestMapping(value = "/registration/activate/{token:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String authorizeTheUser(@PathVariable("token") String token) {
-			//getting id of user from JWT Token
-			Claims claim=tokenOperation.parseTheToken(key, token);
-			int id=Integer.parseInt(claim.getSubject());
-			
-			return registerService.updateTheValidationToken(id) == 1 ? "Account Activated" : "Account Activation Failed";
-		}
+	public @ResponseBody Response authorizeTheUser(@PathVariable("token") String token) {
+		// getting id of user from JWT Token
+		Response response = new Response();
+		Claims claim = tokenOperation.parseTheToken(KEY, token);
+		int id = Integer.parseInt(claim.getSubject());
+		if(registerService.updateTheValidationToken(id) == 1)
+			response.setMessage("Account Activated");
+		else
+			response.setMessage("Account Activation Failed");
+		return response ;
+	}
 }

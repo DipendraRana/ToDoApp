@@ -5,7 +5,7 @@ user.controller('loginController', function($scope, loginService, $location) {
 		message.then(function(response) {
 			console.log(response.data.message);
 			localStorage.setItem('token', response.headers('token'));
-			/*$location.path();*/
+			$location.path();
 		}, function() {
 			$scope.error = response.data.message;
 		});

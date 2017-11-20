@@ -62,7 +62,9 @@ public class FacebookController {
 			user.setValidToken(true);
 			user.setPicture(userProfile.get("picture").get("data").get("url").asText());
 			registrationSerivce.register(user);
+			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
 		}else {
+			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
 			System.out.println("User Already Present");
 		}
 		/*String token=tokenOperation.generateTokenWithExpire(user.getEmailId(),name, key, 7200000 , user.getId());*/
