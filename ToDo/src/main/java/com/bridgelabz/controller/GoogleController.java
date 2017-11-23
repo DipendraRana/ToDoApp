@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.GoogleService;
 import com.bridgelabz.service.RegistrationService;
+import com.bridgelabz.service.TokenOperation;
 import com.bridgelabz.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -27,6 +28,11 @@ public class GoogleController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TokenOperation tokenOperation;
+
+	private static final String KEY = "!12@3#abcde";
 
 	@RequestMapping("/googleLogin")
 	public void onClickOfGoogleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -50,7 +56,11 @@ public class GoogleController {
 		JsonNode userProfile=googleService.getUserProfile(accessToken);
 		String emailId=userProfile.get("email").asText();
 		User user=userService.getUserByEmail(emailId);
-		if(user==null) {
+		if(user!=null&&user.getPassword()==null) {
+			response.addHeader("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId()));
+			response.sendRedirect("http://localhost:8080/ToDo/#!/home");
+		}else if(user==null) {
 			user=new User();
 			user.setUserName(userProfile.get("name").asText());
 			user.setEmailId(emailId);
@@ -58,10 +68,11 @@ public class GoogleController {
 			if(userProfile.get("picture").get("data")!=null)
 				user.setPicture(userProfile.get("picture").get("data").get("url").asText());
 			registrationSerivce.register(user);
-			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
+			response.addHeader("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId()));
+			response.sendRedirect("http://localhost:8080/ToDo/#!/home");
 		}else {
 			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
-			System.out.println("User Already Present");
 		}
 	}
 

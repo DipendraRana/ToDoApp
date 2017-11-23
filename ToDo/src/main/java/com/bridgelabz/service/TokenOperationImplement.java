@@ -16,6 +16,13 @@ public class TokenOperationImplement implements TokenOperation {
 	public String generateToken(String subject, String key) {
 		return Jwts.builder().setSubject(subject).signWith(SignatureAlgorithm.HS512,key).compact();
 	}
+	
+	@Override
+	public String generateExpiryToken(String subject, String key,long milliseconds) {
+		long nowMillisecond = System.currentTimeMillis();
+	    long expiryMillisecond = nowMillisecond + milliseconds;
+		return Jwts.builder().setExpiration(new Date(expiryMillisecond)).setSubject(subject).signWith(SignatureAlgorithm.HS512,key).compact();
+	}
 
 	@Override
 	public String generateTokenWithExpire(String claim,String claimName, String key, long milliseconds,int userId) {
@@ -27,6 +34,11 @@ public class TokenOperationImplement implements TokenOperation {
 	@Override
 	public Claims parseTheToken(String key, String token) throws ExpiredJwtException {
 		return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+	}
+	
+	@Override
+	public <T> String generateToken(String claimName,T object,String key) {
+		return Jwts.builder().claim(claimName, object).signWith(SignatureAlgorithm.HS512,key).compact();
 	}
 
 }

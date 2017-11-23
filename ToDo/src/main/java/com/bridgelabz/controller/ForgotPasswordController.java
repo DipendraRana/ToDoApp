@@ -1,6 +1,6 @@
 package com.bridgelabz.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,54 +19,64 @@ import com.bridgelabz.service.TokenOperation;
 import com.bridgelabz.service.UserService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 
 @RestController
 public class ForgotPasswordController {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private TokenOperation tokenOperation;
-	
+
 	@Autowired
 	private JmsMessageSendingService jmsMessageSendingService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	private static final String KEY="!12@3#";
-	
-	@RequestMapping(value="/forgotPassword",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
-	public Response forgotPassword(@RequestBody User user,HttpServletRequest request) {
-		user=userService.getUserByEmail(user.getEmailId());
-		Response response=new Response();
-		if(user==null) {
+
+	private static final String KEY = "!12@3#abcde";
+
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Response forgotPassword(@RequestBody User user, HttpServletResponse httpResponse) {
+		user = userService.getUserByEmail(user.getEmailId());
+		Response response = new Response();
+		if (user == null) {
 			response.setMessage("no such email-Id is present");
 			return response;
-		}	
-		else {
-			String token=tokenOperation.generateToken(String.valueOf(user.getId()), KEY);
-			String message = "<a href=\"" + request.getRequestURL() + "/resetPassword/" + token + "\" >"
-					+ request.getRequestURL() + "</a>";
+		} else {
+			String token = tokenOperation.generateExpiryToken(String.valueOf(user.getId()), KEY, 3600000);
+			httpResponse.setHeader("token", token);
+			String message = "Click To resetPassword-><a href=\"http://localhost:8080/ToDo/#!/resetPassword\" >" + token
+					+ " </a>";
 			jmsMessageSendingService.sendMessage(message, user.getEmailId());
-			response.setMessage("email-sent");
-			return response;
-		}	
-	}
-	
-	@RequestMapping(value="/forgotPassword/resetPassword/{token:.+}",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
-	public Response resetPassword(@PathVariable String token,@RequestBody ResetPassword resetPassword) {
-		Response response=new Response();
-		if(resetPassword.getNewPassword().equals(resetPassword.getReEnterNewPassword())) {
-			Claims claim=tokenOperation.parseTheToken(KEY, token);
-			int id=Integer.parseInt(claim.getSubject());
-			String newPassword=passwordEncoder.encode(resetPassword.getNewPassword());
-			userService.updatePasswordOfUser(newPassword, id);
-			response.setMessage("password is reset");
+			response.setMessage("Email-Sent");
 			return response;
 		}
-		else {
+	}
+
+	@RequestMapping(value = "/forgotPassword/resetPassword/{token:.+}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Response resetPassword(@PathVariable String token, @RequestBody ResetPassword resetPassword) {
+		Response response = new Response();
+		if (resetPassword.getNewPassword().equals(resetPassword.getReEnterNewPassword())) {
+			try {
+				Claims claim = tokenOperation.parseTheToken(KEY, token);
+				int id = Integer.parseInt(claim.getSubject());
+				String newPassword = passwordEncoder.encode(resetPassword.getNewPassword());
+				userService.updatePasswordOfUser(newPassword, id);
+				response.setMessage("password is reset");
+				return response;
+			} catch (ExpiredJwtException e) {
+				e.printStackTrace();
+				response.setMessage("Token Expired");
+				return response;
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				response.setMessage("Input Problem");
+				return response;
+			}
+		} else {
 			response.setMessage("Password not matched");
 			return response;
 		}

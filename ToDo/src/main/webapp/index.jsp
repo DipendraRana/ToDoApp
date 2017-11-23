@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/scriptpage.css">
-<script
+
+<script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script
+<script type="text/javascript"
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 	
 <script type="text/javascript" src="script/ToDoApp.js"></script>
+	
+<script type="text/javascript" src="controller/loginController.js"></script>
+<script type="text/javascript" src="controller/enterEmailController.js"></script>
+<script type="text/javascript"
+	src="controller/registrationController.js"></script>
+<script type="text/javascript"
+	src="controller/resetPasswordController.js"></script>
+<script type="text/javascript" src="script/navigationbar.js"></script>
+
 <script type="text/javascript" src="service/loginService.js"></script>
 <script type="text/javascript" src="service/registrationService.js"></script>
-<script type="text/javascript" src="controller/loginController.js"></script>
-<script type="text/javascript" src="controller/registrationController.js"></script>
+<script type="text/javascript" src="service/enterEmailService.js"></script>
+<script type="text/javascript" src="service/resetPassowrdService.js"></script>
 
+</head>
 <body data-ng-app="ToDo">
 	<div data-ui-view></div>
 </body>

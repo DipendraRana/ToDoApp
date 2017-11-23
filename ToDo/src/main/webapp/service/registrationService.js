@@ -1,5 +1,5 @@
-var toDo = angular.module('ToDo');
-toDo.factory('registrationService', function($http) {
+var ToDo = angular.module('ToDo');
+ToDo.factory('registrationService', function($http) {
 	var details = {};
 	details.registerUser = function(user) {
 		return $http({

@@ -1,5 +1,5 @@
-var toDo = angular.module('ToDo');
-toDo.factory('loginService', function($http) {
+var ToDo = angular.module('ToDo');
+ToDo.factory('loginService', function($http) {
 	var details = {};
 	details.loginUser = function(user) {
 		return $http({

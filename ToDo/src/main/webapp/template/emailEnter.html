@@ -2,9 +2,26 @@
 	<h3 align="center">Find Your Account</h3>
 	<div class="col-sx-12 col-md-12 col-lg-12">
 		<div class="form-group">
-			<label class="control-label">Email-ID</label> 
-			<input type="email" class="form-control" data-ng-model="user.emailId" name="emailid"
-				required>
+			<label class="control-label">Enter Your Email-ID</label> <input
+				type="email" class="form-control" data-ng-model="user.emailId"
+				name="emailid" required>
 		</div>
 	</div>
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<button id="buttons" type="submit" data-ng-click="enterEmail()">Submit</button>
+		</div>
+	</div>
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<div>
+				<a href="#!/login">Remember Your Password?</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group" data-ng-bind="message"></div>
+	</div>
+	<div class="row"></div>
+
 </form>

@@ -40,7 +40,7 @@ public class LoginController {
 			if (user.getPassword() != null && BCrypt.checkpw(receivedPassword, user.getPassword())) {
 				response.addHeader("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
 						3600000, user.getId()));
-				message.setMessage("login succesfull");
+				message.setMessage("succesfull");
 				return message;
 			} else {
 				message.setMessage("login unsuccesfull");

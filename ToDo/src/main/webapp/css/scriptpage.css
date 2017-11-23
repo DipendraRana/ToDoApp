@@ -1,3 +1,8 @@
+/* body {
+	background-color: #d9d9d9;
+} */
+
+/*froms css*/
 form {
 	border: 3px solid white;
 	max-width: 30%;
@@ -5,7 +10,7 @@ form {
 	box-shadow: 0 4px 10px 4px;
 }
 
-button {
+#buttons{
 	background-color: #4CAF50;
 	color: white;
 	padding: 14px 20px;
@@ -17,4 +22,40 @@ button {
 
 button:hover {
 	opacity: 0.8;
+}
+
+/*home page css*/
+.topNav .navbar-default {
+	background-color: #ff9900;
+	margin-bottom: 0%;
+}
+
+.topNav .navbar-default .navbar-brand {
+	color: #000000;
+	margin-left: 20px;
+}
+
+.sideNav .content{
+	background-color: #ff9900;
+	margin-bottom: 0%;
+	height: 700px;
+	width: 250px;
+	position: fixed;
+	transition: 0.3s;
+}
+
+/*notes css*/
+.note {
+	transition: 0.5s;
+	background-color: white;
+    padding: 16px;
+    margin-left: 250px;
+    margin-right: 250px;
+    margin-top: 10px;
+}
+
+#notesArea {
+	margin-left: 250px;
+    transition: margin-left .5s;
+    padding: 16px;
 }

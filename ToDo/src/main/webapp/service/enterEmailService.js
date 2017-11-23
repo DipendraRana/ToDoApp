@@ -1,5 +1,5 @@
-var toDo = angular.module("ToDo");
-toDo.factory('emailEnteringService', function($http) {
+var ToDo = angular.module('ToDo');
+ToDo.factory('emailEnteringService', function($http) {
 	var details = {};
 	details.enterEmail = function(user) {
 		return $http({

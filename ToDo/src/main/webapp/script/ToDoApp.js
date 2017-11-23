@@ -1,4 +1,4 @@
-var ToDo = angular.module('ToDo', [ 'ui.router' ]);
+var ToDo = angular.module('ToDo', [ 'ui.router','ngResource']);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -8,15 +8,24 @@ function($stateProvider, $urlRouterProvider) {
 		templateUrl : 'template/login.html',
 		controller : 'loginController'
 	});
-	$stateProvider.state('register',{
-		url:'/registration',
-		templateUrl:'template/registration.html',
-		controller:'registrationController'
+	$stateProvider.state('register', {
+		url : '/registration',
+		templateUrl : 'template/registration.html',
+		controller : 'registrationController'
 	});
-	$stateProvider.state('emailEnter',{
-		url:'/forgotPassword',
-		templateUrl:'template/emailEnter.html',
-		controller:'enterEmailController'
+	$stateProvider.state('home', {
+		url : '/home',
+		templateUrl : 'template/home.html'
+	});
+	$stateProvider.state('enterEmail', {
+		url : '/enterEmail',
+		templateUrl : 'template/emailEnter.html',
+		controller : 'enterEmailController'
+	});
+	$stateProvider.state('resetPassword', {
+		url : '/resetPassword',
+		templateUrl : 'template/resetPassword.html',
+		controller : 'resetPasswordController'
 	});
 	$urlRouterProvider.otherwise('login');
 } ]);
