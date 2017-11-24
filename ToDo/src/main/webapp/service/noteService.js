@@ -1,26 +1,16 @@
-/*var toDo = angular.module('Note',['ngResource']);
-toDo.factory('noteService', function($http,$resource) {
-	var details = {};
-	var token = localStorage.getItem('token');
-	details.noteSave = function(note, token) {
+var ToDo = angular.module('ToDo');
+ToDo.factory('noteService', function($http) {
+	var notes={};
+	notes.service = function(url, method, token, note) {
 		return $http({
-			method : 'POST',
-			url : 'saveNote',
+			method : method,
+			url : url,
 			data : note,
 			headers : {
-				"token" : token
+				'token' : token
 			}
-		})
+
+		});
 	}
-	details.deleteNote = function(note, token) {
-		return $http({
-			method : 'DELETE',
-			url : $resource('/deleteNote/:noteId', {noteId: '@id'}, actions),
-			data : note,
-			headers : {
-				"token" : token
-			}
-		})
-	}
-	return details;
-});*/
+	return notes;
+});

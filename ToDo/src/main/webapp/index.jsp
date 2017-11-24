@@ -16,6 +16,8 @@
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
 <script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+<script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
@@ -28,12 +30,16 @@
 	src="controller/registrationController.js"></script>
 <script type="text/javascript"
 	src="controller/resetPasswordController.js"></script>
+<script type="text/javascript" src="controller/homeController.js"></script>
+
+<script type="text/javascript" src="directive/customDirective.js"></script>
 <script type="text/javascript" src="script/navigationbar.js"></script>
 
 <script type="text/javascript" src="service/loginService.js"></script>
 <script type="text/javascript" src="service/registrationService.js"></script>
 <script type="text/javascript" src="service/enterEmailService.js"></script>
 <script type="text/javascript" src="service/resetPassowrdService.js"></script>
+<script type="text/javascript" src="service/noteService.js"></script>
 
 </head>
 <body data-ng-app="ToDo">

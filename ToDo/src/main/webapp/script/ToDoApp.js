@@ -1,4 +1,4 @@
-var ToDo = angular.module('ToDo', [ 'ui.router','ngResource']);
+var ToDo = angular.module('ToDo', [ 'ui.router','ngResource','ngSanitize']);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -15,7 +15,8 @@ function($stateProvider, $urlRouterProvider) {
 	});
 	$stateProvider.state('home', {
 		url : '/home',
-		templateUrl : 'template/home.html'
+		templateUrl : 'template/home.html',
+		controller: 'homeController'
 	});
 	$stateProvider.state('enterEmail', {
 		url : '/enterEmail',

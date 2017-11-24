@@ -1,6 +1,8 @@
-/* body {
-	background-color: #d9d9d9;
-} */
+
+/*icon color*/
+.black, .black a {
+	color: black;
+}
 
 /*froms css*/
 form {
@@ -10,7 +12,7 @@ form {
 	box-shadow: 0 4px 10px 4px;
 }
 
-#buttons{
+#buttons {
 	background-color: #4CAF50;
 	color: white;
 	padding: 14px 20px;
@@ -35,27 +37,112 @@ button:hover {
 	margin-left: 20px;
 }
 
-.sideNav .content{
+.sideNav .content {
 	background-color: #ff9900;
 	margin-bottom: 0%;
-	height: 700px;
+	height: 100vh;
 	width: 250px;
 	position: fixed;
 	transition: 0.3s;
 }
 
 /*notes css*/
+#noteContainer {
+	transition: 0.3s;
+	background-color: #cccccc;
+	margin-left: 250px;
+	height: 100vh;
+	padding-top: 100px;
+}
+
 .note {
 	transition: 0.5s;
 	background-color: white;
-    padding: 16px;
-    margin-left: 250px;
-    margin-right: 250px;
-    margin-top: 10px;
+	padding: 16px;
+	margin-left: 250px;
+	margin-right: 250px;
+	margin-top: 10px;
 }
 
-#notesArea {
-	margin-left: 250px;
-    transition: margin-left .5s;
-    padding: 16px;
+#note{
+	padding:10px;
+	margin-bottom:20px;
+	background-color: white;
+	box-shadow: 0px 1px 2px black;
+	
+/* 	margin-left: 20%; */
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text)
+}
+
+
+#note-body:focus  {
+
+	outline: none;
+}
+
+#note-body,#note-title{
+	padding: 5px;
+}
+#note-title:focus{
+
+	outline: none;
+}
+
+.note-icons > img{
+
+	height: 17px;
+	width:20px;
+	margin-right:5px;
+}
+
+.card  > .note-icons{
+		padding :2px;
+	visibility: hidden;
+}
+.card{
+	width:100%;
+	height: 90px;
+	background-color: white;
+	margin:5px;
+	padding:10px;
+	box-shadow: 1px 1px 1px black;
+	word-break: break-word;
+}
+
+.card:hover {
+
+	box-shadow: 2px 0px 3px black;
+}
+.card:hover .note-icons{
+	
+	visibility:visible;
+
+}
+
+.col-sm-1{
+	width:3%;
+}
+
+
+ #note-scope{
+ 
+	display: inline-block;
+
+} 
+
+.inline{
+	display: inline-block;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+
+}
+.modal {
+  text-align: center;
+  padding: 0!important;
 }

@@ -1,5 +1,5 @@
 <div class="topNav">
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="navbar-header">
 			<a class="navbar-brand" href=""> <span
 				style="font-size: 30px; cursor: pointer" onclick="toogleNav()">&#9776;</span>
@@ -8,11 +8,68 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" href="">FunDoNote</a>
 		</div>
+		<div class="navbar-header navbar-right">
+			<div class="dropdown navbar-brand">
+				<a class="dropdown-toggle" data-toggle="dropdown" href=""> <span
+					class="glyphicon glyphicon-user black" style="margin-right: 15px;"></span></a>
+				<ul class="dropdown-menu">
+					<li><a data-ng-click="logoutUser()"> <span
+							class="glyphicon glyphicon-log-out"></span> Logout
+					</a></li>
+				</ul>
+			</div>
+		</div>
 	</nav>
 </div>
 <div class="sideNav">
 	<nav id="sideNavContent" class="content"></nav>
 </div>
-<div data-ng-app="Note">
-	<div data-ui-view></div>
+
+<div id="noteContainer" class="container-fluid">
+
+	<div class="row">
+		<div class="col-lg-3 col-md-3"></div>
+		<div id="note" class=" col-sm-12 col-md-6 col-xs-12 col-lg-4">
+			<div contenteditable="true" data-text="Title"
+				data-ng-model="newNote.noteTitle" id="note-title"></div>
+			<div contenteditable="true" data-text="Take a note"
+				data-ng-model="newNote.noteDescription" id="note-body"></div>
+			<div class="note-icons">
+				<img src="images/archive.png"> <img src="images/reminder.png">
+				<img src="images/colors.png"> <img
+					src="images/collaborator1600.png">
+				<div role="button" data-ng-click="createNote()"
+					class="btn btn-done pull-right">DONE</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<h4>Others:</h4>
+			<div data-ng-repeat="note in notes" id="note-scope"
+				class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+
+				<div class="card">
+					<div class="card-block" data-ng-click="">
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<div class="note-icons">
+						<div class="dropdown inline pull-right">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="">Delete</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-1 col-md-1"></div>
+	</div>
+
 </div>

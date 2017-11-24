@@ -1,7 +1,6 @@
 package com.bridgelabz.controller;
 
 import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -52,9 +51,10 @@ public class LoginController {
 		}
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String logout(HttpServletRequest request) {
+		
 		return "succesfully Loged Out";
-	}
+	}*/
 
 }

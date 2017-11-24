@@ -11,13 +11,11 @@ function toogleNav(){
 /* Set the width of the side navigation to 250px */
 function openNav() {
     document.getElementById("sideNavContent").style.width = "250px";
-    document.getElementById("notesArea").style.marginLeft = "250px";
-    document.getElementById("note").style.marginRight = "250px";
+    document.getElementById("noteContainer").style.marginLeft = "250px";
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
     document.getElementById("sideNavContent").style.width = "0px";
-    document.getElementById("notesArea").style.marginLeft = "0px";
-    document.getElementById("note").style.marginRight = "500px";
+    document.getElementById("noteContainer").style.marginLeft = "0px";
 }

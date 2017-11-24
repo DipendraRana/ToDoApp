@@ -28,7 +28,6 @@ public class NoteDaoImplement implements NoteDao {
 		List<User> list = sessionFactory.getCurrentSession().createQuery("from User where id=:User_Id")
 				.setParameter("User_Id", userId).list();
 		User user=list.get(0);
-		System.out.println(user.getEmailId());
 		user.getNotes().size();
 		return user.getNotes();
 	}
