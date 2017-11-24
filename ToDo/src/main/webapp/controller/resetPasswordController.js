@@ -1,8 +1,7 @@
 var ToDo = angular.module('ToDo');
 ToDo.controller('resetPasswordController', [ '$scope', 'resetPasswordService',
 		'$location', function($scope, resetPasswordService, $location) {
-			$scope.token = localStorage.getItem("token");
-			console.log($scope.token);
+			$scope.token = $location.hash();
 			$scope.resetPassword = function() {
 				if ($scope.token != null) {
 					var userPassword = {

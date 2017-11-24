@@ -1,5 +1,8 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class ForgotPasswordController {
 	private static final String KEY = "!12@3#abcde";
 
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Response forgotPassword(@RequestBody User user, HttpServletResponse httpResponse) {
+	public Response forgotPassword(@RequestBody User user, HttpServletResponse httpResponse,HttpServletRequest request) {
 		user = userService.getUserByEmail(user.getEmailId());
 		Response response = new Response();
 		if (user == null) {
@@ -47,8 +50,7 @@ public class ForgotPasswordController {
 			return response;
 		} else {
 			String token = tokenOperation.generateExpiryToken(String.valueOf(user.getId()), KEY, 3600000);
-			httpResponse.setHeader("token", token);
-			String message = "Click To resetPassword-><a href=\"http://localhost:8080/ToDo/#!/resetPassword\" >" + token
+			String message = "Click To resetPassword-><a href=\""+request.getRequestURL()+"/validate/"+token+"\" >" + token
 					+ " </a>";
 			jmsMessageSendingService.sendMessage(message, user.getEmailId());
 			response.setMessage("Email-Sent");
@@ -80,6 +82,29 @@ public class ForgotPasswordController {
 			response.setMessage("Password not matched");
 			return response;
 		}
+	}
+	
+	@RequestMapping(value = "/forgotPassword/validate/{token:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Response checkResponseFromEmailAndRedirect(@PathVariable String token,HttpServletResponse httpResponse) {
+		Response response = new Response();
+		try {
+			Claims claim = tokenOperation.parseTheToken(KEY, token);response.setMessage("Okay");
+			int id = Integer.parseInt(claim.getSubject());
+			if(id!=0) {
+				httpResponse.sendRedirect("http://localhost:8080/ToDo/#!/resetPassword/#"+token);
+			}
+			else
+				response.setMessage("Not-Okay");
+			return response;
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.setMessage("Token Expired");
+			return response;
+		} catch (IOException e) {
+			e.printStackTrace();
+			response.setMessage("Problem in Rediecting");
+			return response;
+		}		
 	}
 
 }

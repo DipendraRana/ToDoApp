@@ -23,7 +23,7 @@ function($stateProvider, $urlRouterProvider) {
 		controller : 'enterEmailController'
 	});
 	$stateProvider.state('resetPassword', {
-		url : '/resetPassword',
+		url : '/resetPassword/',
 		templateUrl : 'template/resetPassword.html',
 		controller : 'resetPasswordController'
 	});
