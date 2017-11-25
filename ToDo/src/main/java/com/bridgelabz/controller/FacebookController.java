@@ -57,9 +57,9 @@ public class FacebookController {
 		String emailId=userProfile.get("email").asText();
 		User user=userService.getUserByEmail(emailId);
 		if(user!=null&&user.getPassword()==null) {
-			response.addHeader("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
-					3600000, user.getId()));
-			response.sendRedirect("http://localhost:8080/ToDo/#!/home");
+			String token=tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId());
+			response.sendRedirect("http://localhost:8080/ToDo/#!/home/#"+token);
 			System.out.println("User Already Present");
 		}else if(user==null) {
 			user=new User();
@@ -68,9 +68,9 @@ public class FacebookController {
 			user.setValidToken(true);
 			user.setPicture(userProfile.get("picture").get("data").get("url").asText());
 			registrationSerivce.register(user);
-			response.addHeader("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
-					3600000, user.getId()));
-			response.sendRedirect("http://localhost:8080/ToDo/#!/home");
+			String token=tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId());
+			response.sendRedirect("http://localhost:8080/ToDo/#!/home/#"+token);
 		}	
 		else {
 			response.sendRedirect("http://localhost:8080/ToDo/#!/login");

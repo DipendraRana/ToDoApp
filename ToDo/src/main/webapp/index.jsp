@@ -21,9 +21,11 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
-	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+
 <script type="text/javascript" src="script/ToDoApp.js"></script>
-	
+
 <script type="text/javascript" src="controller/loginController.js"></script>
 <script type="text/javascript" src="controller/enterEmailController.js"></script>
 <script type="text/javascript"

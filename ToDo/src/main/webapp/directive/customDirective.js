@@ -1,4 +1,16 @@
 var ToDo = angular.module('ToDo');
+ToDo.directive('topNavBar',function(){
+	return{
+		templateUrl : 'template/topNavBar.html'
+	}
+});
+
+ToDo.directive('sideNavBar', function() {
+	return{
+		templateUrl : 'template/sideNavBar.html'
+	}
+});
+
 ToDo.directive('contenteditable', [ '$sce', function($sce) {
 	
 	return {

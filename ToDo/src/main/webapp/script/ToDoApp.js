@@ -1,4 +1,4 @@
-var ToDo = angular.module('ToDo', [ 'ui.router','ngResource','ngSanitize']);
+var ToDo = angular.module('ToDo', [ 'ui.router','ngResource','ngSanitize','ui.bootstrap']);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -15,6 +15,11 @@ function($stateProvider, $urlRouterProvider) {
 	});
 	$stateProvider.state('home', {
 		url : '/home',
+		templateUrl : 'template/home.html',
+		controller: 'homeController'
+	});
+	$stateProvider.state('socialtohome', {
+		url : '/home/',
 		templateUrl : 'template/home.html',
 		controller: 'homeController'
 	});

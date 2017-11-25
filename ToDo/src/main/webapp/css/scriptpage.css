@@ -1,3 +1,8 @@
+html,body {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
 
 /*icon color*/
 .black, .black a {
@@ -37,13 +42,30 @@ button:hover {
 	margin-left: 20px;
 }
 
-.sideNav .content {
-	background-color: #ff9900;
-	margin-bottom: 0%;
-	height: 100vh;
-	width: 250px;
-	position: fixed;
-	transition: 0.3s;
+.sideNav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #ff9900;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+
+.sideNav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+}
+
+.sideNav a:hover {
+    color: grey;
 }
 
 /*notes css*/
@@ -51,8 +73,10 @@ button:hover {
 	transition: 0.3s;
 	background-color: #cccccc;
 	margin-left: 250px;
-	height: 100vh;
+	height: 100%;
+	margin-top:0px;
 	padding-top: 100px;
+	padding-bottom: 29%;
 }
 
 .note {
@@ -104,12 +128,14 @@ button:hover {
 }
 .card{
 	width:100%;
-	height: 90px;
+	height: 100%;
 	background-color: white;
 	margin:5px;
 	padding:10px;
 	box-shadow: 1px 1px 1px black;
 	word-break: break-word;
+  	display: flex;
+  	flex-direction: column;
 }
 
 .card:hover {

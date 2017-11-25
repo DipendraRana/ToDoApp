@@ -12,9 +12,9 @@ public interface NoteDao {
 	
 	public List<Note> getTheNotes(int userId);
 	
-	public int deleteTheNote(int id);
+	public int deleteTheNote(Note note);
 	
-	public void updateTheNote(Note note,int id) throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException;
+	public int updateTheNote(Note note) throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException;
 	
 	public int saveTheNote(Note note);
 

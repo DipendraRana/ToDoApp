@@ -26,14 +26,14 @@ public class NoteServiceImplement implements NoteService {
 	}
 
 	@Override
-	public int deleteTheNote(int id) {
-		return noteDao.deleteTheNote(id);
+	public int deleteTheNote(Note note) {
+		return noteDao.deleteTheNote(note);
 	}
 
 	@Override
-	public void updateTheNote(Note note, int id)
+	public int updateTheNote(Note note)
 			throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException {
-		noteDao.updateTheNote(note, id);
+		return noteDao.updateTheNote(note);
 	}
 
 	@Override
