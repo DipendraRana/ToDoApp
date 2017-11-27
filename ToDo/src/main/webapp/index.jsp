@@ -33,6 +33,7 @@
 <script type="text/javascript"
 	src="controller/resetPasswordController.js"></script>
 <script type="text/javascript" src="controller/homeController.js"></script>
+<script type="text/javascript" src="controller/intermediateController.js"></script>
 
 <script type="text/javascript" src="directive/customDirective.js"></script>
 <script type="text/javascript" src="script/navigationbar.js"></script>
@@ -42,9 +43,10 @@
 <script type="text/javascript" src="service/enterEmailService.js"></script>
 <script type="text/javascript" src="service/resetPassowrdService.js"></script>
 <script type="text/javascript" src="service/noteService.js"></script>
+<script type="text/javascript" src="service/intermediateService.js"></script>
 
 </head>
 <body data-ng-app="ToDo">
-	<div data-ui-view></div>
+	<div data-ui-view style="height:100%;"></div>
 </body>
 </html>

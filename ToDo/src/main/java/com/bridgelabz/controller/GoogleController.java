@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,7 @@ public class GoogleController {
 	}
 
 	@RequestMapping("/connectGoogle")
-	public void handlingRedirectURL(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void handlingRedirectURL(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
 		String sessionStoredState = (String) request.getSession().getAttribute("uniqueId");
 		String googleUrlStoredState = request.getParameter("state");
 		if (sessionStoredState == null || !sessionStoredState.equals(googleUrlStoredState))
@@ -57,9 +58,9 @@ public class GoogleController {
 		String emailId=userProfile.get("email").asText();
 		User user=userService.getUserByEmail(emailId);
 		if(user!=null&&user.getPassword()==null) {
-			String token=tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
-					3600000, user.getId());
-			response.sendRedirect("http://localhost:8080/ToDo/#!/home/#"+token);
+			session.setAttribute("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId()));
+			response.sendRedirect("/ToDo/#!/intermediate");
 		}else if(user==null) {
 			user=new User();
 			user.setUserName(userProfile.get("name").asText());
@@ -68,11 +69,11 @@ public class GoogleController {
 			if(userProfile.get("picture").get("data")!=null)
 				user.setPicture(userProfile.get("picture").get("data").get("url").asText());
 			registrationSerivce.register(user);
-			String token=tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
-					3600000, user.getId());
-			response.sendRedirect("http://localhost:8080/ToDo/#!/home/#"+token);
+			session.setAttribute("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
+					3600000, user.getId()));
+			response.sendRedirect("/ToDo/#!/intermediate");
 		}else {
-			response.sendRedirect("http://localhost:8080/ToDo/#!/login");
+			response.sendRedirect("/ToDo/#!/login");
 		}
 	}
 

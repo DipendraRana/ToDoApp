@@ -1,6 +1,8 @@
 package com.bridgelabz.controller;
 
 import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -51,10 +53,11 @@ public class LoginController {
 		}
 	}
 
-	/*@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String logout(HttpServletRequest request) {
-		
-		return "succesfully Loged Out";
-	}*/
+	@RequestMapping(value = "/intermediateLogin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void logout(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		String token=(String) session.getAttribute("token");
+		session.removeAttribute("token");
+		response.setHeader("token", token);
+	}
 
 }

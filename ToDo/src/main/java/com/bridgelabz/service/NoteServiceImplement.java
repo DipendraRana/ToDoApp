@@ -2,9 +2,6 @@ package com.bridgelabz.service;
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.QueryTimeoutException;
-import javax.persistence.TransactionRequiredException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +28,8 @@ public class NoteServiceImplement implements NoteService {
 	}
 
 	@Override
-	public int updateTheNote(Note note)
-			throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException {
-		return noteDao.updateTheNote(note);
+	public void updateTheNote(Note note) {
+		noteDao.updateTheNote(note);
 	}
 
 	@Override

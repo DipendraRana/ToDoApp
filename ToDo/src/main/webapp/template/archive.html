@@ -1,0 +1,35 @@
+<top-nav-bar></top-nav-bar>
+<side-nav-bar></side-nav-bar>
+<div id="noteContainer" class="container-fluid">
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<div data-ng-repeat="note in notes | filter : {archived : true}"
+				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+
+				<div class="card">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<img class="pull-right" src="images/unpinned.svg"
+							data-ng-click="pinNote(note)" width="22" height="22">
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<div class="note-icons">
+						<img data-ng-src="images/archive.svg"
+							data-ng-click="unarchiveNote(note)">
+						<div class="dropdown inline pull-right">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-1"></div>
+</div>

@@ -2,10 +2,6 @@ package com.bridgelabz.dao;
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.QueryTimeoutException;
-import javax.persistence.TransactionRequiredException;
-
 import com.bridgelabz.model.Note;
 
 public interface NoteDao {
@@ -14,7 +10,7 @@ public interface NoteDao {
 	
 	public int deleteTheNote(Note note);
 	
-	public int updateTheNote(Note note) throws IllegalStateException, TransactionRequiredException, QueryTimeoutException, PersistenceException;
+	public void updateTheNote(Note note);
 	
 	public int saveTheNote(Note note);
 

@@ -36,14 +36,15 @@ public class Note {
 	@JsonIgnore
 	private User user;
 	
-	public Note() {
-		noteId=0;
-		creationDate=null;
-		noteDescription=null;
-		noteTitle=null;
-		user=null;
-	}
-
+	@Column(name="Trashed",nullable=false)
+	private boolean trashed;
+	
+	@Column(name="Archived",nullable=false)
+	private boolean archived;
+	
+	@Column(name="Pinned",nullable=false)
+	private boolean pinned;
+	
 	public int getNoteId() {
 		return noteId;
 	}
@@ -82,6 +83,30 @@ public class Note {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isTrashed() {
+		return trashed;
+	}
+
+	public void setTrashed(boolean trashed) {
+		this.trashed = trashed;
+	}
+
+	public boolean isArchived() {
+		return archived;
+	}
+
+	public void setArchived(boolean archived) {
+		this.archived = archived;
+	}
+
+	public boolean isPinned() {
+		return pinned;
+	}
+
+	public void setPinned(boolean pinned) {
+		this.pinned = pinned;
 	}
 
 }

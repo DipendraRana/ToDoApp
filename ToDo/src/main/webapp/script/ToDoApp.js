@@ -1,4 +1,5 @@
-var ToDo = angular.module('ToDo', [ 'ui.router','ngResource','ngSanitize','ui.bootstrap']);
+var ToDo = angular.module('ToDo', [ 'ui.router', 'ngResource', 'ngSanitize',
+		'ui.bootstrap' ]);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -16,12 +17,12 @@ function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('home', {
 		url : '/home',
 		templateUrl : 'template/home.html',
-		controller: 'homeController'
+		controller : 'homeController'
 	});
 	$stateProvider.state('socialtohome', {
 		url : '/home/',
 		templateUrl : 'template/home.html',
-		controller: 'homeController'
+		controller : 'homeController'
 	});
 	$stateProvider.state('enterEmail', {
 		url : '/enterEmail',
@@ -32,6 +33,20 @@ function($stateProvider, $urlRouterProvider) {
 		url : '/resetPassword/',
 		templateUrl : 'template/resetPassword.html',
 		controller : 'resetPasswordController'
+	});
+	$stateProvider.state('intermediate', {
+		url : '/intermediate',
+		controller : 'intermediateController'
+	});
+	$stateProvider.state('trash', {
+		url : '/trash',
+		templateUrl : 'template/trash.html',
+		controller : 'homeController'
+	});
+	$stateProvider.state('archive', {
+		url : '/archive',
+		templateUrl : 'template/archive.html',
+		controller : 'homeController'
 	});
 	$urlRouterProvider.otherwise('login');
 } ]);

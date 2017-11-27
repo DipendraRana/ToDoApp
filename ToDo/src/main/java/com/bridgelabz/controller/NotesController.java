@@ -75,17 +75,15 @@ public class NotesController {
 	@RequestMapping(value = "/updateNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response updateTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();
+		System.out.println(note.isArchived()+" "+note.isTrashed());
 		String token = request.getHeader("token");
 		try {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
 			String emailId = (String) claim.get("emailId");
 			User user = userService.getUserByEmail(emailId);
 			note.setUser(user);
-			int noOfRows = noteService.updateTheNote(note);
-			if (noOfRows == 1)
-				response.setMessage("update succesfull");
-			else
-				response.setMessage("update failed");
+			noteService.updateTheNote(note);
+			response.setMessage("update succesfull");
 			return response;
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -98,8 +96,8 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "/deleteNote", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Response deleteTheNote(@RequestBody Note note,HttpServletRequest request) {
+	@RequestMapping(value = "/deleteNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Response deleteTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
