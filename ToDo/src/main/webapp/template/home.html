@@ -42,7 +42,9 @@
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
-								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
+								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
+								<li><a data-ng-click="createCopyOfNote(note)">Make a
+										copy</a></li>
 							</ul>
 						</div>
 					</div>
@@ -64,18 +66,30 @@
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
-							data-ng-click="pinNote(note)" width="22" height="22" id="notPinned">
+							data-ng-click="pinNote(note)" width="22" height="22"
+							id="notPinned">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
 					<div class="note-icons">
+						<div class="dropdown inline">
+							<img src="images/reminder.png" data-toggle="dropdown"
+								width="19px" height="19px" onclick="todaysDate()">
+							<ul class="dropdown-menu">
+								<li><div class="conatiner" style="padding-left: 2px;">Reminder:</div></li>
+								<li><input type="date" id="date" data-ng-mode="note.date"></li>
+								<li><input type="text" placeholder="8 AM" data-ng-model="note.time"></li>
+							</ul>
+						</div>
 						<img data-ng-src="images/archive.png"
 							data-ng-click="archiveNote(note)">
 						<div class="dropdown inline pull-right">
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
-								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
+								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
+								<li><a data-ng-click="createCopyOfNote(note)">Make a
+										copy</a></li>
 							</ul>
 						</div>
 					</div>

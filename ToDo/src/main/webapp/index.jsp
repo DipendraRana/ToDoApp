@@ -23,6 +23,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
 
 <script type="text/javascript" src="script/ToDoApp.js"></script>
 
@@ -33,10 +35,11 @@
 <script type="text/javascript"
 	src="controller/resetPasswordController.js"></script>
 <script type="text/javascript" src="controller/homeController.js"></script>
-<script type="text/javascript" src="controller/intermediateController.js"></script>
+<script type="text/javascript"
+	src="controller/intermediateController.js"></script>
 
 <script type="text/javascript" src="directive/customDirective.js"></script>
-<script type="text/javascript" src="script/navigationbar.js"></script>
+<script type="text/javascript" src="script/scripts.js"></script>
 
 <script type="text/javascript" src="service/loginService.js"></script>
 <script type="text/javascript" src="service/registrationService.js"></script>
@@ -47,6 +50,6 @@
 
 </head>
 <body data-ng-app="ToDo">
-	<div data-ui-view style="height:100%;"></div>
+	<div data-ui-view style="height: 100%;"></div>
 </body>
 </html>

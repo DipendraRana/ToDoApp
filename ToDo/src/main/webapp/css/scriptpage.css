@@ -1,6 +1,6 @@
 html, body {
-	max-height: 100%;
-	max-width: 100%;
+	height: 100%;
+	width: 100%;
 }
 
 /*icon color*/
@@ -48,7 +48,7 @@ button:hover {
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color: #ff9900;
+	background-color: #d3d7cf;
 	overflow-x: hidden;
 	transition: 0.3s;
 	padding-top: 60px;
@@ -72,13 +72,14 @@ button:hover {
 	transition: 0.3s;
 	background-color: #cccccc;
 	margin-left: 250px;
-	height: 
+	height: 100%;
 	padding-top: 7%;
+	padding-bottom: auto;
+	overflow-y:auto
 }
 
 .note {
 	transition: 0.5s;
-	/* background-color: white; */
 	padding: 16px;
 	margin-left: 250px;
 	margin-right: 250px;
@@ -92,6 +93,11 @@ button:hover {
 	box-shadow: 0px 1px 2px black;
 
 	/* 	margin-left: 20%; */
+}
+
+#ng-scope {
+	background-color: #cccccc;
+	display: inline-block;
 }
 
 [contentEditable=true]:empty:not(:focus ):before {
@@ -126,7 +132,7 @@ button:hover {
 	height: 100%;
 	background-color: white;
 	margin: 5px;
-	padding: 10px;
+	padding: 10px; 
 	box-shadow: 1px 1px 1px black;
 	word-break: break-word;
 	display: flex;
@@ -145,10 +151,6 @@ button:hover {
 	width: 3%;
 }
 
-#note-scope {
-	display: inline-block;
-}
-
 .inline {
 	display: inline-block;
 }
@@ -157,6 +159,8 @@ button:hover {
 	display: inline-block;
 	text-align: left;
 	vertical-align: middle;
+	/* background-color: white; */
+	border-radius: 25px;
 }
 
 .modal {
@@ -170,4 +174,8 @@ button:hover {
 
 .card:hover .card-block > img#notPinned {
 	visibility: visible;
+}
+
+.note-extras > .date {
+	text-align: right;
 }

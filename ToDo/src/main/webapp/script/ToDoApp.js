@@ -8,42 +8,34 @@ function($stateProvider, $urlRouterProvider) {
 		url : '/login',
 		templateUrl : 'template/login.html',
 		controller : 'loginController'
-	});
-	$stateProvider.state('register', {
+	}).state('register', {
 		url : '/registration',
 		templateUrl : 'template/registration.html',
 		controller : 'registrationController'
-	});
-	$stateProvider.state('home', {
+	}).state('home', {
 		url : '/home',
 		templateUrl : 'template/home.html',
 		controller : 'homeController'
-	});
-	$stateProvider.state('socialtohome', {
+	}).state('socialtohome', {
 		url : '/home/',
 		templateUrl : 'template/home.html',
 		controller : 'homeController'
-	});
-	$stateProvider.state('enterEmail', {
+	}).state('enterEmail', {
 		url : '/enterEmail',
 		templateUrl : 'template/emailEnter.html',
 		controller : 'enterEmailController'
-	});
-	$stateProvider.state('resetPassword', {
+	}).state('resetPassword', {
 		url : '/resetPassword/',
 		templateUrl : 'template/resetPassword.html',
 		controller : 'resetPasswordController'
-	});
-	$stateProvider.state('intermediate', {
+	}).state('intermediate', {
 		url : '/intermediate',
 		controller : 'intermediateController'
-	});
-	$stateProvider.state('trash', {
+	}).state('trash', {
 		url : '/trash',
 		templateUrl : 'template/trash.html',
 		controller : 'homeController'
-	});
-	$stateProvider.state('archive', {
+	}).state('archive', {
 		url : '/archive',
 		templateUrl : 'template/archive.html',
 		controller : 'homeController'

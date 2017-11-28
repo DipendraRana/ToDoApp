@@ -36,12 +36,13 @@ public class NoteDaoImplement implements NoteDao {
 
 	@Override
 	public void updateTheNote(Note note) {
+		note.setEditedDate(date);
 		sessionFactory.getCurrentSession().update(note);
 	}
 
 	@Override
 	public int saveTheNote(Note note) {
-		note.setCreationDate(date);
+		note.setEditedDate(date);
 		return (int) sessionFactory.getCurrentSession().save(note);
 	}
 

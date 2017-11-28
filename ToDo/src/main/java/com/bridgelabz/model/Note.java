@@ -28,8 +28,8 @@ public class Note {
 	@Column(name="Note_Description",nullable=false)
 	private String noteDescription;
 	
-	@Column(name="Creation_Date",nullable=false)
-	private Date creationDate;
+	@Column(name="Edited_Date",nullable=false)
+	private Date editedDate;
 	
 	@ManyToOne
 	@JoinColumn(nullable=false,name="User_ID")
@@ -69,12 +69,12 @@ public class Note {
 		this.noteDescription = noteDescription;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
+	public Date getEditedDate() {
+		return editedDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+	public void setEditedDate(Date editedDate) {
+		this.editedDate = editedDate;
 	}
 
 	public User getUser() {

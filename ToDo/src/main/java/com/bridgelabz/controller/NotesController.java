@@ -75,7 +75,7 @@ public class NotesController {
 	@RequestMapping(value = "/updateNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response updateTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();
-		System.out.println(note.isArchived()+" "+note.isTrashed());
+		System.out.println(note.isArchived() + " " + note.isTrashed());
 		String token = request.getHeader("token");
 		try {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
