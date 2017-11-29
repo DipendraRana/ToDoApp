@@ -11,7 +11,7 @@
 			data-ng-model="note.noteDescription"></div>
 
 		<div class="note-extras">
-		<div class="date">Edited {{ note.editedDate | date : 'MMM dd'}}</div>
+			<div class="date">Edited {{ note.editedDate | date : 'MMM dd'}}</div>
 		</div>
 
 		<div class="note-icons">
@@ -26,13 +26,21 @@
 				<img src='images/more.svg' width="17px" height="17px"
 					data-toggle="dropdown">
 				<ul class="dropdown-menu">
-					<li><a data-ng-click="deleteNote(note)" data-dismiss="modal">Delete Note</a></li>
-					<li><a data-ng-click="createCopyOfNote(note)" data-dismiss="modal">Make a copy</a></li>
+					<li><a data-ng-click="deleteNote(note)" data-dismiss="modal"
+						data-ng-show="note.trashed==false">Delete Note</a></li>
+					<li><a data-ng-click="createCopyOfNote(note)"
+						data-dismiss="modal" data-ng-show="note.trashed==false">Make a
+							copy</a></li>
+					<li><a data-ng-click="deleteNotePermanently(note)"
+						data-ng-show="note.trashed==true" data-dismiss="modal">Delete
+							Forever</a></li>
+					<li><a data-ng-click="restoreNote(note)"
+						data-ng-show="note.trashed==true" data-dismiss="modal">Restore</a></li>
 				</ul>
 			</div>
 
 			<div role="button" data-ng-click="updateNote(note)"
-				class="btn btn-done pull-right inline" data-dismiss="modal">DONE</div>
+				class="btn btn-done pull-right inline" data-dismiss="modal" data-ng-show="note.trashed==false">DONE</div>
 
 		</div>
 	</div>

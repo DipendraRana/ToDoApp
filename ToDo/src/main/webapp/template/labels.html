@@ -1,0 +1,137 @@
+<top-nav-bar></top-nav-bar>
+<side-nav-bar></side-nav-bar>
+<div id="noteContainer" class="container-fluid">
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div id="note-container"
+			class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+			<div class="col-lg-1 col-md-1"></div>
+			<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+				<h4 data-ng-show="pinnedNote.length">Pinned:</h4>
+				<div
+					data-ng-repeat="note in notes | filter : {pinned : true , trashed : false , archived : false , labeled : true} as pinnedNotes"
+					id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+
+					<div class="card" data-ng-show="note.label">
+						<div class="card-block" data-ng-click="showModal(note)">
+							<img class="pull-right" src="images/pinned.svg"
+								data-ng-click="unpinNote(note)" width="22" height="22">
+							<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+							<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+						</div>
+						<div class="note-extras" data-ng-show="note.label">
+							<button type="button" class="btn btn-xs">
+								{{note.label}}<span class="badge" style="color: white;"><span
+									class="glyphicon glyphicon-remove"
+									data-ng-click="removeLabel(note)"></span></span>
+							</button>
+						</div>
+						<div class="note-icons">
+							<img data-ng-src="images/archive.png"
+								data-ng-click="archiveNote(note)">
+							<div class="dropdown inline pull-right">
+								<img src='images/more.svg' width="19px" height="19px"
+									data-toggle="dropdown">
+								<ul class="dropdown-menu">
+									<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
+									<li><a data-ng-click="createCopyOfNote(note)">Make a
+											copy</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-1"></div>
+		</div>
+	</div>
+
+
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<h4
+				data-ng-show="otherNotes.length&&archivedNotes.length&&pinnedNotes.length">Others:</h4>
+			<div
+				data-ng-repeat="note in notes | filter : {trashed : false , archived : false , pinned : false , labeled : true} as otherNotes"
+				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+
+				<div class="card" data-ng-show="note.label">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<img class="pull-right" src="images/unpinned.svg"
+							data-ng-click="pinNote(note)" width="22" height="22"
+							id="notPinned">
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<div class="note-extras" data-ng-show="note.label">
+						<button type="button" class="btn btn-xs">
+							{{note.label}}<span class="badge" style="color: white;"><span
+								class="glyphicon glyphicon-remove"
+								data-ng-click="removeLabel(note)"></span></span>
+						</button>
+					</div>
+					<div class="note-icons">
+						<div class="dropdown inline">
+							<img src="images/reminder.png" width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><div style="padding-left: 2px;">Reminder:</div></li>
+								<li><input type="date"></li>
+								<li><input type="text"></li>
+							</ul>
+						</div>
+						<img data-ng-src="images/archive.png"
+							data-ng-click="archiveNote(note)">
+						<div class="dropdown inline pull-right">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
+								<li><a data-ng-click="createCopyOfNote(note)">Make a
+										copy</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-1 col-md-1"></div>
+	</div>
+
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<h4 data-ng-show="archivedNotes.length">Archived:</h4>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<div
+				data-ng-repeat="note in notes | filter : {archived : true , trashed : false , pinned : false , labeled : true} as archivedNotes"
+				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+
+				<div class="card" data-ng-show="note.label">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<img class="pull-right" src="images/unpinned.svg"
+							data-ng-click="pinNote(note)" width="22" height="22">
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<div class="note-icons">
+						<img data-ng-src="images/archive.svg"
+							data-ng-click="unarchiveNote(note)">
+						<div class="dropdown inline pull-right">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
+								<li><a data-ng-click="createCopyOfNote(note)">Make a
+										copy</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-1"></div>
+</div>

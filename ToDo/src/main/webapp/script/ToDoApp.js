@@ -1,5 +1,5 @@
 var ToDo = angular.module('ToDo', [ 'ui.router', 'ngResource', 'ngSanitize',
-		'ui.bootstrap' ]);
+		'ui.bootstrap']);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -38,6 +38,10 @@ function($stateProvider, $urlRouterProvider) {
 	}).state('archive', {
 		url : '/archive',
 		templateUrl : 'template/archive.html',
+		controller : 'homeController'
+	}).state('labels', {
+		url : '/labels',
+		templateUrl : 'template/labels.html',
 		controller : 'homeController'
 	});
 	$urlRouterProvider.otherwise('login');

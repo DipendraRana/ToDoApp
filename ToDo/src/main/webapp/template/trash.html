@@ -14,6 +14,11 @@
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
+					<div class="note-extras" data-ng-show="note.label">
+						<button type="button" class="btn btn-xs">
+							{{note.label}}<span class="badge" style="color: white;"></span>
+						</button>
+					</div>
 					<div class="note-icons">
 						<div class="dropup">
 							<img src='images/more.svg' width="19px" height="19px"

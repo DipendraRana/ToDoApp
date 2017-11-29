@@ -19,8 +19,3 @@ function closeNav() {
     document.getElementById("sideNavContent").style.width = "0px";
     document.getElementById("noteContainer").style.marginLeft = "0px";
 }
-
-function todaysDate(){
-	var today = moment().format('YYYY-MM-DD');
-	document.getElementById("date").defaultValue = today;
-}

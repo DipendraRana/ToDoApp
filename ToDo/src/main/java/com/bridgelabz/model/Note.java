@@ -45,6 +45,12 @@ public class Note {
 	@Column(name="Pinned",nullable=false)
 	private boolean pinned;
 	
+	@Column(name="Label")
+	private String label;
+	
+	@Column(name="Is_Labeled",nullable=false)
+	private boolean labeled;
+	
 	public int getNoteId() {
 		return noteId;
 	}
@@ -107,6 +113,22 @@ public class Note {
 
 	public void setPinned(boolean pinned) {
 		this.pinned = pinned;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public boolean isLabeled() {
+		return labeled;
+	}
+
+	public void setLabeled(boolean labeled) {
+		this.labeled = labeled;
 	}
 
 }

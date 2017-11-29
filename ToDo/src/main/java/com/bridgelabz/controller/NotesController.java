@@ -46,6 +46,9 @@ public class NotesController {
 			list = noteService.getTheNotes(id);
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
+			Note note=new Note();
+			note.setNoteId(0);
+			list.add(note);
 		}
 		return list;
 	}
@@ -75,8 +78,8 @@ public class NotesController {
 	@RequestMapping(value = "/updateNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response updateTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();
-		System.out.println(note.isArchived() + " " + note.isTrashed());
 		String token = request.getHeader("token");
+		System.out.println(note.getLabel()+" "+note.isLabeled());
 		try {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
 			String emailId = (String) claim.get("emailId");
