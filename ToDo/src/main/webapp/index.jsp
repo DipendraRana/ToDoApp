@@ -47,6 +47,8 @@
 <script type="text/javascript" src="service/resetPassowrdService.js"></script>
 <script type="text/javascript" src="service/noteService.js"></script>
 <script type="text/javascript" src="service/intermediateService.js"></script>
+<script type="text/javascript" src="service/labelService.js"></script>
+
 
 </head>
 <body data-ng-app="ToDo">

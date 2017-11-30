@@ -41,17 +41,10 @@ public class User {
 	@OneToMany(mappedBy="user")
 	@JsonIgnore
 	private List<Note> notes;
-
-	public User() {
-		id=0;
-		userName=null;
-		password=null;
-		mobileNumber=0;
-		emailId=null;
-		validToken=false;
-		notes=null;
-		picture=null;
-	}
+	
+	@OneToMany(mappedBy="user")
+	@JsonIgnore
+	private List<Label> labels;
 	
 	public int getId() {
 		return id;
@@ -115,6 +108,14 @@ public class User {
 
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+
+	public List<Label> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(List<Label> labels) {
+		this.labels = labels;
 	}
 	
 }

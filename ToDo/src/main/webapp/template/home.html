@@ -62,7 +62,6 @@
 			<div
 				data-ng-repeat="note in notes | filter : {trashed : false , archived : false , pinned : false} as otherNotes"
 				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
-
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
@@ -73,8 +72,9 @@
 					</div>
 					<div class="note-extras" data-ng-show="note.label">
 						<button type="button" class="btn btn-xs">
-							{{note.label}}<span class="badge" style="color: white;"><span
-									class="glyphicon glyphicon-remove" data-ng-click="removeLabel(note)"></span></span>
+							{{note.labelName}}<span class="badge" style="color: white;"><span
+								class="glyphicon glyphicon-remove"
+								data-ng-click="removeLabel(note)"></span></span>
 						</button>
 					</div>
 					<div class="note-icons">
@@ -96,14 +96,19 @@
 								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
 								<li><a data-ng-click="createCopyOfNote(note)">Make a
 										copy</a></li>
-								<li><a data-toggle="collapse" data-target="#input">Create
-										a label<span class="caret"></span>
+								<li><a data-toggle="collapse"
+									data-target="#input{{note.noteId}}">Create a label<span
+										class="caret"></span>
 								</a>
-									<div id="input" class="collapse">
-										<input type="text" data-ng-model="note.label"
-											style="margin-right: 40px;"><span
-											class="glyphicon glyphicon glyphicon-ok"
-											data-ng-click="addLabel(note)"></span>
+									<div id="input{{note.noteId}}" class="collapse">
+										<div class="input-group" data-ng-repeat="label in labels">
+											<div class="conatiner">
+												<div class="checkbox" style="padding-left: 25px;">
+													<label><input type="checkbox"
+														data-ng-model="active" data-ng-change="change(active,label,note)">{{label.labelName}}</label>
+												</div>
+											</div>
+										</div>
 									</div></li>
 							</ul>
 						</div>

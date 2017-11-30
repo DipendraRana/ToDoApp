@@ -1,6 +1,14 @@
 <div class="sideNav" id="sideNavContent">
-	<a href="#!/home">Notes</a> 
-	<a href="#!/labels">Labels</a> 
+	<a href="#!/home">Notes</a>
+	<hr> 
+	<a>Labels</a>
+	<div class="container" data-ng-repeat="label in labels">
+	<a data-ng-click="showLabel(label)" data-ng-bind="label.labelName"></a>
+	</div> 
+	<div class="container">
+	<a data-ng-click="showModalLabel()">Create Label</a>
+	</div>
+	<hr> 
 	<a href="#!/archive">Archives</a> 
 	<a href="#!/trash">Trash</a>
 </div>
