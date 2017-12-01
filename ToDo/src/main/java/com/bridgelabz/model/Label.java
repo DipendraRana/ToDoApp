@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,12 +28,12 @@ public class Label {
 	@Column(name="Label_Name" , nullable=false)
 	private String labelName;
 	
-	/*@ManyToMany(mappedBy="labels" ,cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy="labels" ,cascade=CascadeType.ALL , fetch=FetchType.EAGER)
 	@JsonIgnore
-	private List<Note> notes;*/
+	private List<Note> notes;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "User_ID")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "User_ID")
 	@JsonIgnore
 	private User user;
 
@@ -52,13 +53,13 @@ public class Label {
 		this.labelName = labelName;
 	}
 
-	/*public List<Note> getNotes() {
+	public List<Note> getNotes() {
 		return notes;
 	}
 
 	public void setNotes(List<Note> notes) {
 		this.notes = notes;
-	}*/
+	}
 
 	public User getUser() {
 		return user;

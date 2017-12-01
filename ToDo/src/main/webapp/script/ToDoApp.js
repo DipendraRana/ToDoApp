@@ -40,7 +40,7 @@ function($stateProvider, $urlRouterProvider) {
 		templateUrl : 'template/archive.html',
 		controller : 'homeController'
 	}).state('labels', {
-		url : '/labels',
+		url : '/{labelNames}',
 		templateUrl : 'template/labels.html',
 		controller : 'homeController'
 	});

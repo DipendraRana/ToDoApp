@@ -75,8 +75,8 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "/updateNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Response updateTheNote(@RequestBody Note note, HttpServletRequest request) {
+	@RequestMapping(value = {"/updateNote"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Response updateTheNote(@RequestBody Note note , HttpServletRequest request) {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
@@ -97,7 +97,7 @@ public class NotesController {
 			return response;
 		}
 	}
-
+	
 	@RequestMapping(value = "/deleteNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response deleteTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();

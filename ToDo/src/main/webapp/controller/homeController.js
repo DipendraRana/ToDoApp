@@ -3,19 +3,15 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 		$location, $uibModal) {
 	$scope.notes = [];
 	$scope.labels = [];
-	
+	$scope.labelName = [];
+
 	$scope.logoutUser = function() {
 		logout();
 	}
 
-	/*------------------------Logout User--------------------------------------------------*/
-	var logout = function() {
-		localStorage.removeItem("token");
-		$location.path("login");
-	}
-
 	/*------------------------Navigation Bar Name Change--------------------------------------------------*/
 	var navBarNameChange = function() {
+
 		if ($location.path() == "/home") {
 			$scope.navBarName = "FunDoNote";
 			$scope.navBarColor = "#ff9900";
@@ -25,7 +21,16 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 		} else if ($location.path() == "/archive") {
 			$scope.navBarName = "Archive";
 			$scope.navBarColor = "#5B9B9D";
+		} else {
+			$scope.navBarName = $location.path().substr(1);
+			$scope.navBarColor = "#4E5C4D";
 		}
+	}
+
+	/*------------------------Logout User--------------------------------------------------*/
+	var logout = function() {
+		localStorage.removeItem("token");
+		$location.path("login");
 	}
 
 	/*------------------------get Labels--------------------------------------------------*/
@@ -35,7 +40,6 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			var url = 'getLabels';
 			var labels = noteService.service(url, 'GET', token);
 			labels.then(function(response) {
-				console.log(response.data);
 				$scope.labels = response.data;
 			});
 		} else
@@ -49,15 +53,25 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			var url = 'getNotes';
 			var notes = noteService.service(url, 'GET', token);
 			notes.then(function(response) {
-				if(response.headers('Error')=="Expired")
+				if (response.headers('Error') == "Expired")
 					logout();
-				else{
+				else {
 					getLabels();
 					$scope.notes = response.data;
 				}
 			});
 		} else
 			$location.path("login");
+	}
+
+	/*------------------------Check The Labels--------------------------------------------------*/
+	$scope.checked = function(note, label) {
+		var checkedLabels = note.labels;
+		for (var labelNo = 0; labelNo < checkedLabels.length; labelNo++) {
+			if (checkedLabels[labelNo].labelName == label.labelName)
+				return true;
+		}
+		return false;
 	}
 
 	/*------------------------Pin Notes--------------------------------------------------*/
@@ -280,7 +294,50 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			$location.path("login");
 	}
 
-	/*------------------------Remove Label of Note--------------------------------------------------*/
+	/*------------------------Update Note with Label--------------------------------------------------*/
+	$scope.attachLabelToNote = function(note, label) {
+		var token = localStorage.getItem('token');
+		if (token != null && token != "") {
+			var url = 'updateNote';
+			note.labeled = true;
+			note.labels.push(label);
+			var notes = noteService.service(url, 'PUT', token, note);
+			notes.then(function(response) {
+				if (response.data.message == "Token Expired")
+					$location.path("/login");
+				else
+					getNotes();
+			}, function(response) {
+				$scope.error = response.data.message;
+
+			});
+		} else
+			$location.path("login");
+	}
+
+	/*------------------------Remove Label From Notes--------------------------------------------------*/
+	$scope.removeLabelFromNotes = function(note, label, $index) {
+		var token = localStorage.getItem('token');
+		if (token != null && token != "") {
+			var url = 'updateNote/';
+			note.labels.splice($index, 1);
+			if (note.labels.length == 0)
+				note.labeled = false;
+			var notes = noteService.service(url, 'PUT', token, note);
+			notes.then(function(response) {
+				if (response.data.message == "Token Expired")
+					$location.path("/login");
+				else
+					getNotes();
+			}, function(response) {
+				$scope.error = response.data.message;
+
+			});
+		} else
+			$location.path("login");
+	}
+
+	/*------------------------Remove Label--------------------------------------------------*/
 	$scope.removeLabel = function(label) {
 		var token = localStorage.getItem('token');
 		if (token != null && token != "") {
@@ -299,7 +356,7 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			$location.path("login");
 	}
 
-	/*------------------------Update Label of Note--------------------------------------------------*/
+	/*------------------------Update Label--------------------------------------------------*/
 	$scope.updateLabel = function(label) {
 		var token = localStorage.getItem('token');
 		if (token != null && token != "") {
@@ -319,7 +376,7 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			$location.path("login");
 	}
 
-	/*------------------------Add Label of Note--------------------------------------------------*/
+	/*------------------------Add Label--------------------------------------------------*/
 	$scope.addLabel = function(label) {
 		var token = localStorage.getItem('token');
 		if (token != null && token != "") {
@@ -346,7 +403,7 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			size : 'md'
 		});
 	};
-	
+
 	$scope.showModalLabel = function() {
 		modalInstance = $uibModal.open({
 			templateUrl : 'template/LabelEdit.html',
@@ -354,20 +411,15 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			size : 'sm'
 		});
 	};
-	
-	$scope.showLabel = function(label) {
-		$scope.navBarName = label.labelName;
-		$scope.navBarColor = "#4E5C4D";
-		$loacation.path("labels");
-	};
-	
-	/*$scope.change = function(active,label,note){
-		if(active){
-			$scope.note.labelName=label.labelName;
-		}
-	};*/
 
-	/*getLabels();*/
+	$scope.change = function(active, label, note, $index) {
+		if (active) {
+			$scope.labelName = label.labelName;
+			$scope.attachLabelToNote(note, label);
+		} else if (!active) {
+			$scope.removeLabelFromNotes(note, label, $index);
+		}
+	};
 
 	getNotes();
 

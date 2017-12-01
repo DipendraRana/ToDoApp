@@ -11,7 +11,13 @@
 			data-ng-model="note.noteDescription"></div>
 
 		<div class="note-extras">
-			<div class="date">Edited {{ note.editedDate | date : 'MMM dd'}}</div>
+			<button type="button" class="btn btn-xs"
+				data-ng-repeat="label in note.labels" style="display: inline-block;">
+				{{label.labelName}}<span class="badge" style="color: white;"><span
+					class="glyphicon glyphicon-remove"
+					data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
+			</button>
+			<div class="date pull-right" style="display: inline-block;">Edited {{ note.editedDate | date : 'MMM dd'}}</div>
 		</div>
 
 		<div class="note-icons">
@@ -36,11 +42,28 @@
 							Forever</a></li>
 					<li><a data-ng-click="restoreNote(note)"
 						data-ng-show="note.trashed==true" data-dismiss="modal">Restore</a></li>
+					<li><a data-toggle="collapse"
+						data-target="#input{{note.noteId}}"
+						data-ng-show="note.trashed==false">Create a label<span
+							class="caret"></span>
+					</a>
+						<div id="input{{note.noteId}}" class="collapse">
+							<div class="input-group" data-ng-repeat="label in labels">
+								<div class="conatiner">
+									<div class="checkbox" style="padding-left: 25px;">
+										<label><input type="checkbox" data-ng-model="active"
+											data-ng-checked="checked(note,label)"
+											data-ng-click="change(active,label,note,$index)">{{label.labelName}}</label>
+									</div>
+								</div>
+							</div>
+						</div></li>
 				</ul>
 			</div>
 
 			<div role="button" data-ng-click="updateNote(note)"
-				class="btn btn-done pull-right inline" data-dismiss="modal" data-ng-show="note.trashed==false">DONE</div>
+				class="btn btn-done pull-right inline" data-dismiss="modal"
+				data-ng-show="note.trashed==false">DONE</div>
 
 		</div>
 	</div>

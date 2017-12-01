@@ -3,7 +3,6 @@ package com.bridgelabz.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,10 +40,10 @@ public class Note {
 	@JsonIgnore
 	private User user;
 	
-	/*@ManyToMany(cascade = CascadeType.ALL , fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "Note_Label", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "Label_ID") })
-	private List<Label> labels;*/
+	private List<Label> labels;
 
 	@Column(name = "Trashed", nullable = false)
 	private boolean trashed;
@@ -130,12 +129,12 @@ public class Note {
 		this.labeled = labeled;
 	}
 
-	/*public List<Label> getLabels() {
+	public List<Label> getLabels() {
 		return labels;
 	}
 
 	public void setLabels(List<Label> labels) {
 		this.labels = labels;
-	}*/
+	}
 
 }
