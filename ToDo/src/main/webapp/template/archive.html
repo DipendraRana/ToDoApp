@@ -16,6 +16,15 @@
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
+					<span class="note-extras" style="display: inline-block;"
+						data-ng-show="note.labels">
+						<button type="button" class="btn btn-xs"
+							data-ng-repeat="label in note.labels">
+							{{label.labelName}}<span class="badge" style="color: white;"><span
+								class="glyphicon glyphicon-remove"
+								data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
+						</button>
+					</span>
 					<div class="note-icons">
 						<img data-ng-src="images/archive.svg"
 							data-ng-click="unarchiveNote(note)">
@@ -24,7 +33,8 @@
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
 								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
-								<li><a data-ng-click="createCopyOfNote(note)">Make a copy</a></li>
+								<li><a data-ng-click="createCopyOfNote(note)">Make a
+										copy</a></li>
 							</ul>
 						</div>
 					</div>

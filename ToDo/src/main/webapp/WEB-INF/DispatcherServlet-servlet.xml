@@ -25,6 +25,7 @@
 	<mvc:resources location="/directive/" mapping="/directive/**"></mvc:resources>
 	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
 	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/filters/" mapping="/filters/**"></mvc:resources>
 
 	<!-- enable the configuration of jms on annotations -->
 	<jms:annotation-driven container-factory="jmsListenerContainerFactory" />

@@ -49,6 +49,7 @@
 <script type="text/javascript" src="service/intermediateService.js"></script>
 <script type="text/javascript" src="service/labelService.js"></script>
 
+<script type="text/javascript" src="filters/labelFilters.js"></script>
 
 </head>
 <body data-ng-app="ToDo">

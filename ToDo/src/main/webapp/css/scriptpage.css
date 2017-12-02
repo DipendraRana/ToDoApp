@@ -124,7 +124,7 @@ button:hover {
 
 .card>.note-icons {
 	padding: 2px;
-	/* visibility: hidden; */
+	visibility: hidden;
 }
 
 .card {

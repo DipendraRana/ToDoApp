@@ -1,5 +1,5 @@
 var ToDo = angular.module("ToDo");
-ToDo.controller('homeController', function($scope, noteService, labelService,
+ToDo.controller('homeController', function($scope, noteService, labelService, 
 		$location, $uibModal) {
 	$scope.notes = [];
 	$scope.labels = [];
@@ -155,8 +155,6 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 				getNotes();
 				$scope.error = response.data.message;
 			});
-			;
-			$stateProvider
 		} else
 			$location.path("login");
 	}
@@ -180,8 +178,6 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			});
 		} else
 			$location.path("login");
-		;
-		$stateProvider
 	}
 
 	/*------------------------Delete Note--------------------------------------------------*/
@@ -204,7 +200,6 @@ ToDo.controller('homeController', function($scope, noteService, labelService,
 			});
 		} else
 			$location.path("login");
-		;
 	}
 
 	/*------------------------Restore Notes--------------------------------------------------*/
