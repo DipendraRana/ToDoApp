@@ -14,11 +14,15 @@
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
-					<div class="note-extras" data-ng-show="note.label">
-						<button type="button" class="btn btn-xs">
-							{{note.label}}<span class="badge" style="color: white;"></span>
+					<span class="note-extras" style="display: inline-block;"
+						data-ng-show="note.labels">
+						<button type="button" class="btn btn-xs"
+							data-ng-repeat="label in note.labels">
+							{{label.labelName}}<span class="badge" style="color: white;"><span
+								class="glyphicon glyphicon-remove"
+								data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
 						</button>
-					</div>
+					</span>
 					<div class="note-icons">
 						<div class="dropup">
 							<img src='images/more.svg' width="19px" height="19px"

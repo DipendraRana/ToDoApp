@@ -1,96 +1,21 @@
 <top-nav-bar></top-nav-bar>
 <side-nav-bar></side-nav-bar>
 <div id="noteContainer" class="container-fluid">
-	<div class="row">
-		<div class="col-lg-3 col-md-3"></div>
-		<div id="note" class=" col-sm-12 col-md-6 col-xs-12 col-lg-4">
-			<div contenteditable="true" data-text="Title"
-				data-ng-model="newNote.noteTitle" id="note-title"></div>
-			<div contenteditable="true" data-text="Take a note"
-				data-ng-model="newNote.noteDescription" id="note-body"></div>
-			<div class="note-icons">
-				<img src="images/archive.png"> <img src="images/reminder.png">
-				<img src="images/colors.png"> <img
-					src="images/collaborator1600.png">
-				<div role="button" data-ng-click="createNote()"
-					class="btn btn-done pull-right">DONE</div>
-			</div>
-		</div>
-	</div>
-
 	<div id="note-container"
 		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
 		<div class="col-lg-1 col-md-1"></div>
 		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
-			<h4 data-ng-show="pinnedNote.length">Pinned:</h4>
 			<div
-				data-ng-repeat="note in notes | filter : {pinned : true} as pinnedNote"
-				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
-
-				<div class="card">
-					<div class="card-block" data-ng-click="showModal(note)">
-						<img class="pull-right" src="images/pinned.svg"
-							data-ng-click="unpinNote(note)" width="22" height="22">
-						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
-						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
-					</div>
-					<span class="note-extras" style="display: inline-block;"
-						data-ng-show="note.labels">
-						<button type="button" class="btn btn-xs"
-							data-ng-repeat="label in note.labels">
-							{{label.labelName}}<span class="badge" style="color: white;"><span
-								class="glyphicon glyphicon-remove"
-								data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
-						</button>
-					</span>
-					<div class="note-icons">
-						<img data-ng-src="images/archive.png"
-							data-ng-click="archiveNote(note)">
-						<div class="dropdown inline pull-right">
-							<img src='images/more.svg' width="19px" height="19px"
-								data-toggle="dropdown">
-							<ul class="dropdown-menu">
-								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
-								<li><a data-ng-click="createCopyOfNote(note)">Make a
-										copy</a></li>
-								<li><a data-toggle="collapse"
-									data-target="#input{{note.noteId}}">Create a label<span
-										class="caret"></span>
-								</a>
-									<div id="input{{note.noteId}}" class="collapse">
-										<div class="input-group" data-ng-repeat="label in labels">
-											<div class="conatiner">
-												<div class="checkbox" style="padding-left: 25px;">
-													<label><input type="checkbox"
-														data-ng-model="active"
-														data-ng-checked="checked(note,label)"
-														data-ng-click="change(active,label,note,$index)">{{label.labelName}}</label>
-												</div>
-											</div>
-										</div>
-									</div></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-1 col-md-1"></div>
-	</div>
-
-	<div id="note-container"
-		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
-		<div class="col-lg-1 col-md-1"></div>
-		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
-			<h4 data-ng-show="otherNotes.length && pinnedNote.length">Others:</h4>
-			<div
-				data-ng-repeat="note in notes | filter : {trashed : false , archived : false , pinned : false} as otherNotes"
+				data-ng-repeat="note in notes | filter : {reminder: true} as otherNotes"
 				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
 							data-ng-click="pinNote(note)" width="22" height="22"
-							id="notPinned">
+							id="notPinned" data-ng-show="note.pinned==false"> 
+						<img class="pull-right" src="images/pinned.svg"
+							data-ng-click="unpinNote(note)" width="22" height="22"
+							data-ng-show="note.pinned==true">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
@@ -140,7 +65,10 @@
 							</ul>
 						</div>
 						<img data-ng-src="images/archive.png"
-							data-ng-click="archiveNote(note)">
+							data-ng-click="archiveNote(note)"
+							data-ng-show="note.archived==false"> <img
+							data-ng-src="images/archive.svg"
+							data-ng-click="unarchiveNote(note)" data-ng-show="note.archived">
 						<div class="dropdown inline pull-right">
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">

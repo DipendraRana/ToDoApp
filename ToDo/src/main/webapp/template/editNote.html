@@ -10,7 +10,7 @@
 		<div id="note-body" contenteditable="true"
 			data-ng-model="note.noteDescription"></div>
 
-		<div class="note-extras">
+		<div class="note-extras" style="overflow: auto;">
 			<button type="button" class="btn btn-xs"
 				data-ng-repeat="label in note.labels" style="display: inline-block;">
 				{{label.labelName}}<span class="badge" style="color: white;"><span
@@ -61,7 +61,7 @@
 				</ul>
 			</div>
 
-			<div role="button" data-ng-click="updateNote(note)"
+			<div role="button" data-ng-click="updateNotesFromModal(note)"
 				class="btn btn-done pull-right inline" data-dismiss="modal"
 				data-ng-show="note.trashed==false">DONE</div>
 

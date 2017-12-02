@@ -56,6 +56,15 @@ public class Note {
 
 	@Column(name = "Is_Labeled", nullable = false)
 	private boolean labeled;
+	
+	@Column(name = "Is_Reminded", nullable = false)
+	private boolean reminder;
+	
+	@Column(name = "Reminder_Date", nullable = true)
+	private Date reminderDate; 
+	
+	@Column(name = "Reminder_Time", nullable = true)
+	private String reminderTime;
 
 	public int getNoteId() {
 		return noteId;
@@ -135,6 +144,30 @@ public class Note {
 
 	public void setLabels(List<Label> labels) {
 		this.labels = labels;
+	}
+
+	public Date getReminderDate() {
+		return reminderDate;
+	}
+
+	public void setReminderDate(Date reminderDate) {
+		this.reminderDate = reminderDate;
+	}
+
+	public String getReminderTime() {
+		return reminderTime;
+	}
+
+	public void setReminderTime(String reminderTime) {
+		this.reminderTime = reminderTime;
+	}
+
+	public boolean isReminder() {
+		return reminder;
+	}
+
+	public void setReminder(boolean reminder) {
+		this.reminder = reminder;
 	}
 
 }

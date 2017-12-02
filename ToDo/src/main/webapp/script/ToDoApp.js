@@ -1,5 +1,5 @@
 var ToDo = angular.module('ToDo', [ 'ui.router', 'ngResource', 'ngSanitize',
-		'ui.bootstrap']);
+		'ui.bootstrap', 'toastr' ]);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {
@@ -42,6 +42,10 @@ function($stateProvider, $urlRouterProvider) {
 	}).state('labels', {
 		url : '/{labelNames}',
 		templateUrl : 'template/labels.html',
+		controller : 'homeController'
+	}).state('reminders', {
+		url : '/reminders',
+		templateUrl : 'template/reminders.html',
 		controller : 'homeController'
 	});
 	$urlRouterProvider.otherwise('login');
