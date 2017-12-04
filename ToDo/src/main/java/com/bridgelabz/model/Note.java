@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -65,6 +66,13 @@ public class Note {
 	
 	@Column(name = "Reminder_Time", nullable = true)
 	private String reminderTime;
+	
+	@Column(name = "Color", nullable = true)
+	private String color;
+	
+	@Lob
+	@Column(name="Image" , nullable=true , columnDefinition="LONGBLOB")
+	private String image;
 
 	public int getNoteId() {
 		return noteId;
@@ -168,6 +176,22 @@ public class Note {
 
 	public void setReminder(boolean reminder) {
 		this.reminder = reminder;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }

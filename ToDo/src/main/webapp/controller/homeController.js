@@ -1,12 +1,11 @@
 var ToDo = angular.module("ToDo");
-ToDo
-		.controller(
-				'homeController',
-				function($scope, noteService, labelService, $location,
-						$uibModal, $interval) {
+ToDo.controller('homeController',
+				function($scope, noteService, labelService, toastr, $location,
+						$uibModal, $interval, $filter , FileUploader,$timeout) {
 					$scope.notes = [];
 					$scope.labels = [];
 					$scope.labelName = [];
+					$scope.colors = [];
 
 					$scope.logoutUser = function() {
 						logout();
@@ -24,7 +23,7 @@ ToDo
 						} else if ($location.path() == "/archive") {
 							$scope.navBarName = "Archive";
 							$scope.navBarColor = "#5B9B9D";
-						} else if($location.path() == "/reminders"){
+						} else if ($location.path() == "/reminders") {
 							$scope.navBarName = "Reminders";
 							$scope.navBarColor = "#4E5C4D";
 						} else {
@@ -38,7 +37,7 @@ ToDo
 						$interval(
 								function() {
 									notes = $scope.notes;
-									for (var noteCount; noteCount < notes.length; noteCount++) {
+									for (var noteCount = 0; noteCount < notes.length; noteCount++) {
 										if (notes[noteCount].reminderDate != 0
 												&& notes[noteCount].reminderTime != "") {
 											var currentDate = $filter('date')(
@@ -49,7 +48,7 @@ ToDo
 																	notes[noteCount].reminderDate),
 															'yyyy-MM-dd');
 											var currentTime = $filter('date')(
-													new Date(), 'h:m a');
+													new Date(), 'h:mm a');
 											if (currentDate == remindedDate
 													&& currentTime == notes[noteCount].reminderTime) {
 												toastr
@@ -67,9 +66,69 @@ ToDo
 								}, 30000);
 					}
 
+					var colors = [ {
+						'color' : '#FFFFFF',
+						'tooltip' : 'White',
+						'path' : 'images/white.png'
+					}, {
+						'color' : '#F8BBD0',
+						'tooltip' : 'Pink',
+						'path' : 'images/pink.png'
+					}, {
+						'color' : '#DC94F7',
+						'tooltip' : 'purple',
+						'path' : 'images/purple.png'
+					}, {
+						'color' : '#82B1FF',
+						'tooltip' : 'Dark blue',
+						'path' : 'images/darkblue.png'
+					}, {
+						'color' : '#80D8FF',
+						'tooltip' : 'Blue',
+						'path' : 'images/blue.png'
+					}, {
+						'color' : '#CCFF90',
+						'tooltip' : 'Green',
+						'path' : 'images/green.png'
+					}, {
+						'color' : '#FF8A80',
+						'tooltip' : 'Red',
+						'path' : 'images/Red.png'
+					}, {
+						'color' : '#D5DBDB',
+						'tooltip' : 'Grey',
+						'path' : 'images/grey.png'
+					}, {
+						'color' : '#FFD180',
+						'tooltip' : 'Orange',
+						'path' : 'images/orange.png'
+					}, {
+						'color' : '#F5F518',
+						'tooltip' : 'Yellow',
+						'path' : 'images/lightyellow.png'
+					}, {
+						'color' : '#D7C9C8',
+						'tooltip' : 'Brown',
+						'path' : 'images/brown.png'
+					} ];
+					$scope.colors = colors;
+
+					/*------------------------Initially Checks what view to present--------------------------------------------------*/
+					var checkForView = function() {
+						$scope.icon = localStorage.getItem('icon');
+						if ($scope.icon == "glyphicon glyphicon-th-large black") {
+							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
+							$scope.icon = "glyphicon glyphicon-th-large black";
+						} else {
+							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
+							$scope.icon = "glyphicon glyphicon-th-list black"
+						}
+					}
+
 					/*------------------------Logout User--------------------------------------------------*/
 					var logout = function() {
 						localStorage.removeItem("token");
+						localStorage.removeItem("icon");
 						$location.path("login");
 					}
 
@@ -122,7 +181,6 @@ ToDo
 							var url = 'deleteNote';
 							var notes = noteService.service(url, 'PUT', token,
 									note);
-							modalInstance.close();
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("login");
@@ -144,12 +202,11 @@ ToDo
 						if (token != null && token != "") {
 							if ($scope.newNote.noteTitle != ''
 									|| $scope.newNote.noteDescription != '') {
+								$scope.newNote.image=null;
 								var url = 'saveNote';
 								var notes = noteService.service(url, 'POST',
 										token, $scope.newNote);
-								notes
-										.then(
-												function(response) {
+								notes.then(function(response) {
 													if (response.data.message == "Token Expired")
 														$location
 																.path("/login");
@@ -246,15 +303,62 @@ ToDo
 							$location.path("login");
 					}
 
+					/*------------------------Changes view to on click--------------------------------------------------*/
+					$scope.listView = function() {
+						$scope.icon = localStorage.getItem('icon');
+						if ($scope.icon == "glyphicon glyphicon-th-list black") {
+							$scope.icon = "glyphicon glyphicon-th-large black";
+							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
+							document.getElementById("note-scope").style.transition = "0.5 s";
+							localStorage.setItem('icon', $scope.icon);
+						} else {
+							$scope.icon = "glyphicon glyphicon-th-list black"
+							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
+							localStorage.setItem('icon', $scope.icon);
+						}
+
+					}
+					
+					/*------------------------Facebook Sharing of Note--------------------------------------------------*/
+					$scope.facebookShare = function(note) {
+						FB.init({
+							appId : '370919266686959',
+							status : true,
+							cookie : true,
+							xfbml : true,
+							version : 'v2.4'
+						});
+						
+						FB.ui({
+							  method: 'share_open_graph',
+							  action_type: 'og.likes',
+							  action_properties: JSON.stringify({
+							    object:{
+							    	'og:title' : note.noteTitle,
+									'og:description' : note.noteDescription
+							    }
+							  })
+							}, function(response){
+							  console.log(response);
+							  	if (response && !response.error_message) {
+									toastr.success('Note shared', 'successfully');
+							  	} else {
+									toastr.success('Note not shared', 'Error');
+								}
+							});
+					}
+
 					/*------------------------Pin Notes--------------------------------------------------*/
-					$scope.pinNote = function(note) {
+					$scope.pinNote = function(note, $event) {
+						$event.stopPropagation();
 						note.archived = false;
 						note.pinned = true;
 						$scope.updateNote(note);
 					}
 
 					/*------------------------UnPin Notes--------------------------------------------------*/
-					$scope.unpinNote = function(note) {
+					$scope.unpinNote = function(note, $event) {
+						$event.stopPropagation();
 						note.archived = false;
 						note.pinned = false;
 						$scope.updateNote(note);
@@ -280,8 +384,8 @@ ToDo
 						note.archived = false;
 						note.pinned = false;
 						note.reminder = false;
-						note.reminderDate=null;
-						note.reminderTime=null;
+						note.reminderDate = null;
+						note.reminderTime = null;
 						$scope.updateNote(note);
 					}
 
@@ -339,6 +443,33 @@ ToDo
 						modalInstance.close();
 					}
 
+					/*------------------------Delete Notes from modal--------------------------------------------------*/
+					$scope.deleteNotePermanentlyFromModal = function() {
+						modalInstance.close();
+						$scope.deleteNotePermanently(note);
+					}
+
+					/*------------------------change color--------------------------------------------------*/
+					$scope.changeColor = function(note, color) {
+						note.color = color.color;
+						$scope.color = color;
+						$scope.updateNote(note);
+					}
+					
+					/*------------------------upload photo to database--------------------------------------------------*/
+					$scope.uploadPhoto = function (note) {
+						$scope.uploader = new FileUploader();
+						note.image=$scope.uploader.queue[0];
+						console.log($scope.uploader.queue[0]);
+						$scope.updateNote(note);
+					}
+					
+					$scope.triggerImageUploadUI = function(){
+						$timeout(function(){
+						$('#fileUploadUI').trigger('click');
+						},0);
+					}
+
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {
 							notes[noteCount].reminderDate = new Date(
@@ -377,4 +508,6 @@ ToDo
 					navBarNameChange();
 
 					intervalFunction();
+
+					checkForView();
 				});

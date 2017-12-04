@@ -30,7 +30,7 @@
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/pinned.svg"
-							data-ng-click="unpinNote(note)" width="22" height="22">
+							data-ng-click="unpinNote(note,$event)" width="22" height="22">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
@@ -85,11 +85,11 @@
 			<h4 data-ng-show="otherNotes.length && pinnedNote.length">Others:</h4>
 			<div
 				data-ng-repeat="note in notes | filter : {trashed : false , archived : false , pinned : false} as otherNotes"
-				id="note-scope" class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
-				<div class="card">
+				id="note-scope" class="{{changeView}}">
+				<div class="card" style="background-color: {{note.color}}">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
-							data-ng-click="pinNote(note)" width="22" height="22"
+							data-ng-click="pinNote(note,$event)" width="22" height="22"
 							id="notPinned">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
@@ -115,15 +115,15 @@
 							<img src="images/reminder.png" width="19px" height="19px"
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
-								<li><div style="padding-left: 2px;">Reminder:</div></li>
+								<li><div style="padding-left: 2px;">Reminder:</div> <br></li>
 								<li><div>
 										<input type="date" data-ng-model="note.reminderDate">
-									</div></li>
+									</div> <br></li>
 								<li><div class="input-group" data-toggle="collapse"
-										data-target="#input{{note.noteId}}">
+										data-target="#inputreminder{{note.noteId}}">
 										Click To Add Time<span class="caret"></span>
 									</div>
-									<div id="input{{note.noteId}}" class="collapse">
+									<div id="inputreminder{{note.noteId}}" class="collapse">
 										<div data-ng-model="note.reminderTime"
 											data-ng-click="addReminderToNote(note,'8:00 AM')">Morning
 											8:00 AM</div>
@@ -139,8 +139,22 @@
 									</div></li>
 							</ul>
 						</div>
+						<div class="dropdown inline">
+							<img src="images/colors.svg" width="30px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><span data-ng-repeat="color in colors" role="menuitem"><img
+									data-ng-src="{{color.path}}" title="{{color.tooltip}}" height="25px"
+									data-ng-click="changeColor(note,color);">
+								</span></li>
+							</ul>
+						</div>
 						<img data-ng-src="images/archive.png"
 							data-ng-click="archiveNote(note)">
+							
+						<img data-ng-src="images/image.svg" data-ng-click="triggerImageUploadUI()">
+						<input type="file" id="fileUploadUI" accept="image/*" data-ng-show="false" data-ng-if="uploader" nv-file-select uploader="uploader" data-ng-click="uploadPhoto(note)">
+						
 						<div class="dropdown inline pull-right">
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">
@@ -148,11 +162,12 @@
 								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
 								<li><a data-ng-click="createCopyOfNote(note)">Make a
 										copy</a></li>
+								<li><a data-ng-click="facebookShare(note)">Share To Facebook</a></li>
 								<li><a data-toggle="collapse"
-									data-target="#input{{note.noteId}}">Create a label<span
+									data-target="#inputmore{{note.noteId}}">Select a label<span
 										class="caret"></span>
 								</a>
-									<div id="input{{note.noteId}}" class="collapse">
+									<div id="inputmore{{note.noteId}}" class="collapse">
 										<div class="input-group" data-ng-repeat="label in labels">
 											<div class="conatiner">
 												<div class="checkbox" style="padding-left: 25px;">
@@ -163,7 +178,8 @@
 												</div>
 											</div>
 										</div>
-									</div></li>
+									</div>
+								</li>
 							</ul>
 						</div>
 					</div>

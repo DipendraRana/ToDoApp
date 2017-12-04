@@ -14,7 +14,7 @@
 					<div class="card">
 						<div class="card-block" data-ng-click="showModal(note)">
 							<img class="pull-right" src="images/pinned.svg"
-								data-ng-click="unpinNote(note)" width="22" height="22">
+								data-ng-click="unpinNote(note,$event)" width="22" height="22">
 							<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 							<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 						</div>
@@ -74,7 +74,7 @@
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
-							data-ng-click="pinNote(note)" width="22" height="22"
+							data-ng-click="pinNote(note,$event)" width="22" height="22"
 							id="notPinned">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
@@ -144,7 +144,7 @@
 				<div class="card">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right" src="images/unpinned.svg"
-							data-ng-click="pinNote(note)" width="22" height="22">
+							data-ng-click="pinNote(note,$event)" width="22" height="22">
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>

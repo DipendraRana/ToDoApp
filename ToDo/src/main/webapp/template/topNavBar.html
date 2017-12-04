@@ -9,16 +9,22 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" data-ng-bind="navBarName"></a>
 		</div>
-		<div class="navbar-header navbar-right">
-			<div class="dropdown navbar-brand">
-				<a class="dropdown-toggle" data-toggle="dropdown"> <span
-					class="glyphicon glyphicon-user black" style="margin-right: 15px;"></span></a>
-				<ul class="dropdown-menu">
-					<li><a data-ng-click="logoutUser()"> <span
-							class="glyphicon glyphicon-log-out"></span> Logout
-					</a></li>
-				</ul>
-			</div>
-		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a data-ng-click="listView()"><span
+					class="{{icon}}"></span></a></li>
+			<li><div class="navbar-header navbar-right">
+					<div class="dropdown navbar-brand">
+						<a class="dropdown-toggle" data-toggle="dropdown"> <span
+							class="glyphicon glyphicon-user black"
+							style="margin-right: 40px;"></span></a>
+						<ul class="dropdown-menu">
+							<li><a data-ng-click="logoutUser()"> <span
+									class="glyphicon glyphicon-log-out"></span> Logout
+							</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
 	</nav>
 </div>

@@ -180,6 +180,14 @@ button:hover {
 	text-align: right;
 }
 
+.color-dropdown-item{
+	margin:2px;
+	border-radius: 50%;
+	min-width: 10px;
+	min-height: 25px;
+	border:2px solid Grey;
+}
+
 .dropdown-submenu {
     position: relative;
 }
