@@ -6,9 +6,9 @@
 			data-ng-show="note.pinned==false" src="images/unpinned.svg"
 			data-ng-click="pinNote(note)" width="22" height="22">
 		<div id="note-title" contenteditable="true"
-			data-ng-model="note.noteTitle"></div>
+			data-ng-model="note.noteTitle" data-ng-change="updateNotesFromModal(note)"></div>
 		<div id="note-body" contenteditable="true"
-			data-ng-model="note.noteDescription"></div>
+			data-ng-model="note.noteDescription" data-ng-change="updateNotesFromModal(note)"></div>
 
 		<div class="note-extras" style="overflow: auto;">
 			<button type="button" class="btn btn-xs"
@@ -61,7 +61,7 @@
 				</ul>
 			</div>
 
-			<div role="button" data-ng-click="updateNotesFromModal(note)"
+			<div role="button" data-ng-click="updateNotesFromModal(note);closeModal();"
 				class="btn btn-done pull-right inline" data-dismiss="modal"
 				data-ng-show="note.trashed==false">DONE</div>
 

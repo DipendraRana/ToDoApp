@@ -123,7 +123,8 @@ button:hover {
 }
 
 .card>.note-icons {
-	padding: 2px;
+	padding-left: 10px;
+	padding-bottom: 5px;
 	/* visibility: hidden; */
 }
 
@@ -132,7 +133,6 @@ button:hover {
 	height: 100%;
 	background-color: white;
 	margin: 5px;
-	padding: 10px; 
 	box-shadow: 1px 1px 1px black;
 	word-break: break-word;
 	display: flex;
@@ -168,12 +168,23 @@ button:hover {
 	padding: 0 !important;
 }
 
-.card > .card-block > img#notPinned {
+.card > .card-block > img.notPinned {
 	visibility: hidden;
+	position: absolute;
+    right: 8px;
+    top: 7px;
 }
 
-.card:hover .card-block > img#notPinned {
+.images {
+	
+    width: 100%;
+}
+
+.card:hover .card-block > img.notPinned {
 	visibility: visible;
+	position: absolute;
+    right: 8px;
+    top: 7px;
 }
 
 .note-extras > .date {
@@ -196,4 +207,12 @@ button:hover {
     top: 0;
     left: 100%;
     margin-top: -1px;
+}
+
+.card-title,.card-text {
+	padding: 10px;
+}
+
+.note-extras{
+	padding-left: 10px;
 }

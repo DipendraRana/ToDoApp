@@ -1,5 +1,6 @@
 <top-nav-bar></top-nav-bar>
 <side-nav-bar></side-nav-bar>
+
 <div id="noteContainer" class="container-fluid">
 	<div class="row">
 		<div class="col-lg-3 col-md-3"></div>
@@ -88,9 +89,9 @@
 				id="note-scope" class="{{changeView}}">
 				<div class="card" style="background-color: {{note.color}}">
 					<div class="card-block" data-ng-click="showModal(note)">
-						<img class="pull-right" src="images/unpinned.svg"
-							data-ng-click="pinNote(note,$event)" width="22" height="22"
-							id="notPinned">
+						<img class="pull-right notPinned" src="images/unpinned.svg"
+							data-ng-click="pinNote(note,$event)" width="22" height="22">
+						<img class="images" data-ng-src="{{note.image}}"></img>
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
@@ -144,17 +145,19 @@
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
 								<li><span data-ng-repeat="color in colors" role="menuitem"><img
-									data-ng-src="{{color.path}}" title="{{color.tooltip}}" height="25px"
-									data-ng-click="changeColor(note,color);">
+										data-ng-src="{{color.path}}" title="{{color.tooltip}}"
+										height="25px" data-ng-click="changeColor(note,color);">
 								</span></li>
 							</ul>
 						</div>
-						<img data-ng-src="images/archive.png"
-							data-ng-click="archiveNote(note)">
-							
-						<img data-ng-src="images/image.svg" data-ng-click="triggerImageUploadUI()">
-						<input type="file" id="fileUploadUI" accept="image/*" data-ng-show="false" data-ng-if="uploader" nv-file-select uploader="uploader" data-ng-click="uploadPhoto(note)">
 						
+						<img data-ng-src="images/archive.png"
+							data-ng-click="archiveNote(note)"> 
+						<img data-ng-src="images/image.svg"
+							data-ng-click="triggerImageUploadUI(note)"> 
+						<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
+							onchange="angular.element(this).scope().imageUpload(this)">
+
 						<div class="dropdown inline pull-right">
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">
@@ -162,7 +165,8 @@
 								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
 								<li><a data-ng-click="createCopyOfNote(note)">Make a
 										copy</a></li>
-								<li><a data-ng-click="facebookShare(note)">Share To Facebook</a></li>
+								<li><a data-ng-click="facebookShare(note)">Share To
+										Facebook</a></li>
 								<li><a data-toggle="collapse"
 									data-target="#inputmore{{note.noteId}}">Select a label<span
 										class="caret"></span>
@@ -178,8 +182,7 @@
 												</div>
 											</div>
 										</div>
-									</div>
-								</li>
+									</div></li>
 							</ul>
 						</div>
 					</div>

@@ -32,9 +32,13 @@
 <script type="text/javascript"
 	src="https://connect.facebook.net/en_US/sdk.js"></script>
 <script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/angular-file-upload/2.5.0/angular-file-upload.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
 <script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-base64/2.0.5/angular-base64.min.js"></script>
+<script type="text/javascript"
+	src="https://cdn.rawgit.com/adonespitogo/angular-base64-upload/master/src/angular-base64-upload.js"></script>
 
 <script type="text/javascript" src="script/ToDoApp.js"></script>
 
@@ -58,6 +62,7 @@
 <script type="text/javascript" src="service/noteService.js"></script>
 <script type="text/javascript" src="service/intermediateService.js"></script>
 <script type="text/javascript" src="service/labelService.js"></script>
+<script type="text/javascript" src="service/fileUploadService.js"></script>
 
 <script type="text/javascript" src="filters/labelFilters.js"></script>
 

@@ -11,7 +11,7 @@ function toogleNav() {
 function openNav() {
 	document.getElementById("sideNavContent").style.width = "250px";
 	document.getElementById("noteContainer").style.marginLeft = "250px";
-}
+}	
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {

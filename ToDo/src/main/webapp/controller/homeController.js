@@ -1,7 +1,8 @@
 var ToDo = angular.module("ToDo");
 ToDo.controller('homeController',
 				function($scope, noteService, labelService, toastr, $location,
-						$uibModal, $interval, $filter , FileUploader,$timeout) {
+						$uibModal, $interval, $filter ,$timeout,fileReader) {
+	
 					$scope.notes = [];
 					$scope.labels = [];
 					$scope.labelName = [];
@@ -9,6 +10,16 @@ ToDo.controller('homeController',
 
 					$scope.logoutUser = function() {
 						logout();
+					}
+					
+					/*------------------------Check for Duplicate Label--------------------------------------------------*/
+					var checkForDuplicateLabel = function(label){
+						for(var labelNo=0;labelNo<$scope.labels.length;labelNo++){
+							if($scope.labels[labelNo].labelName==label.labelName)
+								return false;
+							else
+								return true;
+						}
 					}
 
 					/*------------------------Navigation Bar Name Change--------------------------------------------------*/
@@ -65,7 +76,8 @@ ToDo.controller('homeController',
 									}
 								}, 30000);
 					}
-
+					
+					/*------------------------Color Palette--------------------------------------------------*/
 					var colors = [ {
 						'color' : '#FFFFFF',
 						'tooltip' : 'White',
@@ -189,7 +201,6 @@ ToDo.controller('homeController',
 							}, function(response) {
 								getNotes();
 								$scope.error = response.data.message;
-								;
 								$stateProvider
 							});
 						} else
@@ -285,22 +296,26 @@ ToDo.controller('homeController',
 
 					/*------------------------Add Label--------------------------------------------------*/
 					$scope.addLabel = function(label) {
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							var url = 'createLabel';
-							var labels = labelService.service(url, 'POST',
-									token, label);
-							labels.then(function(response) {
-								if (response.data.message == "Token Expired")
-									$location.path("/login");
-								else
-									getLabels();
-							}, function(response) {
-								$scope.error = response.data.message;
+						if(checkForDuplicateLabel(label)){
+							var token = localStorage.getItem('token');
+							if (token != null && token != "") {
+								var url = 'createLabel';
+								var labels = labelService.service(url, 'POST',
+										token, label);
+								labels.then(function(response) {
+									if (response.data.message == "Token Expired")
+										$location.path("/login");
+									else
+										getLabels();
+								}, function(response) {
+									$scope.error = response.data.message;
 
-							});
-						} else
-							$location.path("login");
+								});
+							} else
+								$location.path("login");
+						}else
+							document.getElementById("labelmessage").innerHTML = "Label Already Exists";
+						
 					}
 
 					/*------------------------Changes view to on click--------------------------------------------------*/
@@ -309,7 +324,6 @@ ToDo.controller('homeController',
 						if ($scope.icon == "glyphicon glyphicon-th-list black") {
 							$scope.icon = "glyphicon glyphicon-th-large black";
 							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
-							document.getElementById("note-scope").style.transition = "0.5 s";
 							localStorage.setItem('icon', $scope.icon);
 						} else {
 							$scope.icon = "glyphicon glyphicon-th-list black"
@@ -440,6 +454,9 @@ ToDo.controller('homeController',
 					/*------------------------Update Notes from modal--------------------------------------------------*/
 					$scope.updateNotesFromModal = function(note) {
 						$scope.updateNote(note);
+					}
+					
+					$scope.closeModal = function() {
 						modalInstance.close();
 					}
 
@@ -456,20 +473,30 @@ ToDo.controller('homeController',
 						$scope.updateNote(note);
 					}
 					
-					/*------------------------upload photo to database--------------------------------------------------*/
-					$scope.uploadPhoto = function (note) {
-						$scope.uploader = new FileUploader();
-						note.image=$scope.uploader.queue[0];
-						console.log($scope.uploader.queue[0]);
-						$scope.updateNote(note);
-					}
-					
-					$scope.triggerImageUploadUI = function(){
+					/*------------------------Trigger the upload UI--------------------------------------------------*/
+					$scope.triggerImageUploadUI = function(note){
 						$timeout(function(){
-						$('#fileUploadUI').trigger('click');
+							$scope.type=note;
+						$('#imageUploadUI').trigger('click');
 						},0);
 					}
-
+					
+					/*------------------------upload photo to database--------------------------------------------------*/
+					$scope.imageUpload = function(element){
+					    var reader = new FileReader();
+					    reader.onload = $scope.imageIsLoaded;
+					    reader.readAsDataURL(element.files[0]);
+					}
+				
+					$scope.imageIsLoaded = function(e){
+					    $scope.$apply(function() {
+					        var imageSrc=e.target.result;
+					        $scope.type.image=imageSrc;
+					        $scope.updateNote($scope.type);
+					    });
+					};
+					
+					
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {
 							notes[noteCount].reminderDate = new Date(

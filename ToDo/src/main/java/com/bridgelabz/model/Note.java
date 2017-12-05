@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -70,8 +69,8 @@ public class Note {
 	@Column(name = "Color", nullable = true)
 	private String color;
 	
-	@Lob
-	@Column(name="Image" , nullable=true , columnDefinition="LONGBLOB")
+
+	@Column(name="Image",columnDefinition="LONGBLOB")
 	private String image;
 
 	public int getNoteId() {
