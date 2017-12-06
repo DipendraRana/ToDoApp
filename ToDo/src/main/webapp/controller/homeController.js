@@ -14,11 +14,12 @@ ToDo.controller('homeController',
 					
 					/*------------------------Check for Duplicate Label--------------------------------------------------*/
 					var checkForDuplicateLabel = function(label){
+						console.log($scope.labels.length);
 						for(var labelNo=0;labelNo<$scope.labels.length;labelNo++){
 							if($scope.labels[labelNo].labelName==label.labelName)
-								return false;
-							else
 								return true;
+							else
+								return false;
 						}
 					}
 
@@ -296,7 +297,7 @@ ToDo.controller('homeController',
 
 					/*------------------------Add Label--------------------------------------------------*/
 					$scope.addLabel = function(label) {
-						if(checkForDuplicateLabel(label)){
+						if(!checkForDuplicateLabel(label)){
 							var token = localStorage.getItem('token');
 							if (token != null && token != "") {
 								var url = 'createLabel';
@@ -518,6 +519,15 @@ ToDo.controller('homeController',
 							templateUrl : 'template/LabelEdit.html',
 							scope : $scope,
 							size : 'sm'
+						});
+					};
+					
+					$scope.showModalCollaborator = function(note) {
+						$scope.note = note;
+						modalInstance = $uibModal.open({
+							templateUrl : 'template/Collaborate.html',
+							scope : $scope,
+							size : 'md'
 						});
 					};
 

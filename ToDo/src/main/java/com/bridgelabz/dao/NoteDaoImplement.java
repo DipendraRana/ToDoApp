@@ -27,6 +27,14 @@ public class NoteDaoImplement implements NoteDao {
 		user.getNotes().size();
 		return user.getNotes();
 	}
+	
+	@Override
+	public List<User> getTheCollaboratedNotes(int noteId) {
+		Note note = (Note) sessionFactory.getCurrentSession().createQuery("from Note where id=:Note_Id")
+				.setParameter("Note_Id", noteId).uniqueResult();
+		note.getCollaboratedUser().size();
+		return note.getCollaboratedUser();
+	}
 
 	@Override
 	public int deleteTheNote(Note note) {

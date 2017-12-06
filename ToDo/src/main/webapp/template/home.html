@@ -10,9 +10,10 @@
 			<div contenteditable="true" data-text="Take a note"
 				data-ng-model="newNote.noteDescription" id="note-body"></div>
 			<div class="note-icons">
-				<img src="images/archive.png"> <img src="images/reminder.png">
-				<img src="images/colors.png"> <img
-					src="images/collaborator1600.png">
+				<img src="images/archive.png"> 
+				<img src="images/reminder.png">
+				<img src="images/colors.png"> 
+				<img src="images/collaborator.svg">
 				<div role="button" data-ng-click="createNote()"
 					class="btn btn-done pull-right">DONE</div>
 			</div>
@@ -157,6 +158,8 @@
 							data-ng-click="triggerImageUploadUI(note)"> 
 						<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
 							onchange="angular.element(this).scope().imageUpload(this)">
+							
+						<img src="images/collaborator.svg" data-ng-click="showModalCollaborator(note)">
 
 						<div class="dropdown inline pull-right">
 							<img src='images/more.svg' width="19px" height="19px"

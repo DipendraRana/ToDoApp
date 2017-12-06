@@ -20,5 +20,5 @@ function closeNav() {
 }
 
 function cleanFeild() {
-	document.getElementById("cleanField").value = 'Create New Label';
+	document.getElementById("cleanField").value = '';
 }

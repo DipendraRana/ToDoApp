@@ -35,15 +35,21 @@ public class Note {
 	@Column(name = "Edited_Date", nullable = false)
 	private Date editedDate;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Note_Label", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "Label_ID") })
+	private List<Label> labels;
+	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "User_ID")
 	@JsonIgnore
 	private User user;
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name = "Note_Label", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "Label_ID") })
-	private List<Label> labels;
+
+	@ManyToMany
+	@JoinTable(name = "Collaborated", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "User_ID") })
+	@JsonIgnore
+	private List<User> collaboratedUser;
 
 	@Column(name = "Trashed", nullable = false)
 	private boolean trashed;
@@ -56,21 +62,20 @@ public class Note {
 
 	@Column(name = "Is_Labeled", nullable = false)
 	private boolean labeled;
-	
+
 	@Column(name = "Is_Reminded", nullable = false)
 	private boolean reminder;
-	
+
 	@Column(name = "Reminder_Date", nullable = true)
-	private Date reminderDate; 
-	
+	private Date reminderDate;
+
 	@Column(name = "Reminder_Time", nullable = true)
 	private String reminderTime;
-	
+
 	@Column(name = "Color", nullable = true)
 	private String color;
-	
 
-	@Column(name="Image",columnDefinition="LONGBLOB")
+	@Column(name = "Image", columnDefinition = "LONGBLOB")
 	private String image;
 
 	public int getNoteId() {
@@ -191,6 +196,14 @@ public class Note {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public List<User> getCollaboratedUser() {
+		return collaboratedUser;
+	}
+
+	public void setCollaboratedUser(List<User> collaboratedUser) {
+		this.collaboratedUser = collaboratedUser;
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.bridgelabz.dao.NoteDao;
 import com.bridgelabz.model.Note;
+import com.bridgelabz.model.User;
 
 @Service
 @Transactional
@@ -20,6 +21,11 @@ public class NoteServiceImplement implements NoteService {
 	@Override
 	public List<Note> getTheNotes(int userId) {
 		return noteDao.getTheNotes(userId);
+	}
+	
+	@Override
+	public List<User> getAllCollaboratedUserOfNote(int noteId) {
+		return noteDao.getTheCollaboratedNotes(noteId);
 	}
 
 	@Override
