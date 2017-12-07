@@ -15,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -38,6 +41,7 @@ public class Note {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Note_Label", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "Label_ID") })
+	@Fetch(FetchMode.SELECT)
 	private List<Label> labels;
 	
 	@ManyToOne
@@ -45,10 +49,10 @@ public class Note {
 	@JsonIgnore
 	private User user;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Collaborated", joinColumns = { @JoinColumn(name = "Note_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "User_ID") })
-	@JsonIgnore
+	@Fetch(FetchMode.SELECT)
 	private List<User> collaboratedUser;
 
 	@Column(name = "Trashed", nullable = false)

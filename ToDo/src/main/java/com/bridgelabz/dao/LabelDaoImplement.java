@@ -33,8 +33,8 @@ public class LabelDaoImplement implements LabelDao {
 				.createQuery("from Label where labelId=:Label_Id and id=:User_Id")
 				.setParameter("Label_Id", label.getLabelId()).setParameter("User_Id", userId).list();
 		label = list.get(0);
-		/*label.getNotes().size();*/
-		return null;
+		label.getNotes().size();
+		return label.getNotes();
 	}
 
 	@Override

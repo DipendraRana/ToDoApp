@@ -25,7 +25,7 @@ public class NoteServiceImplement implements NoteService {
 	
 	@Override
 	public List<User> getAllCollaboratedUserOfNote(int noteId) {
-		return noteDao.getTheCollaboratedNotes(noteId);
+		return noteDao.getTheCollaboratedUserOfTheNotes(noteId);
 	}
 
 	@Override
@@ -41,6 +41,11 @@ public class NoteServiceImplement implements NoteService {
 	@Override
 	public int saveTheNote(Note note) {
 		return noteDao.saveTheNote(note);
+	}
+
+	@Override
+	public List<Note> getTheCollaboratedNotes(int userId) {
+		return noteDao.getTheCollaboratedNotes(userId);
 	}
 
 }

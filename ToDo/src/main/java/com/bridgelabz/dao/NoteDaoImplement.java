@@ -18,22 +18,30 @@ public class NoteDaoImplement implements NoteDao {
 
 	private Date date = new Date();
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Note> getTheNotes(int userId) {
-		List<User> list = sessionFactory.getCurrentSession().createQuery("from User where id=:User_Id")
-				.setParameter("User_Id", userId).list();
-		User user = list.get(0);
+		User user = (User) sessionFactory.getCurrentSession().createQuery("from User where id=:User_Id")
+				.setParameter("User_Id", userId).uniqueResult();
 		user.getNotes().size();
 		return user.getNotes();
 	}
-	
+
 	@Override
-	public List<User> getTheCollaboratedNotes(int noteId) {
+	public List<User> getTheCollaboratedUserOfTheNotes(int noteId) {
 		Note note = (Note) sessionFactory.getCurrentSession().createQuery("from Note where id=:Note_Id")
 				.setParameter("Note_Id", noteId).uniqueResult();
 		note.getCollaboratedUser().size();
 		return note.getCollaboratedUser();
+	}
+
+	@Override
+	public List<Note> getTheCollaboratedNotes(int userId) {
+		@SuppressWarnings("unchecked")
+		List<Note> notes = sessionFactory.getCurrentSession()
+				.createQuery("select note from Note as note join note.collaboratedUser as collaboration where collaboration.id=:User_Id")
+				.setParameter("User_Id", userId).list();
+		notes.size();
+		return notes;
 	}
 
 	@Override

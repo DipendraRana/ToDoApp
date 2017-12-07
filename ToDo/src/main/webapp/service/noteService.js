@@ -12,5 +12,16 @@ ToDo.factory('noteService', function($http) {
 
 		});
 	}
+	notes.collaboratedUser = function(url, method, token, note, emailId){
+		return $http({
+			method : method,
+			url : url,
+			data : note,
+			headers : {
+				'token' : token,
+				'emailId': emailId
+			}
+		});
+	}
 	return notes;
 });

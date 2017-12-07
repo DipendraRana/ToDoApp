@@ -9,7 +9,9 @@ public interface NoteDao {
 	
 	public List<Note> getTheNotes(int userId);
 	
-	public List<User> getTheCollaboratedNotes(int noteId);
+	public List<User> getTheCollaboratedUserOfTheNotes(int noteId);
+	
+	public List<Note> getTheCollaboratedNotes(int userId);
 	
 	public int deleteTheNote(Note note);
 	

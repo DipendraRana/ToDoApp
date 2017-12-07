@@ -46,15 +46,21 @@ public class NotesController {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
 			int id = Integer.parseInt(claim.getSubject());
 			list = noteService.getTheNotes(id);
+			List<Note> collaboratedNotes = noteService.getTheCollaboratedNotes(id);
+			for(Note note:collaboratedNotes) {
+				if(!list.contains(note))
+					list.add(note);
+			}	
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
 			response.addHeader("Error", "Expired");
 		}
 		return list;
 	}
-	
+
 	@RequestMapping(value = "/getCollaborators", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<User> gettingAllCollaboratorsOfTheNote(@RequestBody Note note,HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody List<User> gettingAllCollaboratorsOfTheNote(@RequestBody Note note, HttpServletRequest request,
+			HttpServletResponse response) {
 		String token = request.getHeader("token");
 		List<User> list = null;
 		try {
@@ -66,18 +72,42 @@ public class NotesController {
 		}
 		return list;
 	}
-	
+
 	@RequestMapping(value = "/getOwner", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User gettingTheOwner(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("token");
+		User user = null;
 		try {
-			tokenOperation.parseTheToken(KEY, token);
-			list = noteService.getAllCollaboratedUserOfNote(note.getNoteId());
+			Claims claim = tokenOperation.parseTheToken(KEY, token);
+			String emailId = (String) claim.get("emailId");
+			user = userService.getUserByEmail(emailId);
+			user.setPassword(null);
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
 			response.addHeader("Error", "Expired");
 		}
-		return list;
+		return user;
+	}
+	
+	@RequestMapping(value = "/addCollaborator", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<User> gettingTheSpecificUser(@RequestBody Note note,HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("token");
+		String emailId=request.getHeader("emailId");
+		try {
+			Claims claim = tokenOperation.parseTheToken(KEY, token);
+			String ownerEmailId = (String) claim.get("emailId");
+			User ownerUser = userService.getUserByEmail(ownerEmailId);
+			User user = userService.getUserByEmail(emailId);
+			if(user.getPassword()!=null)
+				user.setPassword(null);
+			note.setUser(ownerUser);
+			note.getCollaboratedUser().add(user);
+			noteService.updateTheNote(note);
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.addHeader("Error", "Expired");
+		}
+		return note.getCollaboratedUser();
 	}
 
 	@RequestMapping(value = "/saveNote", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,8 +132,8 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = {"/updateNote"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Response updateTheNote(@RequestBody Note note , HttpServletRequest request) {
+	@RequestMapping(value = { "/updateNote" }, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Response updateTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
@@ -124,7 +154,7 @@ public class NotesController {
 			return response;
 		}
 	}
-	
+
 	@RequestMapping(value = "/deleteNote", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response deleteTheNote(@RequestBody Note note, HttpServletRequest request) {
 		Response response = new Response();

@@ -7,14 +7,15 @@ ToDo.controller('homeController',
 					$scope.labels = [];
 					$scope.labelName = [];
 					$scope.colors = [];
-
+					$scope.collaborators=[];
+					$scope.owner;
+					
 					$scope.logoutUser = function() {
 						logout();
 					}
 					
 					/*------------------------Check for Duplicate Label--------------------------------------------------*/
 					var checkForDuplicateLabel = function(label){
-						console.log($scope.labels.length);
 						for(var labelNo=0;labelNo<$scope.labels.length;labelNo++){
 							if($scope.labels[labelNo].labelName==label.labelName)
 								return true;
@@ -54,24 +55,15 @@ ToDo.controller('homeController',
 												&& notes[noteCount].reminderTime != "") {
 											var currentDate = $filter('date')(
 													new Date(), 'yyyy-MM-dd');
-											var remindedDate = $filter('date')
-													(
-															new Date(
-																	notes[noteCount].reminderDate),
-															'yyyy-MM-dd');
-											var currentTime = $filter('date')(
-													new Date(), 'h:mm a');
+											var remindedDate = $filter('date')(new Date(notes[noteCount].reminderDate),'yyyy-MM-dd');
+											var currentTime = $filter('date')(new Date(), 'h:mm a');
 											if (currentDate == remindedDate
 													&& currentTime == notes[noteCount].reminderTime) {
-												toastr
-														.sucess(
-																notes[noteCount].noteTitle,
-																'Reminder');
+												toastr.sucess(notes[noteCount].noteTitle,'Reminder');
 												$scope.notes[noteCount].reminder = false;
 												$scope.notes[noteCount].reminderDate = null;
 												$scope.notes[noteCount].reminderTime = null;
-												$scope
-														.updateNote($scope.notes[noteCount]);
+												$scope.updateNote($scope.notes[noteCount]);
 											}
 										}
 									}
@@ -176,6 +168,25 @@ ToDo.controller('homeController',
 						} else
 							$location.path("login");
 					}
+					
+					/*------------------------Get The User Profile--------------------------------------------------*/
+					var getTheOwner = function() {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'getOwner';
+							var notes = noteService.service(url, 'GET', token);
+							notes.then(function(response) {
+								if (response.headers('Error') == "Expired")
+									logout();
+								else {
+									getNotes();
+									$scope.owner = response.data;
+								}
+							});
+						} else
+							$location.path("login");
+
+					} 
 
 					/*------------------------Check The Labels--------------------------------------------------*/
 					$scope.checked = function(note, label) {
@@ -202,7 +213,6 @@ ToDo.controller('homeController',
 							}, function(response) {
 								getNotes();
 								$scope.error = response.data.message;
-								$stateProvider
 							});
 						} else
 							$location.path("login");
@@ -362,6 +372,24 @@ ToDo.controller('homeController',
 								}
 							});
 					}
+					
+					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
+					$scope.getTheCollborators = function(note) {
+							var token = localStorage.getItem('token');
+							if (token != null && token != "") {
+								var url = 'getCollaborators';
+								var collaborators = noteService.service(url, 'PUT', token,note);
+								collaborators.then(function(response) {
+									if (response.data.message == "Token Expired")
+										$location.path("login");
+									else
+										$scope.collaborators = response.data;
+								}, function(response) {
+									$scope.error = response.data.message;
+								});
+							} else
+								$location.path("login");
+					}
 
 					/*------------------------Pin Notes--------------------------------------------------*/
 					$scope.pinNote = function(note, $event) {
@@ -497,6 +525,25 @@ ToDo.controller('homeController',
 					    });
 					};
 					
+					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
+					$scope.addCollaboraotrs = function(note,emailId) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							if(note.collaboratedUser.length==0)
+								note.collaboratedUser.push($scope.owner);
+							var url = 'addCollaborator';
+							var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
+							user.then(function(response) {
+								if (response.headers('Error') == "Expired")
+									logout();
+								else {
+									$scope.collaborators = response.data;
+								}
+							});
+						} else
+							$location.path("login");
+					} 
+					
 					
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {
@@ -510,7 +557,7 @@ ToDo.controller('homeController',
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/editNote.html',
 							scope : $scope,
-							size : 'md'
+							size : 'md',
 						});
 					};
 
@@ -518,7 +565,7 @@ ToDo.controller('homeController',
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/LabelEdit.html',
 							scope : $scope,
-							size : 'sm'
+							size : 'sm',
 						});
 					};
 					
@@ -539,12 +586,13 @@ ToDo.controller('homeController',
 							$scope.removeLabelFromNotes(note, label, $index);
 						}
 					};
-
-					getNotes();
+					
+					getTheOwner();
 
 					navBarNameChange();
 
 					intervalFunction();
 
 					checkForView();
+
 				});

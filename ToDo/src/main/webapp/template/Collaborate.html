@@ -1,13 +1,45 @@
-<div class="modal-content">
+<div class="modal-content" data-ng-init="getTheCollborators(note)">
 	<div class="modal-header">
 		<font size="5px">Collborators</font>
 	</div>
 	<div class="modal-body">
 		<div class="row">
 			<div class="col-sm-2">
-				<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
-				
+				<img data-ng-show="owner.image==null" src="images/photo.jpg"
+					class="img-circle" height="50" width="50" />
+			</div>
+			<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
+			<div class="col-sm-8">
+				<font size="3px">{{owner.userName}}<i class="pull-right">(owner)</i></font>
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{owner.emailId}}</font>
 			</div>
 		</div>
+		<br>
+		<div data-ng-repeat="user in collaborators">
+			<div data-ng-show="user.userName!=owner.userName">
+				<div class="col-sm-2">
+					<img data-ng-show="user.image==null" src="images/photo.jpg"
+						class="img-circle" height="50" width="50" />
+				</div>
+				<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
+				<div class="col-sm-8">
+					<font size="3px">{{user.userName}}</font>
+				</div>
+				<div class="col-sm-8">
+					<font size="3px">{{user.emailId}}</font>
+				</div>
+			</div>
+		</div>
+		<br> <br>
+		<div class="row">
+			<input type="email" class="col-sm-12" data-ng-model="emailId"
+				placeholder="Enter Collborator">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div role="button" data-ng-click="addCollaboraotrs(note,emailId)"
+			class="btn btn-done pull-right inline" data-dismiss="modal">DONE</div>
 	</div>
 </div>
