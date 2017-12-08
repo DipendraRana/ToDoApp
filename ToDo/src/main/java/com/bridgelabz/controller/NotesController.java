@@ -46,11 +46,6 @@ public class NotesController {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
 			int id = Integer.parseInt(claim.getSubject());
 			list = noteService.getTheNotes(id);
-			List<Note> collaboratedNotes = noteService.getTheCollaboratedNotes(id);
-			for(Note note:collaboratedNotes) {
-				if(!list.contains(note))
-					list.add(note);
-			}	
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
 			response.addHeader("Error", "Expired");
@@ -94,13 +89,9 @@ public class NotesController {
 		String token = request.getHeader("token");
 		String emailId=request.getHeader("emailId");
 		try {
-			Claims claim = tokenOperation.parseTheToken(KEY, token);
-			String ownerEmailId = (String) claim.get("emailId");
-			User ownerUser = userService.getUserByEmail(ownerEmailId);
+			tokenOperation.parseTheToken(KEY, token);
 			User user = userService.getUserByEmail(emailId);
-			if(user.getPassword()!=null)
-				user.setPassword(null);
-			note.setUser(ownerUser);
+			note.setUser(note.getUser());
 			note.getCollaboratedUser().add(user);
 			noteService.updateTheNote(note);
 		} catch (ExpiredJwtException e) {
@@ -137,10 +128,8 @@ public class NotesController {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
-			Claims claim = tokenOperation.parseTheToken(KEY, token);
-			String emailId = (String) claim.get("emailId");
-			User user = userService.getUserByEmail(emailId);
-			note.setUser(user);
+			tokenOperation.parseTheToken(KEY, token);
+			note.setUser(note.getUser());
 			noteService.updateTheNote(note);
 			response.setMessage("update succesfull");
 			return response;
@@ -160,10 +149,8 @@ public class NotesController {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
-			Claims claim = tokenOperation.parseTheToken(KEY, token);
-			String emailId = (String) claim.get("emailId");
-			User user = userService.getUserByEmail(emailId);
-			note.setUser(user);
+			tokenOperation.parseTheToken(KEY, token);
+			note.setUser(note.getUser());
 			int noOfRowsaffected = noteService.deleteTheNote(note);
 			if (noOfRowsaffected != 0) {
 				response.setMessage("note deleted");

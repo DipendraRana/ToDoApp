@@ -175,6 +175,12 @@ button:hover {
     top: 7px;
 }
 
+.card > .card-block > img.Pinned {
+	position: absolute;
+    right: 8px;
+    top: 7px;
+}
+
 .images {
 	
     width: 100%;
@@ -215,4 +221,5 @@ button:hover {
 
 .note-extras{
 	padding-left: 10px;
+	padding-bottom : 6px;
 }

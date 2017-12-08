@@ -1,7 +1,6 @@
 package com.bridgelabz.service;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,13 @@ public class NoteServiceImplement implements NoteService {
 
 	@Override
 	public List<Note> getTheNotes(int userId) {
-		return noteDao.getTheNotes(userId);
+		List<Note> list = noteDao.getTheNotes(userId);
+		List<Note> collaboratedNotes = noteDao.getTheCollaboratedNotes(userId);
+		for(Note note:collaboratedNotes) {
+			if(!list.contains(note))
+				list.add(note);
+		}	
+		return list;
 	}
 	
 	@Override

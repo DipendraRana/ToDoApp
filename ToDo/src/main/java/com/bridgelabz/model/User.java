@@ -10,9 +10,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="login")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 	
 	@Id
@@ -24,6 +28,7 @@ public class User {
 	private String userName;
 	
 	@Column(name="Password")
+	@JsonProperty(access=Access.WRITE_ONLY)
 	private String password;
 	
 	@Column(name="Mobile_Number",unique=true)

@@ -18,8 +18,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "notes")
 public class Note {
@@ -46,7 +44,6 @@ public class Note {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "User_ID")
-	@JsonIgnore
 	private User user;
 
 	@ManyToMany(fetch = FetchType.EAGER)

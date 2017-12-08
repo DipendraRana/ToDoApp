@@ -10,26 +10,30 @@
 			</div>
 			<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
 			<div class="col-sm-8">
-				<font size="3px">{{owner.userName}}<i class="pull-right">(owner)</i></font>
+				<font size="3px">{{note.user.userName}}<i class="pull-right">(owner)</i></font>
 			</div>
 			<div class="col-sm-8">
-				<font size="3px">{{owner.emailId}}</font>
+				<font size="3px">{{note.user.emailId}}</font>
 			</div>
 		</div>
 		<br>
 		<div data-ng-repeat="user in collaborators">
-			<div data-ng-show="user.userName!=owner.userName">
+			<div class="row" data-ng-show="user.userName!=note.user.userName" style="height: 72px;">
 				<div class="col-sm-2">
 					<img data-ng-show="user.image==null" src="images/photo.jpg"
 						class="img-circle" height="50" width="50" />
 				</div>
 				<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
 				<div class="col-sm-8">
-					<font size="3px">{{user.userName}}</font>
+					<font size="3px">{{user.userName}}</font> 
+					<i class="glyphicon glyphicon-remove col-sm-1 pull-right" 
+					data-ng-click="removeUserFromCollaboration($index,note,user)"></i>
+					<br>
+					{{user.emailId}}
 				</div>
-				<div class="col-sm-8">
+				<!-- <div class="col-sm-8">
 					<font size="3px">{{user.emailId}}</font>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<br> <br>

@@ -9,9 +9,14 @@ ToDo.controller('homeController',
 					$scope.colors = [];
 					$scope.collaborators=[];
 					$scope.owner;
+					$scope.show=false;
 					
 					$scope.logoutUser = function() {
 						logout();
+					}
+					
+					$scope.noteshow = function(value) {
+						$scope.show=value;
 					}
 					
 					/*------------------------Check for Duplicate Label--------------------------------------------------*/
@@ -256,6 +261,7 @@ ToDo.controller('homeController',
 									$location.path("/login");
 								else
 									getNotes();
+								$scope.getTheCollborators(note);
 							}, function(response) {
 								$scope.error = response.data.message;
 
@@ -376,6 +382,7 @@ ToDo.controller('homeController',
 					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
 					$scope.getTheCollborators = function(note) {
 							var token = localStorage.getItem('token');
+							console.log($scope.collaborators);
 							if (token != null && token != "") {
 								var url = 'getCollaborators';
 								var collaborators = noteService.service(url, 'PUT', token,note);
@@ -389,6 +396,37 @@ ToDo.controller('homeController',
 								});
 							} else
 								$location.path("login");
+					}
+					
+					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
+					$scope.addCollaboraotrs = function(note,emailId) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							modalInstance.close();
+							if(emailId!=""&&emailId!=undefined){
+								var url = 'addCollaborator';
+								var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
+								user.then(function(response) {
+									if (response.headers('Error') == "Expired")
+										logout();
+									else {
+										$scope.collaborators = response.data;
+										getNotes();
+									}
+								});
+							}
+						} else
+							$location.path("login");
+					}
+					
+					/*-------------------------Remove The User from Collaborated List---------------------------*/
+					$scope.removeUserFromCollaboration = function($index,note){
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							note.collaboratedUser.splice($index,1);
+							$scope.updateNote(note);
+						}else
+							$location.path("login");
 					}
 
 					/*------------------------Pin Notes--------------------------------------------------*/
@@ -524,27 +562,7 @@ ToDo.controller('homeController',
 					        $scope.updateNote($scope.type);
 					    });
 					};
-					
-					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
-					$scope.addCollaboraotrs = function(note,emailId) {
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							if(note.collaboratedUser.length==0)
-								note.collaboratedUser.push($scope.owner);
-							var url = 'addCollaborator';
-							var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
-							user.then(function(response) {
-								if (response.headers('Error') == "Expired")
-									logout();
-								else {
-									$scope.collaborators = response.data;
-								}
-							});
-						} else
-							$location.path("login");
-					} 
-					
-					
+								
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {
 							notes[noteCount].reminderDate = new Date(
