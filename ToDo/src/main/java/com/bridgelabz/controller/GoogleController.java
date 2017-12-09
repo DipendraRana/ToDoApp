@@ -66,8 +66,8 @@ public class GoogleController {
 			user.setUserName(userProfile.get("name").asText());
 			user.setEmailId(emailId);
 			user.setValidToken(true);
-			if(userProfile.get("picture").get("data")!=null)
-				user.setPicture(userProfile.get("picture").get("data").get("url").asText());
+			if(userProfile.get("picture").asText()!=null)
+				user.setPicture(userProfile.get("picture").asText());
 			registrationSerivce.register(user);
 			session.setAttribute("token", tokenOperation.generateTokenWithExpire(user.getEmailId(), "emailId", KEY,
 					3600000, user.getId()));

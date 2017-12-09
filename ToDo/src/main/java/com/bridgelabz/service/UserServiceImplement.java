@@ -24,5 +24,10 @@ public class UserServiceImplement implements UserService {
 	public int updatePasswordOfUser(String password, int id) {
 		return userDao.updatePasswordOfUser(password, id);
 	}
+	
+	@Override
+	public void updateUser(User user) {
+		userDao.updateUser(user);;
+	}
 
 }

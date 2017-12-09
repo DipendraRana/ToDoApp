@@ -1,5 +1,6 @@
 package com.bridgelabz.dao;
 
+import java.util.Date;
 import java.util.List;
 import com.bridgelabz.model.Note;
 import com.bridgelabz.model.User;
@@ -17,5 +18,9 @@ public interface NoteDao {
 	public void updateTheNote(Note note);
 	
 	public int saveTheNote(Note note);
+	
+	public void deleteNotesFromTrash(Date deleteDay);
+	
+	public int emptyTrash();
 
 }

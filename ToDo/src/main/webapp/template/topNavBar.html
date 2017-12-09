@@ -10,21 +10,42 @@
 			<a class="navbar-brand" data-ng-bind="navBarName"></a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a data-ng-click="listView()"><span
-					class="{{icon}}"></span></a></li>
-			<li><div class="navbar-header navbar-right">
+			<li><a data-ng-click="listView()"><span class="{{icon}}"></span></a></li>
+			<li><div class="navbar-header navbar-right" >
 					<div class="dropdown navbar-brand">
-						<a class="dropdown-toggle" data-toggle="dropdown"> <span
-							class="glyphicon glyphicon-user black"
-							style="margin-right: 40px;"></span></a>
-						<ul class="dropdown-menu">
-							<li><a data-ng-click="logoutUser()"> <span
-									class="glyphicon glyphicon-log-out"></span> Logout
-							</a></li>
+						<a class="dropdown-toggle" data-toggle="dropdown"
+							style="background-color: #ff9900"> <img
+							data-ng-show="owner.picture==null" src="images/photo.jpg"
+							class="img-circle" height="30px" width="30px"
+							style="margin-right: 30px; overflow: hidden; padding-bottom: 3px;" />
+							<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
+								class="img-circle" height="40px" width="40px"
+								style="margin-right: 30px; overflow: hidden; margin-top: -9px;" /></a>
+						<ul class="dropdown-menu" style="margin-right: 40px; width: 300px;">
+							<li><div class="panel panel-default">
+									<div class="panel-body"><div class="row">
+										<div class="col-sm-2">
+											<img data-ng-show="owner.picture==null" src="images/photo.jpg"
+												class="img-circle" height="30px" width="30px"
+												style="margin-right: 30px; overflow: hidden;" 
+												data-ng-click="triggerImageUploadUI(owner,'owner')" />
+											<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
+												class="img-circle" height="40px" width="40px"
+												style="margin-right: 30px; overflow: hidden;" 
+												data-ng-click="triggerImageUploadUI(owner,'owner')" />
+										</div>
+										<div class="col-sm-8">
+											<font size="3px">{{owner.userName}}</font>
+										</div>
+										<div class="col-sm-8">
+											<font size="3px">{{owner.emailId}}</font>
+										</div>
+									</div></div>
+									<div class="panel-footer"><button data-ng-click="logoutUser()">Logout</button></div>
+								</div></li>
 						</ul>
 					</div>
-				</div>
-			</li>
+				</div></li>
 		</ul>
 	</nav>
 </div>

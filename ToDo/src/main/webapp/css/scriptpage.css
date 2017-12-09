@@ -30,7 +30,7 @@ button:hover {
 	opacity: 0.8;
 }
 
-/*home page css*/
+/*home page css*/Pinned
 .topNav .navbar-default {
 	background-color: #ff9900;
 	margin-bottom: 0%;
@@ -222,4 +222,20 @@ button:hover {
 .note-extras{
 	padding-left: 10px;
 	padding-bottom : 6px;
+}
+
+.emptyButton:hover {
+	background-color: #b3b3b3;
+	border: thin;
+	border-color: #595959;
+}
+
+.emptyButton {
+	background-color: transparent; 
+	outline: none;
+	border: none;
+}
+
+.headerTrash {
+	padding-bottom: 52px;
 }

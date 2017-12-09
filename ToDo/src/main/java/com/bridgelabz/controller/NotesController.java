@@ -76,7 +76,19 @@ public class NotesController {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
 			String emailId = (String) claim.get("emailId");
 			user = userService.getUserByEmail(emailId);
-			user.setPassword(null);
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.addHeader("Error", "Expired");
+		}
+		return user;
+	}
+	
+	@RequestMapping(value = "/updateUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User updatingTheUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("token");
+		try {
+			tokenOperation.parseTheToken(KEY, token);
+			userService.updateUser(user);
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
 			response.addHeader("Error", "Expired");
@@ -152,6 +164,27 @@ public class NotesController {
 			tokenOperation.parseTheToken(KEY, token);
 			note.setUser(note.getUser());
 			int noOfRowsaffected = noteService.deleteTheNote(note);
+			if (noOfRowsaffected != 0) {
+				response.setMessage("note deleted");
+				return response;
+			} else {
+				response.setMessage("note is not deleted");
+				return response;
+			}
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.setMessage("Token Expired");
+			return response;
+		}
+	}
+	
+	@RequestMapping(value = "/emptyTrash", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Response emptyTrash(HttpServletRequest request) {
+		Response response = new Response();
+		String token = request.getHeader("token");
+		try {
+			tokenOperation.parseTheToken(KEY, token);
+			int noOfRowsaffected=noteService.emptyTrash();
 			if (noOfRowsaffected != 0) {
 				response.setMessage("note deleted");
 				return response;

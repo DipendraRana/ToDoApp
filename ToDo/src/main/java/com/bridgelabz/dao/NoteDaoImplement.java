@@ -37,8 +37,8 @@ public class NoteDaoImplement implements NoteDao {
 	@Override
 	public List<Note> getTheCollaboratedNotes(int userId) {
 		@SuppressWarnings("unchecked")
-		List<Note> notes = sessionFactory.getCurrentSession()
-				.createQuery("select note from Note as note join note.collaboratedUser as collaboration where collaboration.id=:User_Id")
+		List<Note> notes = sessionFactory.getCurrentSession().createQuery(
+				"select note from Note as note join note.collaboratedUser as collaboration where collaboration.id=:User_Id")
 				.setParameter("User_Id", userId).list();
 		notes.size();
 		return notes;
@@ -60,6 +60,17 @@ public class NoteDaoImplement implements NoteDao {
 	public int saveTheNote(Note note) {
 		note.setEditedDate(date);
 		return (int) sessionFactory.getCurrentSession().save(note);
+	}
+
+	@Override
+	public void deleteNotesFromTrash(Date deleteDay) {
+		sessionFactory.getCurrentSession()
+				.createQuery("delete from Note where editedDate<:Delete_Day and trashed = true")
+				.setParameter("Delete_Day", deleteDay).executeUpdate();
+	}
+
+	public int emptyTrash() {
+		return sessionFactory.getCurrentSession().createQuery("delete from Note where trashed = true").executeUpdate();
 	}
 
 }

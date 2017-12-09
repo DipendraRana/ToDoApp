@@ -40,7 +40,7 @@ public class User {
 	@Column(name="Enabled")
 	private boolean validToken;
 	
-	@Column(name="Pictures")
+	@Column(name="Pictures",columnDefinition = "LONGBLOB")
 	private String picture;
 	
 	@OneToMany(mappedBy="user")

@@ -9,14 +9,19 @@ ToDo.controller('homeController',
 					$scope.colors = [];
 					$scope.collaborators=[];
 					$scope.owner;
-					$scope.show=false;
 					
 					$scope.logoutUser = function() {
 						logout();
 					}
 					
-					$scope.noteshow = function(value) {
-						$scope.show=value;
+					$scope.newNotes = function() {
+						
+					}
+					
+					/*------------------------Hiding the Note Data--------------------------------------------------*/
+					var dontShow = function(){
+						$('#note-title').hide();
+						$('#note_icons').hide();
 					}
 					
 					/*------------------------Check for Duplicate Label--------------------------------------------------*/
@@ -228,7 +233,7 @@ ToDo.controller('homeController',
 						var token = localStorage.getItem('token');
 						if (token != null && token != "") {
 							if ($scope.newNote.noteTitle != ''
-									|| $scope.newNote.noteDescription != '') {
+									|| $scope.newNote.noteDescription != '' || $scope.newNote.images != '') {
 								$scope.newNote.image=null;
 								var url = 'saveNote';
 								var notes = noteService.service(url, 'POST',
@@ -265,6 +270,24 @@ ToDo.controller('homeController',
 							}, function(response) {
 								$scope.error = response.data.message;
 
+							});
+						} else
+							$location.path("login");
+					}
+					
+					/*------------------------Update User --------------------------------------------------*/
+					$scope.updateUser = function(user) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'updateUser';
+							var notes = noteService.service(url, 'PUT', token, user);
+							notes.then(function(response) {
+								if (response.data.message == "Token Expired")
+									$location.path("/login");
+								else
+									getTheOwner();
+							}, function(response) {
+								$scope.error = response.data.message;
 							});
 						} else
 							$location.path("login");
@@ -382,10 +405,9 @@ ToDo.controller('homeController',
 					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
 					$scope.getTheCollborators = function(note) {
 							var token = localStorage.getItem('token');
-							console.log($scope.collaborators);
 							if (token != null && token != "") {
 								var url = 'getCollaborators';
-								var collaborators = noteService.service(url, 'PUT', token,note);
+								var collaborators = noteService.service(url, 'PUT', token , note);
 								collaborators.then(function(response) {
 									if (response.data.message == "Token Expired")
 										$location.path("login");
@@ -415,6 +437,25 @@ ToDo.controller('homeController',
 									}
 								});
 							}
+						} else
+							$location.path("login");
+					}
+					
+					/*-------------------------Delete all Notes From Trash---------------------------*/
+					$scope.deleteAllNotesFromTrash = function() {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'emptyTrash';
+							var notes = noteService.service(url, 'GET', token);
+							notes.then(function(response) {
+								if (response.data.message == "Token Expired")
+									$location.path("login");
+								else
+									getNotes();
+							}, function(response) {
+								getNotes();
+								$scope.error = response.data.message;
+							});
 						} else
 							$location.path("login");
 					}
@@ -467,6 +508,7 @@ ToDo.controller('homeController',
 						note.reminder = false;
 						note.reminderDate = null;
 						note.reminderTime = null;
+						note.editedDate=new Date();
 						$scope.updateNote(note);
 					}
 
@@ -518,15 +560,6 @@ ToDo.controller('homeController',
 						$scope.updateNote(note);
 					}
 
-					/*------------------------Update Notes from modal--------------------------------------------------*/
-					$scope.updateNotesFromModal = function(note) {
-						$scope.updateNote(note);
-					}
-					
-					$scope.closeModal = function() {
-						modalInstance.close();
-					}
-
 					/*------------------------Delete Notes from modal--------------------------------------------------*/
 					$scope.deleteNotePermanentlyFromModal = function() {
 						modalInstance.close();
@@ -541,9 +574,12 @@ ToDo.controller('homeController',
 					}
 					
 					/*------------------------Trigger the upload UI--------------------------------------------------*/
-					$scope.triggerImageUploadUI = function(note){
+					$scope.triggerImageUploadUI = function(object,typeOfObject){
 						$timeout(function(){
-							$scope.type=note;
+							$scope.type=object;
+							$scope.typeOfObject=typeOfObject;
+							console.log($scope.type);
+							console.log($scope.typeOfObject);
 						$('#imageUploadUI').trigger('click');
 						},0);
 					}
@@ -558,8 +594,13 @@ ToDo.controller('homeController',
 					$scope.imageIsLoaded = function(e){
 					    $scope.$apply(function() {
 					        var imageSrc=e.target.result;
-					        $scope.type.image=imageSrc;
-					        $scope.updateNote($scope.type);
+					        if($scope.typeOfObject=='note'){
+					        	$scope.type.image=imageSrc;
+					        	$scope.updateNote($scope.type);
+					        }else {
+					        	$scope.type.picture=imageSrc;
+					        	$scope.updateUser($scope.type);
+					        }
 					    });
 					};
 								
@@ -612,5 +653,7 @@ ToDo.controller('homeController',
 					intervalFunction();
 
 					checkForView();
+					
+					dontShow();
 
 				});

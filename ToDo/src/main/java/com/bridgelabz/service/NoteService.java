@@ -17,5 +17,9 @@ public interface NoteService {
 	public void updateTheNote(Note note);
 	
 	public int saveTheNote(Note note);
+	
+	public void trashCleaner();
+	
+	public int emptyTrash();
 
 }

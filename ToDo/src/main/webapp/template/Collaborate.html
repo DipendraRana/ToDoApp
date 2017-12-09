@@ -3,17 +3,32 @@
 		<font size="5px">Collborators</font>
 	</div>
 	<div class="modal-body">
-		<div class="row">
+		<div class="row" data-ng-show="note.user!=null">
 			<div class="col-sm-2">
-				<img data-ng-show="owner.image==null" src="images/photo.jpg"
+				<img data-ng-show="note.user.image==null" src="images/photo.jpg"
 					class="img-circle" height="50" width="50" />
+				<img data-ng-show="note.user.image!=null" src="note.user.image"
+				class="img-circle" height="50" width="50" />
 			</div>
-			<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
 			<div class="col-sm-8">
 				<font size="3px">{{note.user.userName}}<i class="pull-right">(owner)</i></font>
 			</div>
 			<div class="col-sm-8">
 				<font size="3px">{{note.user.emailId}}</font>
+			</div>
+		</div>
+		<div class="row" data-ng-show="note.user==null">
+			<div class="col-sm-2">
+				<img data-ng-show="owner.picture==null" src="images/photo.jpg"
+					class="img-circle" height="50" width="50" />
+				<img data-ng-show="owner.picture!=null" data-ng-src="owner.picture"
+					class="img-circle" height="50" width="50" />
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{owner.userName}}<i class="pull-right">(owner)</i></font>
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{owner.emailId}}</font>
 			</div>
 		</div>
 		<br>
@@ -22,8 +37,9 @@
 				<div class="col-sm-2">
 					<img data-ng-show="user.image==null" src="images/photo.jpg"
 						class="img-circle" height="50" width="50" />
+					<img data-ng-show="user.image!=null" src="user.image"
+						class="img-circle" height="50" width="50" />
 				</div>
-				<!-- <img data-ng-src="{{}}" class="img-circle"   height="50" width="50"/> -->
 				<div class="col-sm-8">
 					<font size="3px">{{user.userName}}</font> 
 					<i class="glyphicon glyphicon-remove col-sm-1 pull-right" 
@@ -31,9 +47,6 @@
 					<br>
 					{{user.emailId}}
 				</div>
-				<!-- <div class="col-sm-8">
-					<font size="3px">{{user.emailId}}</font>
-				</div> -->
 			</div>
 		</div>
 		<br> <br>

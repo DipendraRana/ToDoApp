@@ -27,5 +27,10 @@ public class UserDaoImplement implements UserDao {
 		return sessionFactory.getCurrentSession().createQuery("update User set password=:Password where id=:User_Id")
 				.setParameter("Password", password).setParameter("User_Id", id).executeUpdate();
 	}
+	
+	@Override
+	public void updateUser(User user) {
+		sessionFactory.getCurrentSession().update(user);
+	}
 
 }

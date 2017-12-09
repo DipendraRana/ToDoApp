@@ -14,7 +14,7 @@
 					<div class="card" style="background-color: {{note.color}}">
 						<div class="card-block" data-ng-click="showModal(note)">
 							<img class="pull-right Pinned" src="images/pinned.svg"
-								data-ng-click="unpinNote(note,$event)" width="22" height="22">
+								data-ng-click="note.pinned = false;updateNote(note);" width="22" height="22">
 							<img class="images" data-ng-src="{{note.image}}"></img>
 							<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 							<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
@@ -81,7 +81,7 @@
 								data-ng-click="archiveNote(note)">
 								
 							<img data-ng-src="images/image.svg"
-							data-ng-click="triggerImageUploadUI(note)"> 
+							data-ng-click="triggerImageUploadUI(note,'note')"> 
 							<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
 							onchange="angular.element(this).scope().imageUpload(this)">
 							
@@ -94,6 +94,8 @@
 									<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
 									<li><a data-ng-click="createCopyOfNote(note)">Make a
 											copy</a></li>
+									<li><a data-ng-click="facebookShare(note)">Share To
+										Facebook</a></li>
 									<li><a data-toggle="collapse"
 										data-target="#input{{note.noteId}}">Select a label<span
 											class="caret"></span>
@@ -131,7 +133,7 @@
 				<div class="card" style="background-color: {{note.color}}">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right notPinned" src="images/unpinned.svg"
-							data-ng-click="pinNote(note,$event)" width="22" height="22"
+							data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22"
 							id="notPinned">
 						<img class="images" data-ng-src="{{note.image}}"></img>
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
@@ -199,7 +201,7 @@
 							data-ng-click="archiveNote(note)">
 						
 						<img data-ng-src="images/image.svg"
-							data-ng-click="triggerImageUploadUI(note)"> 
+							data-ng-click="triggerImageUploadUI(note,'note')"> 
 							<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
 							onchange="angular.element(this).scope().imageUpload(this)">
 							
@@ -212,6 +214,8 @@
 								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
 								<li><a data-ng-click="createCopyOfNote(note)">Make a
 										copy</a></li>
+								<li><a data-ng-click="facebookShare(note)">Share To
+										Facebook</a></li>
 								<li><a data-toggle="collapse"
 									data-target="#input{{note.noteId}}">Create a label<span
 										class="caret"></span>
@@ -249,7 +253,7 @@
 				<div class="card" style="background-color: {{note.color}}">
 					<div class="card-block" data-ng-click="showModal(note)">
 						<img class="pull-right notPinned" src="images/unpinned.svg"
-							data-ng-click="pinNote(note,$event)" width="22" height="22">
+							data-ng-click="note.archived = false;note.pinned = true;updateNote(note);" width="22" height="22">
 						<img class="images" data-ng-src="{{note.image}}"></img>
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
@@ -318,7 +322,7 @@
 							data-ng-click="unarchiveNote(note)">
 						
 						<img data-ng-src="images/image.svg"
-							data-ng-click="triggerImageUploadUI(note)"> 
+							data-ng-click="triggerImageUploadUI(note,'note')"> 
 						<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
 							onchange="angular.element(this).scope().imageUpload(this)">
 							
@@ -331,6 +335,8 @@
 								<li><a data-ng-click="deleteNote(note)">Delete</a></li>
 								<li><a data-ng-click="createCopyOfNote(note)">Make a
 										copy</a></li>
+								<li><a data-ng-click="facebookShare(note)">Share To
+										Facebook</a></li>
 								<li><a data-toggle="collapse"
 									data-target="#input{{note.noteId}}">Create a label<span
 										class="caret"></span>

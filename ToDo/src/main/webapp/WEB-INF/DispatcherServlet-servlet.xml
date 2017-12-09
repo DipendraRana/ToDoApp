@@ -2,12 +2,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
-       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd">
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd 
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd ">
 
 	<!-- Activate Spring MVC Annotation scanning -->
 	<!-- Specifying base package of the Components like Controller, Service,DAO -->
@@ -31,6 +33,8 @@
 	<jms:annotation-driven container-factory="jmsListenerContainerFactory" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<task:annotation-driven/>
 
 	<!-- DataSource is the database configuration and would be required by template 
 		and Dao classes -->
@@ -120,16 +124,5 @@
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<bean id="bcryptDecode" class="org.springframework.security.crypto.bcrypt.BCrypt"></bean>
-
-	<!-- View Resolver -->
-	<!-- <bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix">
-			<value>/WEB-INF/views/</value>
-		</property>
-		<property name="suffix">
-			<value>.jsp</value>
-		</property>
-	</bean> -->
-
+	
 </beans>
