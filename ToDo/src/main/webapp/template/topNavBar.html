@@ -1,4 +1,4 @@
-<div class="topNav">
+	<div class="topNav">
 	<nav class="navbar navbar-default navbar-fixed-top"
 		style="background-color: {{navBarColor}}">
 		<div class="navbar-header">
@@ -9,13 +9,15 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" data-ng-bind="navBarName"></a>
 		</div>
+		<input id="searchbar" type="text" placeholder="Search.." data-ng-click="chageToSearch()" data-ng-model="noteSearched">
+      	<button id="searchbutton" type="submit" data-ng-click="chageToHome()"><i class="fa fa-close"></i></button>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a data-ng-click="listView()"><span class="{{icon}}"></span></a></li>
 			<li><div class="navbar-header navbar-right" >
 					<div class="dropdown navbar-brand">
 						<a class="dropdown-toggle" data-toggle="dropdown"
-							style="background-color: #ff9900"> <img
-							data-ng-show="owner.picture==null" src="images/photo.jpg"
+							style="background-color: {{navBarColor}}"> 
+							<img data-ng-show="owner.picture==null" src="images/photo.jpg"
 							class="img-circle" height="30px" width="30px"
 							style="margin-right: 30px; overflow: hidden; padding-bottom: 3px;" />
 							<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"

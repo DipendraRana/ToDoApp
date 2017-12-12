@@ -1,13 +1,13 @@
-<div class="modal-content" data-ng-init="getTheCollborators(note)">
+<div class="modal-content" data-ng-init="getAllUser(); getTheCollborators(note);">
 	<div class="modal-header">
 		<font size="5px">Collborators</font>
 	</div>
 	<div class="modal-body">
 		<div class="row" data-ng-show="note.user!=null">
 			<div class="col-sm-2">
-				<img data-ng-show="note.user.image==null" src="images/photo.jpg"
+				<img data-ng-show="note.user.picture==null" src="images/photo.jpg"
 					class="img-circle" height="50" width="50" />
-				<img data-ng-show="note.user.image!=null" src="note.user.image"
+				<img data-ng-show="note.user.picture!=null" data-ng-src="{{note.user.picture}}"
 				class="img-circle" height="50" width="50" />
 			</div>
 			<div class="col-sm-8">
@@ -21,7 +21,7 @@
 			<div class="col-sm-2">
 				<img data-ng-show="owner.picture==null" src="images/photo.jpg"
 					class="img-circle" height="50" width="50" />
-				<img data-ng-show="owner.picture!=null" data-ng-src="owner.picture"
+				<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
 					class="img-circle" height="50" width="50" />
 			</div>
 			<div class="col-sm-8">
@@ -35,9 +35,9 @@
 		<div data-ng-repeat="user in collaborators">
 			<div class="row" data-ng-show="user.userName!=note.user.userName" style="height: 72px;">
 				<div class="col-sm-2">
-					<img data-ng-show="user.image==null" src="images/photo.jpg"
+					<img data-ng-show="user.picture==null" src="images/photo.jpg"
 						class="img-circle" height="50" width="50" />
-					<img data-ng-show="user.image!=null" src="user.image"
+					<img data-ng-show="user.picture!=null" data-ng-src="{{user.picture}}"
 						class="img-circle" height="50" width="50" />
 				</div>
 				<div class="col-sm-8">
@@ -52,7 +52,10 @@
 		<br> <br>
 		<div class="row">
 			<input type="email" class="col-sm-12" data-ng-model="emailId"
-				placeholder="Enter Collborator">
+				placeholder="Enter Collborator" list="usersId">
+				<datalist id="usersId">
+				 	<option data-ng-repeat="emailId in users" value="{{emailId}}">
+				</datalist>
 		</div>
 	</div>
 	<div class="modal-footer">

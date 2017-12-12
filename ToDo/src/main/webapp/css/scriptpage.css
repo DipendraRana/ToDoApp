@@ -231,11 +231,28 @@ button:hover {
 }
 
 .emptyButton {
-	background-color: transparent; 
+	background-color: transparent;
 	outline: none;
 	border: none;
 }
 
 .headerTrash {
 	padding-bottom: 52px;
+}
+
+#searchbar {
+	padding: 7px;
+    margin-top: 7px;
+    border: none;
+    margin-left: 171px;
+    width: 515px;
+    outline:none;
+}
+
+#searchbutton {
+	margin-left: -4px;
+    height: 34px;
+    border: none;
+    background-color: white;
+    outline:none;
 }

@@ -1,5 +1,7 @@
 package com.bridgelabz.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,11 @@ public class UserServiceImplement implements UserService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Override
+	public List<String> getAllUser(){
+		return userDao.getAllUser();
+	}
 
 	@Override
 	public User getUserByEmail(String emailId) {
@@ -28,6 +35,11 @@ public class UserServiceImplement implements UserService {
 	@Override
 	public void updateUser(User user) {
 		userDao.updateUser(user);;
+	}
+	
+	@Override
+	public String getUserPassword(String emailId) {
+		return userDao.getUserPassword(emailId);
 	}
 
 }

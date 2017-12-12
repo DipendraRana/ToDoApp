@@ -8,6 +8,7 @@ ToDo.controller('homeController',
 					$scope.labelName = [];
 					$scope.colors = [];
 					$scope.collaborators=[];
+					$scope.users=[];
 					$scope.owner;
 					
 					$scope.logoutUser = function() {
@@ -16,6 +17,14 @@ ToDo.controller('homeController',
 					
 					$scope.newNotes = function() {
 						
+					}
+					
+					$scope.chageToSearch = function() {
+						$location.path('search');
+					}
+					
+					$scope.chageToHome = function() {
+						$location.path('home');
 					}
 					
 					/*------------------------Hiding the Note Data--------------------------------------------------*/
@@ -49,6 +58,9 @@ ToDo.controller('homeController',
 						} else if ($location.path() == "/reminders") {
 							$scope.navBarName = "Reminders";
 							$scope.navBarColor = "#4E5C4D";
+						} else if ($location.path() == "/search") {
+							$scope.navBarName = "FunDoNote";
+							$scope.navBarColor = "#0734EF";
 						} else {
 							$scope.navBarName = $location.path().substr(1);
 							$scope.navBarColor = "#4E5C4D";
@@ -196,6 +208,19 @@ ToDo.controller('homeController',
 						} else
 							$location.path("login");
 
+					}
+					
+					/*------------------------Get All User Email--------------------------------------------------*/
+					$scope.getAllUser = function(){
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'getAllUser';
+							var labels = noteService.service(url, 'GET', token);
+							labels.then(function(response) {
+								$scope.users = response.data;
+							});
+						} else
+							$location.path("login");
 					} 
 
 					/*------------------------Check The Labels--------------------------------------------------*/
@@ -403,21 +428,21 @@ ToDo.controller('homeController',
 					}
 					
 					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
-					$scope.getTheCollborators = function(note) {
-							var token = localStorage.getItem('token');
-							if (token != null && token != "") {
-								var url = 'getCollaborators';
-								var collaborators = noteService.service(url, 'PUT', token , note);
-								collaborators.then(function(response) {
-									if (response.data.message == "Token Expired")
-										$location.path("login");
-									else
-										$scope.collaborators = response.data;
-								}, function(response) {
-									$scope.error = response.data.message;
-								});
-							} else
-								$location.path("login");
+					$scope.getTheCollborators = function(note , typeOfNote) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'getCollaborators';
+							var collaborators = noteService.service(url, 'PUT', token , note);
+							collaborators.then(function(response) {
+								if (response.data.message == "Token Expired")
+									$location.path("login");
+								else
+									$scope.collaborators = response.data;
+							}, function(response) {
+								$scope.error = response.data.message;
+							});
+						} else
+							$location.path("login");
 					}
 					
 					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
@@ -597,7 +622,9 @@ ToDo.controller('homeController',
 					        if($scope.typeOfObject=='note'){
 					        	$scope.type.image=imageSrc;
 					        	$scope.updateNote($scope.type);
-					        }else {
+					        }else if($scope.typeOfObject=='newNote') {
+					        	$scope.type.image=imageSrc;
+					        } else {
 					        	$scope.type.picture=imageSrc;
 					        	$scope.updateUser($scope.type);
 					        }
@@ -606,8 +633,7 @@ ToDo.controller('homeController',
 								
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {
-							notes[noteCount].reminderDate = new Date(
-									notes[noteCount].reminderDate);
+							notes[noteCount].reminderDate = new Date(notes[noteCount].reminderDate);
 						}
 					}
 
@@ -645,6 +671,16 @@ ToDo.controller('homeController',
 							$scope.removeLabelFromNotes(note, label, $index);
 						}
 					};
+					
+					$scope.matchingTheNotes = function(note,noteSearched) {
+						var title = note.noteTitle.toLowerCase();
+						var descrition = note.noteDescription.toLowerCase();
+						if(noteSearched!=''&& noteSearched!=undefined){
+							if(title.includes(noteSearched)|| descrition.includes(noteSearched))
+								return true;
+						}
+						return false;
+					}
 					
 					getTheOwner();
 

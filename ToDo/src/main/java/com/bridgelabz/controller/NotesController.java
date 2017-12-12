@@ -83,11 +83,27 @@ public class NotesController {
 		return user;
 	}
 	
+	@RequestMapping(value = "/getAllUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<String> gettingAllUser(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("token");
+		List<String> allEmails = null;
+		try {
+			tokenOperation.parseTheToken(KEY, token);
+			allEmails=userService.getAllUser();
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.addHeader("Error", "Expired");
+		}
+		return allEmails;
+	}
+	
 	@RequestMapping(value = "/updateUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User updatingTheUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("token");
 		try {
-			tokenOperation.parseTheToken(KEY, token);
+			Claims claim = tokenOperation.parseTheToken(KEY, token);
+			String emailId = (String) claim.get("emailId");
+			user.setPassword(userService.getUserPassword(emailId));
 			userService.updateUser(user);
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();

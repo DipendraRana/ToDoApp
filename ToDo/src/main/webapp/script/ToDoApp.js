@@ -47,6 +47,10 @@ function($stateProvider, $urlRouterProvider) {
 		url : '/reminders',
 		templateUrl : 'template/reminders.html',
 		controller : 'homeController'
+	}).state('search',{
+		url : '/search',
+		templateUrl : 'template/searchpage.html',
+		controller : 'homeController'
 	});
 	$urlRouterProvider.otherwise('login');
 } ]);
