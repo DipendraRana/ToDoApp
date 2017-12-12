@@ -168,14 +168,14 @@ button:hover {
 	padding: 0 !important;
 }
 
-.card > .card-block > img.notPinned {
+.card > .card-block > .img-wrapper > img.notPinned {
 	visibility: hidden;
 	position: absolute;
     right: 8px;
     top: 7px;
 }
 
-.card > .card-block > img.Pinned {
+.card > .card-block > .img-wrapper > img.Pinned {
 	position: absolute;
     right: 8px;
     top: 7px;
@@ -186,7 +186,7 @@ button:hover {
     width: 100%;
 }
 
-.card:hover .card-block > img.notPinned {
+.card:hover .card-block > .img-wrapper > img.notPinned {
 	visibility: visible;
 	position: absolute;
     right: 8px;
@@ -255,4 +255,21 @@ button:hover {
     border: none;
     background-color: white;
     outline:none;
+}
+
+.img-wrapper {
+  position: relative;
+ }
+
+.img-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.img-overlay:before {
+  content: ' ';
+  display: block;
+  /* adjust 'height' to position overlay content vertically */
+  height: 50%;
 }

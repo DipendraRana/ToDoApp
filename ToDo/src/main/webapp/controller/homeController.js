@@ -576,6 +576,12 @@ ToDo.controller('homeController',
 							note.labeled = false;
 						$scope.updateNote(note);
 					}
+					
+					/*------------------------Update Notes from modal--------------------------------------------------*/
+					$scope.updateNotePermanentlyFromModal = function(note) {
+						modalInstance.close();
+						$scope.updateNote(note);
+					}
 
 					/*------------------------Delete Notes from modal--------------------------------------------------*/
 					$scope.deleteNotePermanentlyFromModal = function() {

@@ -1,11 +1,17 @@
 <div class="modal-content" style="background-color: {{note.color}}" data-ng-init="getURLMetaData(note);">
 	<div class="modal-body">
-		<img class="pull-right" data-ng-show="note.pinned==true"
+		<div class="img-wrapper">
+			<img class="pull-right" data-ng-show="note.pinned==true"
 			src="images/pinned.svg" data-ng-click="note.pinned = false;updateNote(note);" width="22"
 			height="22"> 
-		<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
+			<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
 			data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22">
-		<img class="images" data-ng-src="{{note.image}}"></img>
+		    <img data-ng-if="note.image" class="img-responsive images" data-ng-src="{{note.image}}">
+		    <div class="img-overlay">
+		      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="note.image=null;updateNote(note);">
+		      	<i class="glyphicon glyphicon-trash"></i></button>
+		    </div>
+		</div>
 		<div contenteditable="true" data-ng-model="note.noteTitle" data-ng-change="updateNote(note);" style="padding-bottom: 10px;"></div>
 		<div contenteditable="true" data-ng-model="note.noteDescription" data-ng-change="updateNote(note)" style="padding-bottom: 10px;"></div>
 		
@@ -139,7 +145,7 @@
 				</ul>
 			</div>
 
-			<div role="button" data-ng-click="modalInstance.close();updateNote(note);"
+			<div role="button" data-ng-click="updateNotePermanentlyFromModal(note)"
 				class="btn btn-done pull-right inline" data-dismiss="modal"
 				data-ng-show="note.trashed==false">DONE</div>
 

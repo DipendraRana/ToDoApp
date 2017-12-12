@@ -9,12 +9,18 @@
 			<div data-ng-repeat="note in notes" id="note-scope" class="{{changeView}}">
 				<div data-ng-show="matchingTheNotes(note,noteSearched)" class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
 					<div class="card-block" data-ng-click="showModal(note)">
-						<img class="pull-right" data-ng-show="note.pinned==true"
+						<div class="img-wrapper">
+							<img class="pull-right" data-ng-show="note.pinned==true"
 							src="images/pinned.svg" data-ng-click="note.pinned = false;updateNote(note);" width="22"
 							height="22"> 
-						<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
+							<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
 							data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22">
-						<img class="images" data-ng-src="{{note.image}}"></img>
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
 						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
 						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
 					</div>
