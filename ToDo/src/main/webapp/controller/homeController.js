@@ -19,14 +19,6 @@ ToDo.controller('homeController',
 						
 					}
 					
-					$scope.chageToSearch = function() {
-						$location.path('search');
-					}
-					
-					$scope.chageToHome = function() {
-						$location.path('home');
-					}
-					
 					/*------------------------Hiding the Note Data--------------------------------------------------*/
 					var dontShow = function(){
 						$('#note-title').hide();
@@ -428,7 +420,7 @@ ToDo.controller('homeController',
 					}
 					
 					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
-					$scope.getTheCollborators = function(note , typeOfNote) {
+					$scope.getTheCollborators = function(note) {
 						var token = localStorage.getItem('token');
 						if (token != null && token != "") {
 							var url = 'getCollaborators';
@@ -437,7 +429,7 @@ ToDo.controller('homeController',
 								if (response.data.message == "Token Expired")
 									$location.path("login");
 								else
-									$scope.collaborators = response.data;
+									note.collaborators = response.data;
 							}, function(response) {
 								$scope.error = response.data.message;
 							});
@@ -630,6 +622,40 @@ ToDo.controller('homeController',
 					        }
 					    });
 					};
+					
+					/*------------------------Get URL MetaDta--------------------------------------------------*/
+					$scope.getURLMetaData = function(note) {
+						var allmetaData=[];
+						var alldata=note.noteDescription.split(/[ ;]+/);
+						var urlArray=[];
+						var pattern = /https?:\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+						for(var urlNo=0;urlNo<alldata.length;urlNo++){
+							if(pattern.test(alldata[urlNo])){
+								var token = localStorage.getItem('token');
+								if (token != null && token != "") {
+									var url = 'urlMetadata';
+									var urlData = noteService.getUrl(url, 'PUT', token , alldata[urlNo]);
+									urlData.then(function(response) {
+									if (response.data.message == "Token Expired")
+										$location.path("login");
+									else 
+										allmetaData.push(response.data);
+									});	
+								} 
+								else
+									$location.path("login");
+								note.link=allmetaData;
+							}
+						}
+					}
+					
+					$scope.chageToSearch = function() {
+						$location.path('search');
+					}
+					
+					$scope.chageToHome = function() {
+						$location.path('home');
+					}
 								
 					$scope.changeToDateObject = function(notes) {
 						for (var noteCount = 0; noteCount < notes.length; noteCount++) {

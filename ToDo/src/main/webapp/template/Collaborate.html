@@ -32,8 +32,8 @@
 			</div>
 		</div>
 		<br>
-		<div data-ng-repeat="user in collaborators">
-			<div class="row" data-ng-show="user.userName!=note.user.userName" style="height: 72px;">
+		<div data-ng-repeat="user in note.collaborators">
+			<div class="row" style="height: 72px;">
 				<div class="col-sm-2">
 					<img data-ng-show="user.picture==null" src="images/photo.jpg"
 						class="img-circle" height="50" width="50" />

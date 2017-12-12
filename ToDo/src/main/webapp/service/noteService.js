@@ -23,5 +23,15 @@ ToDo.factory('noteService', function($http) {
 			}
 		});
 	}
+	notes.getUrl = function(url, method, token, thisUrl){
+		return $http({
+			method : method,
+			url : url,
+			headers : {
+				'token' : token,
+				'url': thisUrl
+			}
+		});
+	}
 	return notes;
 });

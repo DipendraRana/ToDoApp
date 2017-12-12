@@ -1,5 +1,6 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.model.Note;
 import com.bridgelabz.model.Response;
+import com.bridgelabz.model.UrlDataObject;
 import com.bridgelabz.model.User;
+import com.bridgelabz.service.GetUrlMetaData;
 import com.bridgelabz.service.NoteService;
 import com.bridgelabz.service.TokenOperation;
 import com.bridgelabz.service.UserService;
@@ -35,6 +38,9 @@ public class NotesController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private GetUrlMetaData getUrlMetaData;
 
 	private static final String KEY = "!12@3#abcde";
 
@@ -82,23 +88,24 @@ public class NotesController {
 		}
 		return user;
 	}
-	
+
 	@RequestMapping(value = "/getAllUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<String> gettingAllUser(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader("token");
 		List<String> allEmails = null;
 		try {
 			tokenOperation.parseTheToken(KEY, token);
-			allEmails=userService.getAllUser();
+			allEmails = userService.getAllUser();
 		} catch (ExpiredJwtException e) {
 			e.printStackTrace();
 			response.addHeader("Error", "Expired");
 		}
 		return allEmails;
 	}
-	
+
 	@RequestMapping(value = "/updateUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody User updatingTheUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody User updatingTheUser(@RequestBody User user, HttpServletRequest request,
+			HttpServletResponse response) {
 		String token = request.getHeader("token");
 		try {
 			Claims claim = tokenOperation.parseTheToken(KEY, token);
@@ -111,11 +118,12 @@ public class NotesController {
 		}
 		return user;
 	}
-	
+
 	@RequestMapping(value = "/addCollaborator", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<User> gettingTheSpecificUser(@RequestBody Note note,HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody List<User> gettingTheSpecificUser(@RequestBody Note note, HttpServletRequest request,
+			HttpServletResponse response) {
 		String token = request.getHeader("token");
-		String emailId=request.getHeader("emailId");
+		String emailId = request.getHeader("emailId");
 		try {
 			tokenOperation.parseTheToken(KEY, token);
 			User user = userService.getUserByEmail(emailId);
@@ -193,14 +201,14 @@ public class NotesController {
 			return response;
 		}
 	}
-	
+
 	@RequestMapping(value = "/emptyTrash", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Response emptyTrash(HttpServletRequest request) {
 		Response response = new Response();
 		String token = request.getHeader("token");
 		try {
 			tokenOperation.parseTheToken(KEY, token);
-			int noOfRowsaffected=noteService.emptyTrash();
+			int noOfRowsaffected = noteService.emptyTrash();
 			if (noOfRowsaffected != 0) {
 				response.setMessage("note deleted");
 				return response;
@@ -213,6 +221,23 @@ public class NotesController {
 			response.setMessage("Token Expired");
 			return response;
 		}
+	}
+
+	@RequestMapping(value = "/urlMetadata", method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody UrlDataObject getUrlMetadata(HttpServletRequest request, HttpServletResponse response) {
+		String token = request.getHeader("token");
+		String url = request.getHeader("url");
+		try {
+			tokenOperation.parseTheToken(KEY, token);
+			return getUrlMetaData.getMetadataFromUrl(url);		
+		} catch (ExpiredJwtException e) {
+			e.printStackTrace();
+			response.addHeader("Error", "Expired");
+		} catch (IOException e) {
+			response.addHeader("Error", "Problem with link");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
