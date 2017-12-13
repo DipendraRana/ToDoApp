@@ -1,5 +1,5 @@
 var ToDo = angular.module('ToDo', [ 'ui.router', 'ngResource', 'ngSanitize',
-		'ui.bootstrap', 'toastr', 'ngFileUpload' , 'base64']);
+		'ui.bootstrap', 'toastr', 'ngFileUpload' , 'base64' , 'ngImgCrop']);
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 
 function($stateProvider, $urlRouterProvider) {

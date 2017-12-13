@@ -12,8 +12,8 @@
 		      	<i class="glyphicon glyphicon-trash"></i></button>
 		    </div>
 		</div>
-		<div contenteditable="true" data-ng-model="note.noteTitle" data-ng-change="updateNote(note);" style="padding-bottom: 10px;"></div>
-		<div contenteditable="true" data-ng-model="note.noteDescription" data-ng-change="updateNote(note)" style="padding-bottom: 10px;"></div>
+		<div contenteditable="true" data-ng-model="note.noteTitle" data-ng-change="updateNote(note);" style="padding-bottom: 10px; outline: none;"></div>
+		<div contenteditable="true" data-ng-model="note.noteDescription" data-ng-change="updateNote(note)" style="padding-bottom: 10px; outline: none;"></div>
 		
 		<div data-ng-init="getURLMetaData(note);">
 			<div data-ng-repeat="urlData in note.link">

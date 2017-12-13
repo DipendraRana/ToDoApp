@@ -273,3 +273,16 @@ button:hover {
   /* adjust 'height' to position overlay content vertically */
   height: 50%;
 }
+
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:500px;
+  height:350px;
+}
+
+.noimagemessage {
+	top: 136px;
+    right: -137px;
+    position: relative;
+}

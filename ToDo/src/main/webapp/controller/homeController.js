@@ -15,10 +15,6 @@ ToDo.controller('homeController',
 						logout();
 					}
 					
-					$scope.newNotes = function() {
-						
-					}
-					
 					/*------------------------Hiding the Note Data--------------------------------------------------*/
 					var dontShow = function(){
 						$('#note-title').hide();
@@ -601,11 +597,12 @@ ToDo.controller('homeController',
 						$timeout(function(){
 							$scope.type=object;
 							$scope.typeOfObject=typeOfObject;
-							console.log($scope.type);
-							console.log($scope.typeOfObject);
 						$('#imageUploadUI').trigger('click');
 						},0);
 					}
+					
+					$scope.myImage='';
+				    $scope.myCroppedImage='';
 					
 					/*------------------------upload photo to database--------------------------------------------------*/
 					$scope.imageUpload = function(element){
@@ -620,15 +617,15 @@ ToDo.controller('homeController',
 					        if($scope.typeOfObject=='note'){
 					        	$scope.type.image=imageSrc;
 					        	$scope.updateNote($scope.type);
-					        }else if($scope.typeOfObject=='newNote') {
-					        	$scope.type.image=imageSrc;
-					        } else {
-					        	$scope.type.picture=imageSrc;
-					        	$scope.updateUser($scope.type);
-					        }
+					        }else if($scope.typeOfObject=='waitForCrop')
+					        	$scope.myImage=imageSrc;
 					    });
 					};
 					
+					$scope.updateUserProfilePicture = function(owner) {
+						modalInstance.close();
+						$scope.updateUser(owner);
+					}
 					/*------------------------Get URL MetaDta--------------------------------------------------*/
 					$scope.getURLMetaData = function(note) {
 						var allmetaData=[];
@@ -694,6 +691,15 @@ ToDo.controller('homeController',
 							size : 'md'
 						});
 					};
+					
+					$scope.showImageUploader = function(user) {
+						$scope.user = user;
+						modalInstance = $uibModal.open({
+							templateUrl : 'template/imageuploadmodel.html',
+							scope : $scope,
+							size : 'lg'
+						});
+					};
 
 					$scope.change = function(active, label, note, $index) {
 						if (active) {
@@ -712,6 +718,12 @@ ToDo.controller('homeController',
 								return true;
 						}
 						return false;
+					}
+					
+					$scope.closeModal = function(){
+						$scope.myImage='';
+					    $scope.myCroppedImage='';
+						modalInstance.close();
 					}
 					
 					getTheOwner();

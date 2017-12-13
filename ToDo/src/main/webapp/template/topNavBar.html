@@ -30,11 +30,11 @@
 											<img data-ng-show="owner.picture==null" src="images/photo.jpg"
 												class="img-circle" height="30px" width="30px"
 												style="margin-right: 30px; overflow: hidden;" 
-												data-ng-click="triggerImageUploadUI(owner,'owner')" />
+												data-ng-click="showImageUploader(owner)" />
 											<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
 												class="img-circle" height="40px" width="40px"
 												style="margin-right: 30px; overflow: hidden;" 
-												data-ng-click="triggerImageUploadUI(owner,'owner')" />
+												data-ng-click="showImageUploader(owner)" />
 										</div>
 										<div class="col-sm-8">
 											<font size="3px">{{owner.userName}}</font>
