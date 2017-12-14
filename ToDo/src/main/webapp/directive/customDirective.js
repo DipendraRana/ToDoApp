@@ -11,6 +11,25 @@ ToDo.directive('sideNavBar', function() {
 	}
 });
 
+ToDo.directive('noteExtras', function() {
+	return{
+		templateUrl : 'template/noteExtras.html'
+	}
+});
+
+ToDo.directive('noteIcons', function() {
+	return{
+		templateUrl : 'template/noteIcons.html'
+	}
+});
+
+ToDo.directive('urlMetaData', function() {
+	return{
+		templateUrl : 'template/urlMetaData.html'
+	}
+});
+
+
 ToDo.directive('contenteditable', [ '$sce', function($sce) {
 	
 	return {

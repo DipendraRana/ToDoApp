@@ -4,7 +4,10 @@ ToDo.controller('registrationController',function($scope,registrationService,$lo
 		var message=registrationService.registerUser($scope.user);
 		message.then(function(response){
 			console.log(response.data.message);
-			$location.path("login");
+			if(response.data.message=='registration succesfull')
+				$location.path("login");
+			else
+				document.getElementById("registrationfailedmessage").innerHTML = "Registration Failed";
 		});
 	}
 });

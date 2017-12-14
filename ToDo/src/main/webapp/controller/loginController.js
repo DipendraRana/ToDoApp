@@ -7,7 +7,8 @@ ToDo.controller('loginController', function($scope, loginService, $location) {
 			if(response.data.message=="succesfull"){
 				localStorage.setItem('token', response.headers('token'));
 				$location.path("/home");
-			}
+			} else 
+				document.getElementById("loginfailedmessage").innerHTML = "Login Failed";
 		}, function() {
 			$scope.error = response.data.message;
 		});

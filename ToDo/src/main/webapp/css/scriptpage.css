@@ -1,6 +1,5 @@
 html, body {
 	height: 100%;
-	width: 100%;
 }
 
 /*icon color*/
@@ -34,11 +33,11 @@ button:hover {
 .topNav .navbar-default {
 	background-color: #ff9900;
 	margin-bottom: 0%;
+	-webkit-appearance: button;
 }
 
-.topNav .navbar-default .navbar-brand {
-	color: #000000;
-	margin-left: 20px;
+.navbar-inverse .navbar-brand {
+    color: #000000;
 }
 
 .sideNav {
@@ -98,6 +97,7 @@ button:hover {
 #ng-scope {
 	background-color: #cccccc;
 	display: inline-block;
+	height: 100%;
 }
 
 [contentEditable=true]:empty:not(:focus ):before {
@@ -122,14 +122,12 @@ button:hover {
 	margin-right: 5px;
 }
 
-.card>.note-icons {
+.note-icons {
 	padding-left: 10px;
 	padding-bottom: 5px;
-	/* visibility: hidden; */
 }
 
 .card {
-	width: 100%;
 	height: 100%;
 	background-color: white;
 	margin: 5px;
@@ -182,7 +180,6 @@ button:hover {
 }
 
 .images {
-	
     width: 100%;
 }
 
@@ -286,3 +283,92 @@ button:hover {
     right: -137px;
     position: relative;
 }
+
+.col-md-12 , .col-lg-12 {
+	
+}
+
+@media screen and (max-width: 1075px) {
+	#searchbar {
+		margin-left: 32px;
+    	width: 400px;
+    	transition : 0.5s;
+	}
+}
+
+@media screen and (max-width: 1039px) {
+	.navbar-fixed-top {
+	    position: fixed;
+	    right: 0;
+	    left: 0;
+	    z-index: 1;
+	}
+	
+	.sideNav {
+		padding-top: 0px;
+		z-index: 2;
+	}
+	
+	#noteContainer {
+		z-index: 0;
+		margin-left: 0px;
+	}
+	
+	#note {
+		transition : 0.5s;
+		width: 414px;
+    	margin-left: 18px;
+	}
+	
+	.col-md-6 {
+	    width: 700px;
+	}
+	
+	.col-xs-12 {
+    	width: 100%;
+    	padding-left: 1px;
+    	padding-right: 1px;
+	}
+	
+}
+
+@media screen and (max-width: 1197px) and (min-width: 1029px){
+	#note {
+		transition : 0.1s;
+		width: 375px;
+    	margin-left: 18px;
+	}
+	
+	#noteContainer {
+		padding-top: 500px;
+	}
+}
+
+@media screen and (max-width: 990px) {
+	.row {
+		margin-left: 210px;
+		margin-top: 40px;
+	}
+	
+@media screen and (max-width: 767px) {
+	#searchbar {
+		margin-left: 10px;
+    	width: 85%;
+	}
+	
+	.row {
+		margin-left: 0px;
+	}
+	
+	#list {
+		visibility: hidden;
+	}
+	
+	@media screen and (max-width: 473px) {
+		#note {
+		transition : 0.1s;
+		width: 250px;
+    	margin-left: 18px;
+	}
+	}
+}		

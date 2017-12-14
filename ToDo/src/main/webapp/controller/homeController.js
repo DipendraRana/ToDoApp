@@ -135,7 +135,7 @@ ToDo.controller('homeController',
 							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
 							$scope.icon = "glyphicon glyphicon-th-large black";
 						} else {
-							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
+							$scope.changeView = "col-md-6 col-sm-10 col-xs-12 col-lg-4";
 							$scope.icon = "glyphicon glyphicon-th-list black"
 						}
 					}
@@ -210,16 +210,8 @@ ToDo.controller('homeController',
 						} else
 							$location.path("login");
 					} 
-
-					/*------------------------Check The Labels--------------------------------------------------*/
-					$scope.checked = function(note, label) {
-						var checkedLabels = note.labels;
-						for (var labelNo = 0; labelNo < checkedLabels.length; labelNo++) {
-							if (checkedLabels[labelNo].labelName == label.labelName)
-								return true;
-						}
-						return false;
-					}
+					
+		/*********************************************************************************************************************************/
 
 					/*------------------------Delete Note Permanently--------------------------------------------------*/
 					$scope.deleteNotePermanently = function(note) {
@@ -306,6 +298,297 @@ ToDo.controller('homeController',
 							$location.path("login");
 					}
 
+	/*********************************************************************************************************************************/				
+
+					/*------------------------Changes view to on click--------------------------------------------------*/
+					$scope.listView = function() {
+						$scope.icon = localStorage.getItem('icon');
+						if ($scope.icon == "glyphicon glyphicon-th-list black") {
+							$scope.icon = "glyphicon glyphicon-th-large black";
+							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
+							localStorage.setItem('icon', $scope.icon);
+						} else {
+							$scope.icon = "glyphicon glyphicon-th-list black"
+							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
+							localStorage.setItem('icon', $scope.icon);
+						}
+
+					}
+					
+	
+	/*********************************************************************************************************************************/	
+					
+					/*------------------------Facebook Sharing of Note--------------------------------------------------*/
+					$scope.facebookShare = function(note) {
+						FB.init({
+							appId : '370919266686959',
+							status : true,
+							cookie : true,
+							xfbml : true,
+							version : 'v2.4'
+						});
+						
+						FB.ui({
+							  method: 'share_open_graph',
+							  action_type: 'og.likes',
+							  action_properties: JSON.stringify({
+							    object:{
+							    	'og:title' : note.noteTitle,
+									'og:description' : note.noteDescription
+							    }
+							  })
+							}, function(response){
+							  console.log(response);
+							  	if (response && !response.error_message) {
+									toastr.success('Note shared', 'successfully');
+							  	} else {
+									toastr.success('Note not shared', 'Error');
+								}
+							});
+					}
+					
+	/*********************************************************************************************************************************/
+
+					
+					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
+					$scope.getTheCollborators = function(note) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'getCollaborators';
+							var collaborators = noteService.service(url, 'PUT', token , note);
+							collaborators.then(function(response) {
+								if (response.data.message == "Token Expired")
+									$location.path("login");
+								else
+									note.collaborators = response.data;
+							}, function(response) {
+								$scope.error = response.data.message;
+							});
+						} else
+							$location.path("login");
+					}
+					
+					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
+					$scope.addCollaboraotrs = function(note,emailId) {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							modalInstance.close();
+							if(emailId!=""&&emailId!=undefined){
+								var url = 'addCollaborator';
+								var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
+								user.then(function(response) {
+									if (response.headers('Error') == "Expired")
+										logout();
+									else {
+										$scope.collaborators = response.data;
+										getNotes();
+									}
+								});
+							}
+						} else
+							$location.path("login");
+					}
+					
+					/*-------------------------Remove The User from Collaborated List---------------------------*/
+					$scope.removeUserFromCollaboration = function($index,note){
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							note.collaboratedUser.splice($index,1);
+							$scope.updateNote(note);
+						}else
+							$location.path("login");
+					}
+					
+	/*********************************************************************************************************************************/
+
+					/*-------------------------Delete all Notes From Trash---------------------------*/
+					$scope.deleteAllNotesFromTrash = function() {
+						var token = localStorage.getItem('token');
+						if (token != null && token != "") {
+							var url = 'emptyTrash';
+							var notes = noteService.service(url, 'GET', token);
+							notes.then(function(response) {
+								if (response.data.message == "Token Expired")
+									$location.path("login");
+								else
+									getNotes();
+							}, function(response) {
+								getNotes();
+								$scope.error = response.data.message;
+							});
+						} else
+							$location.path("login");
+					}
+
+					/*------------------------Pin Notes--------------------------------------------------*/
+					$scope.pinNote = function(note, $event) {
+						$event.stopPropagation();
+						note.archived = false;
+						note.pinned = true;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------UnPin Notes--------------------------------------------------*/
+					$scope.unpinNote = function(note, $event) {
+						$event.stopPropagation();
+						note.archived = false;
+						note.pinned = false;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Archive Note--------------------------------------------------*/
+					$scope.archiveNote = function(note) {
+						note.archived = true;
+						note.pinned = false;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Unarchive Notes--------------------------------------------------*/
+					$scope.unarchiveNote = function(note) {
+						note.archived = false;
+						note.pinned = false;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Delete Note--------------------------------------------------*/
+					$scope.deleteNote = function(note) {
+						note.trashed = true;
+						note.archived = false;
+						note.pinned = false;
+						note.reminder = false;
+						note.reminderDate = null;
+						note.reminderTime = null;
+						note.editedDate=new Date();
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Restore Notes--------------------------------------------------*/
+					$scope.restoreNote = function(note) {
+						note.trashed = false;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Create Copy Of Note--------------------------------------------------*/
+					$scope.createCopyOfNote = function(note) {
+						note.archived = false;
+						note.pinned = false;
+						$scope.createNote(note);
+					}
+	
+	/*********************************************************************************************************************************/
+
+
+					/*------------------------Add reminder To Note--------------------------------------------------*/
+					$scope.addReminderToNote = function(note, time) {
+						if (note.reminderDate == 0 && note.reminderTime == "") {
+							note.reminderDate = null;
+							note.reminderTime = null;
+						}
+						note.reminderTime = time;
+						note.reminder = true;
+						$scope.updateNote(note);
+					}
+
+					/*------------------------remove reminder from Note--------------------------------------------------*/
+					$scope.deleteReminderOfNote = function(note) {
+						note.reminderDate = null;
+						note.reminderTime = null;
+						note.reminder = false;
+						$scope.updateNote(note);
+					}
+
+	/*********************************************************************************************************************************/
+
+					
+					/*------------------------Update Notes from modal--------------------------------------------------*/
+					$scope.updateNotePermanentlyFromModal = function(note) {
+						modalInstance.close();
+						$scope.updateNote(note);
+					}
+
+					/*------------------------Delete Notes from modal--------------------------------------------------*/
+					$scope.deleteNotePermanentlyFromModal = function() {
+						modalInstance.close();
+						$scope.deleteNotePermanently(note);
+					}
+					
+	/*********************************************************************************************************************************/
+
+
+					/*------------------------change color--------------------------------------------------*/
+					$scope.changeColor = function(note, color) {
+						note.color = color.color;
+						$scope.color = color;
+						$scope.updateNote(note);
+					}
+					
+	/*********************************************************************************************************************************/
+					
+					/*------------------------Trigger the upload UI--------------------------------------------------*/
+					$scope.triggerImageUploadUI = function(object,typeOfObject){
+						$timeout(function(){
+							$scope.type=object;
+							$scope.typeOfObject=typeOfObject;
+						$('#imageUploadUI').trigger('click');
+						},0);
+					}
+					
+					$scope.myImage='';
+				    $scope.myCroppedImage='';
+					
+					/*------------------------upload photo to database--------------------------------------------------*/
+					$scope.imageUpload = function(element){
+					    var reader = new FileReader();
+					    reader.onload = $scope.imageIsLoaded;
+					    reader.readAsDataURL(element.files[0]);
+					}
+				
+					$scope.imageIsLoaded = function(e){
+					    $scope.$apply(function() {
+					        var imageSrc=e.target.result;
+					        if($scope.typeOfObject=='note'){
+					        	$scope.type.image=imageSrc;
+					        	$scope.updateNote($scope.type);
+					        }else if($scope.typeOfObject=='waitForCrop')
+					        	$scope.myImage=imageSrc;
+					    });
+					};
+					
+					$scope.updateUserProfilePicture = function(owner) {
+						modalInstance.close();
+						$scope.updateUser(owner);
+					}
+					
+	/*********************************************************************************************************************************/
+
+					/*------------------------Get URL MetaDta--------------------------------------------------*/
+					$scope.getURLMetaData = function(note) {
+						var allmetaData=[];
+						var alldata=note.noteDescription.split(/[ ;]+/);
+						var urlArray=[];
+						var pattern = /https?:\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+						for(var urlNo=0;urlNo<alldata.length;urlNo++){
+							if(pattern.test(alldata[urlNo])){
+								var token = localStorage.getItem('token');
+								if (token != null && token != "") {
+									var url = 'urlMetadata';
+									var urlData = noteService.getUrl(url, 'PUT', token , alldata[urlNo]);
+									urlData.then(function(response) {
+									if (response.data.message == "Token Expired")
+										$location.path("login");
+									else 
+										allmetaData.push(response.data);
+									});	
+								} 
+								else
+									$location.path("login");
+								note.link=allmetaData;
+							}
+						}
+					}
+					
+	/*********************************************************************************************************************************/
+					
 					/*------------------------Remove Label--------------------------------------------------*/
 					$scope.removeLabel = function(label) {
 						var token = localStorage.getItem('token');
@@ -370,193 +653,26 @@ ToDo.controller('homeController',
 							document.getElementById("labelmessage").innerHTML = "Label Already Exists";
 						
 					}
-
-					/*------------------------Changes view to on click--------------------------------------------------*/
-					$scope.listView = function() {
-						$scope.icon = localStorage.getItem('icon');
-						if ($scope.icon == "glyphicon glyphicon-th-list black") {
-							$scope.icon = "glyphicon glyphicon-th-large black";
-							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
-							localStorage.setItem('icon', $scope.icon);
-						} else {
-							$scope.icon = "glyphicon glyphicon-th-list black"
-							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
-							localStorage.setItem('icon', $scope.icon);
+					
+					/*------------------------Check The Labels--------------------------------------------------*/
+					$scope.checked = function(note, label) {
+						var checkedLabels = note.labels;
+						for (var labelNo = 0; labelNo < checkedLabels.length; labelNo++) {
+							if (checkedLabels[labelNo].labelName == label.labelName)
+								return true;
 						}
-
+						return false;
 					}
 					
-					/*------------------------Facebook Sharing of Note--------------------------------------------------*/
-					$scope.facebookShare = function(note) {
-						FB.init({
-							appId : '370919266686959',
-							status : true,
-							cookie : true,
-							xfbml : true,
-							version : 'v2.4'
-						});
-						
-						FB.ui({
-							  method: 'share_open_graph',
-							  action_type: 'og.likes',
-							  action_properties: JSON.stringify({
-							    object:{
-							    	'og:title' : note.noteTitle,
-									'og:description' : note.noteDescription
-							    }
-							  })
-							}, function(response){
-							  console.log(response);
-							  	if (response && !response.error_message) {
-									toastr.success('Note shared', 'successfully');
-							  	} else {
-									toastr.success('Note not shared', 'Error');
-								}
-							});
-					}
-					
-					/*------------------------Getting Collaborators of the Note--------------------------------------------------*/
-					$scope.getTheCollborators = function(note) {
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							var url = 'getCollaborators';
-							var collaborators = noteService.service(url, 'PUT', token , note);
-							collaborators.then(function(response) {
-								if (response.data.message == "Token Expired")
-									$location.path("login");
-								else
-									note.collaborators = response.data;
-							}, function(response) {
-								$scope.error = response.data.message;
-							});
-						} else
-							$location.path("login");
-					}
-					
-					/*-------------------------Add Collaborators && Get The User Collaborated List---------------------------*/
-					$scope.addCollaboraotrs = function(note,emailId) {
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							modalInstance.close();
-							if(emailId!=""&&emailId!=undefined){
-								var url = 'addCollaborator';
-								var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
-								user.then(function(response) {
-									if (response.headers('Error') == "Expired")
-										logout();
-									else {
-										$scope.collaborators = response.data;
-										getNotes();
-									}
-								});
-							}
-						} else
-							$location.path("login");
-					}
-					
-					/*-------------------------Delete all Notes From Trash---------------------------*/
-					$scope.deleteAllNotesFromTrash = function() {
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							var url = 'emptyTrash';
-							var notes = noteService.service(url, 'GET', token);
-							notes.then(function(response) {
-								if (response.data.message == "Token Expired")
-									$location.path("login");
-								else
-									getNotes();
-							}, function(response) {
-								getNotes();
-								$scope.error = response.data.message;
-							});
-						} else
-							$location.path("login");
-					}
-					
-					/*-------------------------Remove The User from Collaborated List---------------------------*/
-					$scope.removeUserFromCollaboration = function($index,note){
-						var token = localStorage.getItem('token');
-						if (token != null && token != "") {
-							note.collaboratedUser.splice($index,1);
-							$scope.updateNote(note);
-						}else
-							$location.path("login");
-					}
-
-					/*------------------------Pin Notes--------------------------------------------------*/
-					$scope.pinNote = function(note, $event) {
-						$event.stopPropagation();
-						note.archived = false;
-						note.pinned = true;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------UnPin Notes--------------------------------------------------*/
-					$scope.unpinNote = function(note, $event) {
-						$event.stopPropagation();
-						note.archived = false;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Archive Note--------------------------------------------------*/
-					$scope.archiveNote = function(note) {
-						note.archived = true;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Unarchive Notes--------------------------------------------------*/
-					$scope.unarchiveNote = function(note) {
-						note.archived = false;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Delete Note--------------------------------------------------*/
-					$scope.deleteNote = function(note) {
-						note.trashed = true;
-						note.archived = false;
-						note.pinned = false;
-						note.reminder = false;
-						note.reminderDate = null;
-						note.reminderTime = null;
-						note.editedDate=new Date();
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Restore Notes--------------------------------------------------*/
-					$scope.restoreNote = function(note) {
-						note.trashed = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Create Copy Of Note--------------------------------------------------*/
-					$scope.createCopyOfNote = function(note) {
-						note.archived = false;
-						note.pinned = false;
-						$scope.createNote(note);
-					}
-
-					/*------------------------Add reminder To Note--------------------------------------------------*/
-					$scope.addReminderToNote = function(note, time) {
-						if (note.reminderDate == 0 && note.reminderTime == "") {
-							note.reminderDate = null;
-							note.reminderTime = null;
+					$scope.change = function(active, label, note, $index) {
+						if (active) {
+							$scope.labelName = label.labelName;
+							$scope.attachLabelToNote(note, label);
+						} else if (!active) {
+							$scope.removeLabelFromNotes(note, label, $index);
 						}
-						note.reminderTime = time;
-						note.reminder = true;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------remove reminder from Note--------------------------------------------------*/
-					$scope.deleteReminderOfNote = function(note) {
-						note.reminderDate = null;
-						note.reminderTime = null;
-						note.reminder = false;
-						$scope.updateNote(note);
-					}
-
+					};
+					
 					/*------------------------Update Note with Label--------------------------------------------------*/
 					$scope.attachLabelToNote = function(note, label) {
 						note.labeled = true;
@@ -573,84 +689,7 @@ ToDo.controller('homeController',
 						$scope.updateNote(note);
 					}
 					
-					/*------------------------Update Notes from modal--------------------------------------------------*/
-					$scope.updateNotePermanentlyFromModal = function(note) {
-						modalInstance.close();
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Delete Notes from modal--------------------------------------------------*/
-					$scope.deleteNotePermanentlyFromModal = function() {
-						modalInstance.close();
-						$scope.deleteNotePermanently(note);
-					}
-
-					/*------------------------change color--------------------------------------------------*/
-					$scope.changeColor = function(note, color) {
-						note.color = color.color;
-						$scope.color = color;
-						$scope.updateNote(note);
-					}
-					
-					/*------------------------Trigger the upload UI--------------------------------------------------*/
-					$scope.triggerImageUploadUI = function(object,typeOfObject){
-						$timeout(function(){
-							$scope.type=object;
-							$scope.typeOfObject=typeOfObject;
-						$('#imageUploadUI').trigger('click');
-						},0);
-					}
-					
-					$scope.myImage='';
-				    $scope.myCroppedImage='';
-					
-					/*------------------------upload photo to database--------------------------------------------------*/
-					$scope.imageUpload = function(element){
-					    var reader = new FileReader();
-					    reader.onload = $scope.imageIsLoaded;
-					    reader.readAsDataURL(element.files[0]);
-					}
-				
-					$scope.imageIsLoaded = function(e){
-					    $scope.$apply(function() {
-					        var imageSrc=e.target.result;
-					        if($scope.typeOfObject=='note'){
-					        	$scope.type.image=imageSrc;
-					        	$scope.updateNote($scope.type);
-					        }else if($scope.typeOfObject=='waitForCrop')
-					        	$scope.myImage=imageSrc;
-					    });
-					};
-					
-					$scope.updateUserProfilePicture = function(owner) {
-						modalInstance.close();
-						$scope.updateUser(owner);
-					}
-					/*------------------------Get URL MetaDta--------------------------------------------------*/
-					$scope.getURLMetaData = function(note) {
-						var allmetaData=[];
-						var alldata=note.noteDescription.split(/[ ;]+/);
-						var urlArray=[];
-						var pattern = /https?:\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
-						for(var urlNo=0;urlNo<alldata.length;urlNo++){
-							if(pattern.test(alldata[urlNo])){
-								var token = localStorage.getItem('token');
-								if (token != null && token != "") {
-									var url = 'urlMetadata';
-									var urlData = noteService.getUrl(url, 'PUT', token , alldata[urlNo]);
-									urlData.then(function(response) {
-									if (response.data.message == "Token Expired")
-										$location.path("login");
-									else 
-										allmetaData.push(response.data);
-									});	
-								} 
-								else
-									$location.path("login");
-								note.link=allmetaData;
-							}
-						}
-					}
+	/*********************************************************************************************************************************/				
 					
 					$scope.chageToSearch = function() {
 						$location.path('search');
@@ -699,15 +738,6 @@ ToDo.controller('homeController',
 							scope : $scope,
 							size : 'lg'
 						});
-					};
-
-					$scope.change = function(active, label, note, $index) {
-						if (active) {
-							$scope.labelName = label.labelName;
-							$scope.attachLabelToNote(note, label);
-						} else if (!active) {
-							$scope.removeLabelFromNotes(note, label, $index);
-						}
 					};
 					
 					$scope.matchingTheNotes = function(note,noteSearched) {
