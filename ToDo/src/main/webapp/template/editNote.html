@@ -6,7 +6,7 @@
 			height="22"> 
 			<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
 			data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22">
-		    <img data-ng-if="note.image" class="img-responsive images" data-ng-src="{{note.image}}">
+		    <img data-ng-if="note.image" class="img-responsive images" data-ng-src="{{note.image}}" data-ng-click="showFullImageViewer(note)">
 		    <div class="img-overlay">
 		      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="note.image=null;updateNote(note);">
 		      	<i class="glyphicon glyphicon-trash"></i></button>

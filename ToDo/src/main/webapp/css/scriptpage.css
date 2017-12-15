@@ -338,10 +338,6 @@ img.Pinned {
 		width: 375px;
     	margin-left: 18px;
 	}
-	
-	#noteContainer {
-		padding-top: 500px;
-	}
 }
 
 @media screen and (max-width: 990px) {

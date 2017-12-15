@@ -1,7 +1,7 @@
 var ToDo = angular.module("ToDo");
 ToDo.controller('homeController',
 				function($scope, noteService, labelService, toastr, $location,
-						$uibModal, $interval, $filter ,$timeout,fileReader) {
+						$uibModal, $interval, $filter ,$timeout,fileReader,$log) {
 	
 					$scope.notes = [];
 					$scope.labels = [];
@@ -658,6 +658,8 @@ ToDo.controller('homeController',
 							templateUrl : 'template/editNote.html',
 							scope : $scope,
 							size : 'md',
+						}).result.catch(function(res) {
+							$log.info('Modal dismissed at: ' + new Date());
 						});
 					};
 
@@ -666,6 +668,8 @@ ToDo.controller('homeController',
 							templateUrl : 'template/LabelEdit.html',
 							scope : $scope,
 							size : 'sm',
+						}).result.catch(function(res) {
+							$log.info('Modal dismissed at: ' + new Date());
 						});
 					};
 					
@@ -675,6 +679,8 @@ ToDo.controller('homeController',
 							templateUrl : 'template/Collaborate.html',
 							scope : $scope,
 							size : 'md'
+						}).result.catch(function(res) {
+							$log.info('Modal dismissed at: ' + new Date());
 						});
 					};
 					
@@ -684,6 +690,19 @@ ToDo.controller('homeController',
 							templateUrl : 'template/imageuploadmodel.html',
 							scope : $scope,
 							size : 'lg'
+						}).result.catch(function(res) {
+							$log.info('Modal dismissed at: ' + new Date());
+						});
+					};
+					
+					$scope.showFullImageViewer = function(note) {
+						$scope.note = note;
+						modalInstance = $uibModal.open({
+							templateUrl : 'template/fullImage.html',
+							scope : $scope,
+							size : 'md'
+						}).result.catch(function(res) {
+							$log.info('Modal dismissed at: ' + new Date());
 						});
 					};
 					
