@@ -29,7 +29,7 @@ button:hover {
 	opacity: 0.8;
 }
 
-/*home page css*/Pinned
+/*home page css*/
 .topNav .navbar-default {
 	background-color: #ff9900;
 	margin-bottom: 0%;
@@ -166,14 +166,14 @@ button:hover {
 	padding: 0 !important;
 }
 
-.card > .card-block > .img-wrapper > img.notPinned {
+img.notPinned {
 	visibility: hidden;
 	position: absolute;
     right: 8px;
     top: 7px;
 }
 
-.card > .card-block > .img-wrapper > img.Pinned {
+img.Pinned {
 	position: absolute;
     right: 8px;
     top: 7px;
@@ -183,7 +183,7 @@ button:hover {
     width: 100%;
 }
 
-.card:hover .card-block > .img-wrapper > img.notPinned {
+.card:hover img.notPinned {
 	visibility: visible;
 	position: absolute;
     right: 8px;

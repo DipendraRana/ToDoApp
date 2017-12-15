@@ -94,14 +94,14 @@
 				<ul class="dropdown-menu">
 					<li><span data-ng-repeat="color in colors" role="menuitem"><img
 							data-ng-src="{{color.path}}" title="{{color.tooltip}}"
-							height="25px" data-ng-click="changeColor(note,color);">
+							height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);">
 					</span></li>
 				</ul>
 			</div>
 			<img src="images/archive.png" data-ng-show="note.archived==false"
-				data-ng-click="archiveNote(note)"> <img
-				data-ng-src="images/archive.svg" data-ng-show="note.archived==true"
-				data-ng-click="unarchiveNote(note)">
+				data-ng-click="note.archived = true;note.pinned = false;updateNote(note);"> 
+			<img src="images/archive.svg" data-ng-show="note.archived==true"
+				data-ng-click="note.archived = false;note.pinned = false;updateNote(note);">
 			
 			<img data-ng-src="images/image.svg"
 							data-ng-click="triggerImageUploadUI(note,'note')"> 
@@ -116,7 +116,7 @@
 				<ul class="dropdown-menu">
 					<li><a data-ng-click="deleteNote(note)" data-dismiss="modal"
 						data-ng-show="note.trashed==false">Delete Note</a></li>
-					<li><a data-ng-click="createCopyOfNote(note)"
+					<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);"
 						data-dismiss="modal" data-ng-show="note.trashed==false">Make a
 							copy</a></li>
 					<li><a data-ng-click="facebookShare(note)" data-ng-show="note.trashed==false">Share To
@@ -124,7 +124,7 @@
 					<li><a data-ng-click="modalInstance.close();deleteNotePermanently(note);"
 						data-ng-show="note.trashed==true" data-dismiss="modal">Delete
 							Forever</a></li>
-					<li><a data-ng-click="restoreNote(note)"
+					<li><a data-ng-click="note.trashed = false;updateNote(note);"
 						data-ng-show="note.trashed==true" data-dismiss="modal">Restore</a></li>
 					<li><a data-toggle="collapse"
 						data-target="#input{{note.noteId}}"

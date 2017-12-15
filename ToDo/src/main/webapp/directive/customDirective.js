@@ -29,6 +29,18 @@ ToDo.directive('urlMetaData', function() {
 	}
 });
 
+ToDo.directive('pinned', function() {
+	return{
+		templateUrl : 'template/pinnedTemplate.html'
+	}
+});
+
+ToDo.directive('notPinned', function() {
+	return{
+		templateUrl : 'template/notPinnedTemplate.html'
+	}
+});
+
 
 ToDo.directive('contenteditable', [ '$sce', function($sce) {
 	

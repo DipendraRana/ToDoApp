@@ -420,36 +420,6 @@ ToDo.controller('homeController',
 							$location.path("login");
 					}
 
-					/*------------------------Pin Notes--------------------------------------------------*/
-					$scope.pinNote = function(note, $event) {
-						$event.stopPropagation();
-						note.archived = false;
-						note.pinned = true;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------UnPin Notes--------------------------------------------------*/
-					$scope.unpinNote = function(note, $event) {
-						$event.stopPropagation();
-						note.archived = false;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Archive Note--------------------------------------------------*/
-					$scope.archiveNote = function(note) {
-						note.archived = true;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Unarchive Notes--------------------------------------------------*/
-					$scope.unarchiveNote = function(note) {
-						note.archived = false;
-						note.pinned = false;
-						$scope.updateNote(note);
-					}
-
 					/*------------------------Delete Note--------------------------------------------------*/
 					$scope.deleteNote = function(note) {
 						note.trashed = true;
@@ -460,19 +430,6 @@ ToDo.controller('homeController',
 						note.reminderTime = null;
 						note.editedDate=new Date();
 						$scope.updateNote(note);
-					}
-
-					/*------------------------Restore Notes--------------------------------------------------*/
-					$scope.restoreNote = function(note) {
-						note.trashed = false;
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Create Copy Of Note--------------------------------------------------*/
-					$scope.createCopyOfNote = function(note) {
-						note.archived = false;
-						note.pinned = false;
-						$scope.createNote(note);
 					}
 	
 	/*********************************************************************************************************************************/
@@ -510,16 +467,6 @@ ToDo.controller('homeController',
 					$scope.deleteNotePermanentlyFromModal = function() {
 						modalInstance.close();
 						$scope.deleteNotePermanently(note);
-					}
-					
-	/*********************************************************************************************************************************/
-
-
-					/*------------------------change color--------------------------------------------------*/
-					$scope.changeColor = function(note, color) {
-						note.color = color.color;
-						$scope.color = color;
-						$scope.updateNote(note);
 					}
 					
 	/*********************************************************************************************************************************/

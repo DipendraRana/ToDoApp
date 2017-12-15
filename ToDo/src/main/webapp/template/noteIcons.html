@@ -36,13 +36,13 @@
 		<ul class="dropdown-menu">
 			<li><span data-ng-repeat="color in colors" role="menuitem"><img
 					data-ng-src="{{color.path}}" title="{{color.tooltip}}"
-					height="25px" data-ng-click="changeColor(note,color);">
+					height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);">
 			</span></li>
 		</ul>
 	</div>
 	
 	<img data-ng-src="images/archive.png"
-		data-ng-click="archiveNote(note)"> 
+		data-ng-click="note.archived = true;note.pinned = false;updateNote(note);">	 
 	<img data-ng-src="images/image.svg"
 		data-ng-click="triggerImageUploadUI(note,'note')"> 
 	<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
@@ -55,7 +55,7 @@
 			data-toggle="dropdown">
 		<ul class="dropdown-menu">
 			<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
-			<li><a data-ng-click="createCopyOfNote(note)">Make a
+			<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);">Make a
 					copy</a></li>
 			<li><a data-ng-click="facebookShare(note)">Share To
 					Facebook</a></li>
