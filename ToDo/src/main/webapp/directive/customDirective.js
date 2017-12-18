@@ -41,6 +41,12 @@ ToDo.directive('notPinned', function() {
 	}
 });
 
+ToDo.directive('secondTopBar', function() {
+	return{
+		templateUrl : 'template/directorybar.html'
+	}
+});
+
 
 ToDo.directive('contenteditable', [ '$sce', function($sce) {
 	

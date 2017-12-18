@@ -121,7 +121,7 @@
 							copy</a></li>
 					<li><a data-ng-click="facebookShare(note)" data-ng-show="note.trashed==false">Share To
 										Facebook</a></li>
-					<li><a data-ng-click="modalInstance.close();deleteNotePermanently(note);"
+					<li><a data-ng-click="deleteNotePermanently(note);ok();"
 						data-ng-show="note.trashed==true" data-dismiss="modal">Delete
 							Forever</a></li>
 					<li><a data-ng-click="note.trashed = false;updateNote(note);"
@@ -145,7 +145,7 @@
 				</ul>
 			</div>
 
-			<div role="button" data-ng-click="updateNotePermanentlyFromModal(note)"
+			<div role="button" data-ng-click="updateNote(note);ok();"
 				class="btn btn-done pull-right inline" data-dismiss="modal"
 				data-ng-show="note.trashed==false">DONE</div>
 

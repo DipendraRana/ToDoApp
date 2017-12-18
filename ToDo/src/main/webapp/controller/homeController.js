@@ -2,7 +2,7 @@ var ToDo = angular.module("ToDo");
 ToDo.controller('homeController',
 				function($scope, noteService, labelService, toastr, $location,
 						$uibModal, $interval, $filter ,$timeout,fileReader,$log) {
-	
+					
 					$scope.notes = [];
 					$scope.labels = [];
 					$scope.labelName = [];
@@ -234,19 +234,17 @@ ToDo.controller('homeController',
 					}
 
 					/*------------------------Create Notes--------------------------------------------------*/
-					$scope.createNote = function() {
+					$scope.createNote = function(note) {
 						var token = localStorage.getItem('token');
 						if (token != null && token != "") {
-							if ($scope.newNote.noteTitle != ''
-									|| $scope.newNote.noteDescription != '' || $scope.newNote.images != '') {
-								$scope.newNote.image=null;
+							if (note.noteTitle != ''
+									|| note.noteDescription != '' || note.images != '') {
 								var url = 'saveNote';
 								var notes = noteService.service(url, 'POST',
-										token, $scope.newNote);
+										token, note);
 								notes.then(function(response) {
 													if (response.data.message == "Token Expired")
-														$location
-																.path("/login");
+														$location.path("/login");
 													else
 														getNotes();
 												},
@@ -372,7 +370,6 @@ ToDo.controller('homeController',
 					$scope.addCollaboraotrs = function(note,emailId) {
 						var token = localStorage.getItem('token');
 						if (token != null && token != "") {
-							modalInstance.close();
 							if(emailId!=""&&emailId!=undefined){
 								var url = 'addCollaborator';
 								var user = noteService.collaboratedUser(url, 'PUT', token, note, emailId);
@@ -453,21 +450,6 @@ ToDo.controller('homeController',
 						note.reminder = false;
 						$scope.updateNote(note);
 					}
-
-	/*********************************************************************************************************************************/
-
-					
-					/*------------------------Update Notes from modal--------------------------------------------------*/
-					$scope.updateNotePermanentlyFromModal = function(note) {
-						modalInstance.close();
-						$scope.updateNote(note);
-					}
-
-					/*------------------------Delete Notes from modal--------------------------------------------------*/
-					$scope.deleteNotePermanentlyFromModal = function() {
-						modalInstance.close();
-						$scope.deleteNotePermanently(note);
-					}
 					
 	/*********************************************************************************************************************************/
 					
@@ -500,11 +482,6 @@ ToDo.controller('homeController',
 					        	$scope.myImage=imageSrc;
 					    });
 					};
-					
-					$scope.updateUserProfilePicture = function(owner) {
-						modalInstance.close();
-						$scope.updateUser(owner);
-					}
 					
 	/*********************************************************************************************************************************/
 
@@ -633,10 +610,20 @@ ToDo.controller('homeController',
 						note.labels.splice($index, 1);
 						if (note.labels.length == 0)
 							note.labeled = false;
-						$scope.updateNote(note);
+						$scope.updateNote(note); 
 					}
 					
-	/*********************************************************************************************************************************/				
+	/*********************************************************************************************************************************/	
+					$scope.getRedirectAddress = function() {
+						$scope.redirect=$location.path();
+					}
+					
+					$scope.getDirectory = function() {
+						
+					}
+					
+					
+	/*********************************************************************************************************************************/	
 					
 					$scope.chageToSearch = function() {
 						$location.path('search');
@@ -656,54 +643,89 @@ ToDo.controller('homeController',
 						$scope.note = note;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/editNote.html',
+							controller: 'ModalInstanceCtrl',
 							scope : $scope,
 							size : 'md',
-						}).result.catch(function(res) {
-							$log.info('Modal dismissed at: ' + new Date());
 						});
+						
+						modalInstance.result.then(
+							function (result) {
+							},
+							function (result) {
+								$log.info('Modal dismissed at: ' + new Date());
+							}
+						);
 					};
 
 					$scope.showModalLabel = function() {
-						modalInstance = $uibModal.open({
+						$scope.modalInstance = $uibModal.open({
 							templateUrl : 'template/LabelEdit.html',
+							controller: 'ModalInstanceCtrl',
 							scope : $scope,
 							size : 'sm',
-						}).result.catch(function(res) {
-							$log.info('Modal dismissed at: ' + new Date());
 						});
+						
+						modalInstance.result.then(
+							function (result) {
+							},
+							function (result) {
+								$log.info('Modal dismissed at: ' + new Date());
+							}
+						);
 					};
 					
 					$scope.showModalCollaborator = function(note) {
 						$scope.note = note;
-						modalInstance = $uibModal.open({
+						var modalInstance = $uibModal.open({
 							templateUrl : 'template/Collaborate.html',
+							controller: 'ModalInstanceCtrl',
 							scope : $scope,
-							size : 'md'
-						}).result.catch(function(res) {
-							$log.info('Modal dismissed at: ' + new Date());
+							size : 'md',
 						});
+						
+						modalInstance.result.then(
+							function (result) {
+							},
+							function (result) {
+								$log.info('Modal dismissed at: ' + new Date());
+							}
+						);
 					};
 					
 					$scope.showImageUploader = function(user) {
 						$scope.user = user;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/imageuploadmodel.html',
+							controller: 'ModalInstanceCtrl',
 							scope : $scope,
 							size : 'lg'
-						}).result.catch(function(res) {
-							$log.info('Modal dismissed at: ' + new Date());
 						});
+						
+						modalInstance.result.then(
+							function (result) {
+							},
+							function (result) {
+								$log.info('Modal dismissed at: ' + new Date());
+							}
+						);
 					};
 					
 					$scope.showFullImageViewer = function(note) {
 						$scope.note = note;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/fullImage.html',
+							controller: 'ModalInstanceCtrl',
 							scope : $scope,
 							size : 'md'
-						}).result.catch(function(res) {
-							$log.info('Modal dismissed at: ' + new Date());
 						});
+						
+						modalInstance.result.then(
+							function (result) {
+							},
+							function (result) {
+								$log.info('Modal dismissed at: ' + new Date());
+							}
+						);
 					};
 					
 					$scope.matchingTheNotes = function(note,noteSearched) {
@@ -719,7 +741,6 @@ ToDo.controller('homeController',
 					$scope.closeModal = function(){
 						$scope.myImage='';
 					    $scope.myCroppedImage='';
-						modalInstance.close();
 					}
 					
 					getTheOwner();
@@ -732,4 +753,8 @@ ToDo.controller('homeController',
 					
 					dontShow();
 
-				});
+				}).controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance) {
+				    $scope.ok = function () {
+				    	$uibModalInstance.close();
+				    };
+				}]);;

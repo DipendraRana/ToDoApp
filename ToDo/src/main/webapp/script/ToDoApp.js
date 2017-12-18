@@ -51,6 +51,10 @@ function($stateProvider, $urlRouterProvider) {
 		url : '/search',
 		templateUrl : 'template/searchpage.html',
 		controller : 'homeController'
+	}).state('Labels',{
+		url : '/Labels',
+		templateUrl : 'template/dummypage.html',
+		controller : 'homeController'
 	});
 	$urlRouterProvider.otherwise('login');
 } ]);

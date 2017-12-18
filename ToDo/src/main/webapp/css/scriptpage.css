@@ -284,8 +284,12 @@ img.Pinned {
     position: relative;
 }
 
-.col-md-12 , .col-lg-12 {
-	
+.directorybar {
+	z-index: 2;
+    height: 31px;
+    margin-top: 62px;
+    width: 100%;
+    position: fixed;
 }
 
 @media screen and (max-width: 1075px) {
