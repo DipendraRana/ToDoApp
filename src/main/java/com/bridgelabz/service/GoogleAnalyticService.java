@@ -10,5 +10,5 @@ public interface GoogleAnalyticService {
 	
 	public AnalyticsReporting initializeAnalyticsReporting() throws GeneralSecurityException, IOException;
 
-	public GetReportsResponse getReport(AnalyticsReporting service) throws IOException ;
+	public GetReportsResponse getReport(AnalyticsReporting service,String startDate,String endDate,String[] dimension,String[] metric) throws IOException ;
 }

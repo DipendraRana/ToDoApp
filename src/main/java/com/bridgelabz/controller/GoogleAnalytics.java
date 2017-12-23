@@ -1,4 +1,4 @@
-package com.bridgelabz.controller;
+ package com.bridgelabz.controller;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -19,12 +19,29 @@ public class GoogleAnalytics {
 	@Autowired
 	GoogleAnalyticService googleAnalyticService;
 	
-	@RequestMapping(value="/getGoogleAnalyticData", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public GetReportsResponse getResponse() {
+	@RequestMapping(value="/getGoogleAnalyticEventData", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public GetReportsResponse getEventResponse() {
 		GetReportsResponse getReportsResponse=null;
 		try {
 			AnalyticsReporting analyticsReporting = googleAnalyticService.initializeAnalyticsReporting();
-			getReportsResponse=googleAnalyticService.getReport(analyticsReporting);
+			String[] allDimensions= {"ga:pageTitle","ga:eventAction","ga:eventCategory"};
+			String[] allMetrics= {"ga:totalEvents"};
+			getReportsResponse=googleAnalyticService.getReport(analyticsReporting,"2017-12-19","2017-12-23",allDimensions,allMetrics);
+			return getReportsResponse;
+		} catch (GeneralSecurityException | IOException e) {
+			e.printStackTrace();
+			return getReportsResponse;
+		} 
+	}
+	
+	@RequestMapping(value="/getGoogleAnalyticPageData", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public GetReportsResponse getPageResponse() {
+		GetReportsResponse getReportsResponse=null;
+		try {
+			AnalyticsReporting analyticsReporting = googleAnalyticService.initializeAnalyticsReporting();
+			String[] allDimensions= {"ga:pageTitle"};
+			String[] allMetrics= {"ga:pageviews","ga:timeOnPage"};
+			getReportsResponse=googleAnalyticService.getReport(analyticsReporting,"2017-12-19","2017-12-23",allDimensions,allMetrics);
 			return getReportsResponse;
 		} catch (GeneralSecurityException | IOException e) {
 			e.printStackTrace();

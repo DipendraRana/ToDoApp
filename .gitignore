@@ -8,7 +8,11 @@
 *.so
 .classpath
 .project
+<<<<<<< HEAD
 *.properties
+=======
+.properties
+>>>>>>> 0fe2abd3d82bc786be97da62c812b755830df87c
 build
 # Packages #
 ############
